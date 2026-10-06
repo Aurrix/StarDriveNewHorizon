@@ -43,6 +43,10 @@ namespace Ship_Game
         HashSet<Empire> Moles;
 
         UIButton DiagramButton;
+        readonly Array<UIButton> PirateContacts = new();
+        PirateFactionPresentation[] PirateContactRoster = System.Array.Empty<PirateFactionPresentation>();
+        int PirateContactPage;
+        bool PirateContactsPending;
         Rectangle LeftRect;
 
         Font Font12 = Fonts.Arial12;
@@ -727,13 +731,84 @@ namespace Ship_Game
             int j = 0;
             foreach (RaceEntry re in Races)
             {
-                re.container = new Rectangle((int)cursor.X + 10 + j * 148, LeftRect.Y + 40, 124, 148);
+                re.container = new Rectangle((int)cursor.X + 10 + j * 148, LeftRect.Y + 16, 124, 148);
                 j++;
             }
             GameAudio.MuteRacialMusic();
 
             DiagramButton = Add(new UIButton(ButtonStyle.Default, new Vector2(LeftRect.X + 70, LeftRect.Bottom - 60), "View Relationships"));
             DiagramButton.OnClick = b => AddRelationShipDiagramScreen();
+            RefreshPirateContacts();
+        }
+
+        public override void BecameActive()
+        {
+            base.BecameActive();
+            if (DMenu != null) RefreshPirateContacts();
+        }
+
+        void OpenUnderworld(Empire faction)
+        {
+            var market = new PirateUnderworldScreen(Universe, faction);
+            // Popups leave this screen visible, so BecameActive alone does not signal their closure.
+            market.OnExit += RefreshPirateContacts;
+            ScreenManager.AddScreen(market);
+        }
+
+        void RefreshPirateContacts()
+        {
+            if (PirateContactsPending) return;
+            PirateContactsPending = true;
+            // This existing gap separates empire portraits from their detailed diplomacy panels.
+            // Keep pirates out of the normal empire list: their actions are market contracts.
+            Universe.RunOnSimThread(() =>
+            {
+                var contacts = Universe.UState.PirateFactions
+                    .Where(f => !f.IsDefeated && Player.IsKnown(f))
+                    .OrderBy(f => f.Id)
+                    .Select(f => new PirateFactionPresentation(f, Player, Universe.UState.Underworld)).ToArray();
+                RunOnNextFrame(() =>
+                {
+                    PirateContactsPending = false;
+                    PirateContactRoster = contacts;
+                    ShowPirateContactPage(PirateContactPage);
+                });
+            });
+        }
+
+        void ShowPirateContactPage(int page)
+        {
+            foreach (var card in PirateContacts) Remove(card);
+            PirateContacts.Clear();
+            const int pageSize = 2;
+            int pages = System.Math.Max(1, (PirateContactRoster.Length + pageSize - 1) / pageSize);
+            PirateContactPage = System.Math.Clamp(page, 0, pages - 1);
+            int start = PirateContactPage * pageSize;
+            int count = System.Math.Min(pageSize, PirateContactRoster.Length - start);
+            float left = System.Math.Max(26, LeftRect.X + 60);
+            float width = System.Math.Min(ScreenWidth - left - 26, 1164);
+            float cardsWidth = width - (pages > 1 ? 44 : 0);
+            for (int i = 0; i < count; ++i)
+            {
+                var info = PirateContactRoster[start + i];
+                var rect = new RectF(left + i * (cardsWidth + 12) / count, LeftRect.Y + 192,
+                    (cardsWidth - (count - 1) * 12) / count, 52);
+                PirateContacts.Add(Add(new PirateContactButton(info, rect, () => OpenUnderworld(info.Faction))));
+            }
+            if (pages <= 1) return;
+            for (int i = 0; i < 2; ++i)
+            {
+                int step = i == 0 ? -1 : 1;
+                var button = Add(new PirateMarketButton(new Vector2(left + width - 34, LeftRect.Y + 192 + i * 28), i == 0 ? "<" : ">")
+                {
+                    Name = i == 0 ? "PirateContactsPrevious" : "PirateContactsNext",
+                    Size = new Vector2(34, 24),
+                    Enabled = i == 0 ? PirateContactPage > 0 : PirateContactPage < pages - 1,
+                    Tooltip = PirateUnderworld.Text("PirateContactsPage", PirateContactPage + 1, pages)
+                });
+                button.OnClick = _ => RunOnNextFrame(() => ShowPirateContactPage(PirateContactPage + step));
+                PirateContacts.Add(button);
+            }
         }
 
         void AddRelationShipDiagramScreen()

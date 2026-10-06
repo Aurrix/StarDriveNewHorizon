@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<UID>AutoTurrets_I</UID>
+	<TechnologyType>ShipWeapons</TechnologyType>
+	<Cost>800</Cost>
+	<RootNode>0</RootNode>
+	<Name>AutoTurret Type54</Name>
+	<NameIndex>50801</NameIndex>
+	<DescriptionIndex>50800</DescriptionIndex>
+	<LongDescription>AutoTurret Type54</LongDescription>
+	<LeadsTo>
+		<LeadsToTech>
+			<UID>AutoTurrets_II</UID>
+		</LeadsToTech>
+	</LeadsTo>
+	<ModulesUnlocked>
+		<UnlockedMod>
+			<ModuleUID>AutoTurret Type54</ModuleUID>
+		</UnlockedMod>
+	
+	
+	</ModulesUnlocked>
+	<BuildingsUnlocked/>
+	<BonusUnlocked/>
+	<TroopsUnlocked/>
+	<HullsUnlocked/>
+</Technology>

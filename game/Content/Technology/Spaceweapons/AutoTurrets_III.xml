@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<UID>AutoTurrets_III</UID>
+	<TechnologyType>ShipWeapons</TechnologyType>
+	<Cost>6000</Cost>
+	<RootNode>0</RootNode>
+	<Name>AutoTurret Type80</Name>
+	<NameIndex>50803</NameIndex>
+	<DescriptionIndex>50800</DescriptionIndex>
+	<LongDescription>AutoTurret Type80</LongDescription>
+	<LeadsTo>
+		<LeadsToTech>
+			<UID>Multi-Barrel Drivers</UID>
+		</LeadsToTech>
+	</LeadsTo>
+	<ModulesUnlocked>
+		<UnlockedMod>
+			<ModuleUID>AutoTurret Type68</ModuleUID>
+		</UnlockedMod>		
+	</ModulesUnlocked>
+	<BuildingsUnlocked/>
+	<BonusUnlocked/>
+	<TroopsUnlocked/>
+	<HullsUnlocked/>
+</Technology>

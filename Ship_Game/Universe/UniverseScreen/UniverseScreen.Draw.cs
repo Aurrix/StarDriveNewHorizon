@@ -630,6 +630,14 @@ namespace Ship_Game
                 var shipRangeTex = ResourceManager.Texture("UI/node_shiprange");
                 foreach (Ship ship in UState.Objects.VisibleShips)
                 {
+                    if (SelectedShip == ship && ship.IsPlatformOrStation && ship.Loyalty.CanBeScannedByPlayer)
+                    {
+                        if (ShowStationBorders && ship.BorderClaimRadius > 0)
+                            DrawCircleProjected(ship.Position, ship.BorderClaimRadius,
+                                ship.Loyalty.EmpireColor.Alpha(.7f));
+                        if (ShowStationInhibition && ship.InhibitionRadius > 0)
+                            DrawCircleProjected(ship.Position, ship.InhibitionRadius, Color.Orange.Alpha(.7f));
+                    }
                     if (ship is { WeaponsMaxRange: > 0f, IsVisibleToPlayer: true })
                     {
                         Color baseTint = ship.Loyalty == Player ? new Color(0, 200, 0) : new Color(200, 0, 0);
@@ -646,7 +654,7 @@ namespace Ship_Game
                         }
                     }
 
-                    if ((ship?.SensorRange ?? 0) > 0)
+                    if ((ship?.SensorRange ?? 0) > 0 && (!ship.IsPlatformOrStation || ShowStationSensors))
                     {
                         if (SelectedShip == ship)
                         {
@@ -655,7 +663,7 @@ namespace Ship_Game
                                 : new Color(200, 0, 0, 10).Premultiplied();
                             float sensorRange = ship.AI.GetSensorRadius();
                             DrawTextureProjected(shipRangeTex, ship.Position, sensorRange, color);
-                            DrawCircleProjected(ship.Position, sensorRange, new Color(Color.Blue, 85).Premultiplied());
+                            DrawCircleProjected(ship.Position, sensorRange, new Color(Color.Cyan, 85).Premultiplied());
                         }
                     }
                 }

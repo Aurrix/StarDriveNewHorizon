@@ -62,9 +62,17 @@ namespace Ship_Game.Commands.Goals
                 && (!ToBuild.IsResearchStation || !body.HasExoticStation(Owner, mining: false, except: OldShip));
         }
 
+        public bool DeploymentSiteValid()
+        {
+            if (OldShip != null && (!OldShip.Active || OldShip.Dying || OldShip.Loyalty != Owner)) return false;
+            return !TetherPlanetTakenByOtherEmpire && ExoticStationSiteValid()
+                && StarbaseRules.CanDeploy(Owner, ToBuild, BuildPosition, TetherPlanet, OldShip, this, out _);
+        }
+
         protected override GoalStep? PreEvaluate()
         {
-            if (TetherPlanetTakenByOtherEmpire || !ExoticStationSiteValid())
+            if (IsMainGoalCompleted) return GoalStep.GoalComplete;
+            if (!DeploymentSiteValid())
             {
                 // We no longer own the planet this orbital was for: scrap the in-flight
                 // constructor (if one was already built) and abandon the goal. The base

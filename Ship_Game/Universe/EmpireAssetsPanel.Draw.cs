@@ -174,6 +174,13 @@ public sealed partial class EmpireAssetsPanel
                 L(24, 11, 27, 11); L(27, 11, 27, 23); L(27, 23, 23, 23);
                 L(23, 23, 23, 27); L(23, 27, 18, 23); L(18, 23, 15, 23);
                 break;
+            case SidebarAction.Pirates: // Skull and crossbones, matching the other navigation glyphs.
+                L(7, 22, 25, 28); L(7, 28, 25, 22);
+                C(16, 11, 8); R(12, 16, 8, 5);
+                F(11, 9, 3, 3); F(18, 9, 3, 3);
+                L(16, 13, 15, 15); L(15, 15, 17, 15);
+                L(15, 18, 15, 21); L(18, 18, 18, 21);
+                break;
             case SidebarAction.Fleets:
                 Ship(16, 5, 4); Ship(8, 17, 4); Ship(24, 17, 4);
                 break;

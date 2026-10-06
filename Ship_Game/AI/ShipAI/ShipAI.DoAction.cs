@@ -281,7 +281,7 @@ namespace Ship_Game.AI
                 return;
 
             Planet target = g.TargetPlanet;
-            if (!bg.ExoticStationSiteValid())
+            if (!bg.DeploymentSiteValid())
             {
                 OrderScrapShip();
                 return;
@@ -334,8 +334,10 @@ namespace Ship_Game.AI
             Owner.QueueTotalRemoval();
             if (goal.OldShip?.Active == true) // we are refitting something
             {
+                orbital.VanityName = goal.OldShip.VanityName;
                 goal.OldShip.TransferCargoUponRefit(orbital);
                 goal.OldShip.QueueTotalRemoval();
+                goal.NotifyMainGoalCompleted();
             }
 
             if (bg.TetherPlanet != null)
@@ -365,7 +367,7 @@ namespace Ship_Game.AI
             }
 
             Planet target = bg.TetherPlanet;
-            if (!bg.ExoticStationSiteValid())
+            if (!bg.DeploymentSiteValid())
             {
                 OrderScrapShip();
                 return;
@@ -404,8 +406,10 @@ namespace Ship_Game.AI
                 Owner.QueueTotalRemoval();
                 if (goal.OldShip?.Active == true) // we are refitting something
                 {
-                    goal.OldShip.TransferCargoUponRefit(orbital);
+                    orbital.VanityName = goal.OldShip.VanityName;
+                goal.OldShip.TransferCargoUponRefit(orbital);
                     goal.OldShip.QueueTotalRemoval();
+                goal.NotifyMainGoalCompleted();
                 }
                 else
                 {

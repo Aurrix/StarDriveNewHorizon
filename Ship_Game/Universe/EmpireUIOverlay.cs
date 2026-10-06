@@ -399,6 +399,7 @@ namespace Ship_Game
                 case "Shipyard": Universe.ScreenManager.AddScreen(new ShipDesignScreen(Universe, this)); break;
                 case "Empire": Universe.ScreenManager.AddScreen(new EmpireManagementScreen(Universe, this)); break;
                 case "Diplomacy": Universe.ScreenManager.AddScreen(new MainDiplomacyScreen(Universe)); break;
+                case "Pirates": Universe.ScreenManager.AddScreen(new PirateUnderworldScreen(Universe)); break;
                 case "Fleets": Universe.ScreenManager.AddScreen(new FleetDesignScreen(Universe, this)); break;
                 case "ShipList": Universe.ScreenManager.AddScreen(new ShipListScreen(Universe, this)); break;
                 case "Espionage":

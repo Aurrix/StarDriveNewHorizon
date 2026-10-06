@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
@@ -79,6 +80,9 @@ internal sealed class BorderVisualRenderer : IDisposable
     Generation Displayed, Building;
     Task<BorderVisualTile[]> Worker;
     BorderVisualTile.Scratch WorkerScratch;
+    Task<BorderVisualTile[]> RestoreWorker;
+    Stopwatch LoadTimer;
+    double LoadUploadMilliseconds;
     long NextSceneRefresh;
     internal const int SceneRefreshMilliseconds = 2000;
     readonly Queue<BorderVisualTile> Uploads = new();
@@ -97,7 +101,7 @@ internal sealed class BorderVisualRenderer : IDisposable
     public BorderScene DisplayedScene => Displayed?.Scene;
     BorderScene SavedOverviewScene;
     internal SavedBorderOverview SavedOverview { get; private set; }
-    internal bool RestoredTilesReady => Uploads.Count == 0;
+    internal bool RestoredTilesReady => RestoreWorker == null && Uploads.Count == 0;
 
     internal bool RestoreOverview(SavedBorderOverview saved, BorderScene scene, float radius)
     {
@@ -106,37 +110,44 @@ internal sealed class BorderVisualRenderer : IDisposable
             || !saved.SceneKey.AsSpan().SequenceEqual(scene.SaveKey())) return false;
         var generation = new Generation(scene, radius);
         if (saved.Tiles?.Length != generation.Overview.Count) return false;
-        var restored = new List<BorderVisualTile>();
-        var keys = new HashSet<Key>();
+        if (saved.DetailTiles?.Length > 128) return false;
+        Building = generation;
+        LoadTimer = Stopwatch.StartNew();
+        RestoreWorker = Task.Run(() => DecodeOverview(saved, generation.Overview, scene.Empires.Length));
+        return true; // Accepted for asynchronous validation; invalid caches rebuild normally.
+    }
+
+    internal static BorderVisualTile[] DecodeOverview(SavedBorderOverview saved, List<Key> overview, int empireCount)
+    {
+        var timer = Stopwatch.StartNew();
+        int details = saved.DetailTiles?.Length ?? 0;
+        if (saved.Tiles?.Length != overview.Count || details > 128) return null;
+        var restored = new BorderVisualTile[saved.Tiles.Length + details];
         try
         {
-            foreach (byte[] bytes in saved.Tiles)
-            {
-                var tile = new BorderVisualTile(bytes, scene.Empires.Length);
-                if (!generation.Overview.Contains(tile.Address) || !keys.Add(tile.Address)) return false;
-                restored.Add(tile);
-            }
-            if (saved.DetailTiles != null)
-            {
-                if (saved.DetailTiles.Length > 128) return false;
-                foreach (byte[] bytes in saved.DetailTiles)
+            System.Threading.Tasks.Parallel.For(0, restored.Length,
+                new ParallelOptions { MaxDegreeOfParallelism = BorderSavePreparation.TileWorkers }, i =>
                 {
-                    var tile = new BorderVisualTile(bytes, scene.Empires.Length);
-                    if (tile.Address.Level < -64 || tile.Address.Level > 64 || !keys.Add(tile.Address)) return false;
-                    restored.Add(tile);
-                }
+                    byte[] bytes = i < saved.Tiles.Length ? saved.Tiles[i] : saved.DetailTiles[i-saved.Tiles.Length];
+                    restored[i] = new BorderVisualTile(bytes, empireCount);
+                });
+            var required = new HashSet<Key>(overview);
+            var keys = new HashSet<Key>();
+            for (int i = 0; i < restored.Length; ++i)
+            {
+                Key key = restored[i].Address;
+                if (!keys.Add(key) || (i < saved.Tiles.Length ? !required.Contains(key)
+                    : key.Level < -64 || key.Level > 64)) return null;
             }
         }
-        catch (Exception e) when (e is System.IO.IOException || e is ArgumentException)
+        catch (AggregateException e) when (e.Flatten().InnerExceptions.All(
+            error => error is System.IO.IOException || error is ArgumentException))
         {
-            Log.Warning("Ignoring invalid saved border overview: " + e.Message);
-            return false;
+            Log.Warning("Ignoring invalid saved border overview: " + e.GetBaseException().Message);
+            return null;
         }
-        Building = generation;
-        // This is a validated cache of this scene, not a record of observed
-        // intelligence. Publish it without discarding and rebuilding its tiles.
-        foreach (var tile in restored) Uploads.Enqueue(tile);
-        return true;
+        Log.Info($"Border cache decode: {timer.ElapsedMilliseconds}ms, {restored.Length} tiles");
+        return restored;
     }
 
     void CaptureOverview(float radius)
@@ -149,7 +160,7 @@ internal sealed class BorderVisualRenderer : IDisposable
             if (tiles[i] == null) return;
         }
         SavedOverview = new() { Version = SavedBorderOverview.CurrentVersion, Radius = radius,
-            SceneKey = Displayed.Scene.SaveKey(), Tiles = tiles };
+            SceneKey = Displayed.Scene.SaveKey(), Tiles = tiles, RuntimeScene = Displayed.Scene };
         SavedOverviewScene = Displayed.Scene;
     }
     internal bool IsViewReady(RectF view, float worldPerPixel)
@@ -208,6 +219,15 @@ internal sealed class BorderVisualRenderer : IDisposable
             HideStaleKnowledge = false;
             LastKnowledgeChecked = latest;
         }
+        if (RestoreWorker != null)
+        {
+            if (!RestoreWorker.IsCompleted) return;
+            if (RestoreWorker.IsCompletedSuccessfully && RestoreWorker.Result != null)
+                foreach (var tile in RestoreWorker.Result) Uploads.Enqueue(tile);
+            else if (RestoreWorker.Exception != null)
+                Log.Error(RestoreWorker.Exception, "Border cache restore failed; rebuilding");
+            RestoreWorker = null;
+        }
         // Classification already skips missing fields. One empire waiting for
         // geometry must not block uploads or hide every ready empire's border.
         if (PaletteScene != null)
@@ -249,13 +269,23 @@ internal sealed class BorderVisualRenderer : IDisposable
         }
         var timer = Stopwatch.StartNew();
         int uploadBytes = 0;
-        while (Uploads.Count > 0 && uploadBytes < 8*1024*1024 && timer.Elapsed.TotalMilliseconds < 2)
+        while (Uploads.Count > 0 && uploadBytes < (overviewOnly ? 32 : 8)*1024*1024
+            && timer.Elapsed.TotalMilliseconds < (overviewOnly ? 12 : 2))
         {
             BorderVisualTile data = Uploads.Dequeue();
             int bytes = data.Territory.Length*8 + (data.Metadata.Length+data.Colors.Length)*16;
             Building.Tiles.Add(data.Address, new(Device, data));
             uploadBytes += bytes;
             ++TilesUploaded;
+        }
+        if (LoadTimer != null)
+        {
+            LoadUploadMilliseconds += timer.Elapsed.TotalMilliseconds;
+            if (Uploads.Count == 0 && Building.Complete(Building.Overview))
+            {
+                Log.Info($"Border cache ready: {LoadTimer.ElapsedMilliseconds}ms total, {LoadUploadMilliseconds:F1}ms GPU uploads");
+                LoadTimer = null;
+            }
         }
         // Publish a coherent overview before accepting urgent replacements.
         // Cancelling after every tile can starve the first visible generation
@@ -297,7 +327,7 @@ internal sealed class BorderVisualRenderer : IDisposable
         if (Worker != null || Uploads.Count != 0) return;
         // Build the bounded world grid once. Camera motion only culls drawing;
         // it never allocates tiles or changes the raster's resolution.
-        const int tilesPerJob = 1;
+        int tilesPerJob = overviewOnly ? BorderSavePreparation.TileWorkers : 1;
         var missing = new List<Key>(tilesPerJob);
         foreach (Key key in Building.Overview)
             if (!Building.Tiles.ContainsKey(key) && missing.Count < tilesPerJob) missing.Add(key);
@@ -309,11 +339,19 @@ internal sealed class BorderVisualRenderer : IDisposable
             scene.SaveKey();
             WorkerScratch ??= new();
             var result = new BorderVisualTile[missing.Count];
-            for (int i = 0; i < result.Length; ++i)
-            {
-                result[i] = new(scene, missing[i], WorkerScratch);
-                if (overviewKeys.Contains(missing[i])) result[i].SavedPixels = result[i].Save();
-            }
+            if (overviewOnly)
+                System.Threading.Tasks.Parallel.For(0, result.Length,
+                    new ParallelOptions { MaxDegreeOfParallelism = BorderSavePreparation.TileWorkers }, i =>
+                    {
+                        result[i] = new(scene, missing[i]);
+                        result[i].SavedPixels = result[i].Save();
+                    });
+            else
+                for (int i = 0; i < result.Length; ++i)
+                {
+                    result[i] = new(scene, missing[i], WorkerScratch);
+                    if (overviewKeys.Contains(missing[i])) result[i].SavedPixels = result[i].Save();
+                }
             return result;
         });
         if (Worker != null) ++JobsStarted;
@@ -426,7 +464,7 @@ internal sealed class BorderVisualRenderer : IDisposable
         if (Building != Displayed) Building?.Dispose();
         Uploads.Clear();
         PaletteUpdates.Clear(); PaletteScene = null;
-        Worker = null;
+        Worker = null; RestoreWorker = null;
         Effect.Dispose(); MiniRenderer.Dispose();
     }
 }

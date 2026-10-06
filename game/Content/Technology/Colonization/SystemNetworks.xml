@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <UID>SystemNetworks</UID>
+  <TechnologyType>Research</TechnologyType>
+  <Cost>450</Cost>
+  <RootNode>0</RootNode>
+  <Name>System Research Networks</Name>
+  <NameIndex>50641</NameIndex>
+  <DescriptionIndex>50642</DescriptionIndex>
+  <LongDescription>Each new colony presents a fresh opportunity for scientific discovery, be it biological, geological, archeological, or otherwise.  Basic scientific facilities are critical to understanding our new homes and increasing our knowledge of the universe.</LongDescription>
+  <LeadsTo>
+    <LeadsToTech>
+      <UID>PlanetaryComputing</UID>
+    </LeadsToTech>
+  </LeadsTo>
+  <BuildingsUnlocked>
+    <UnlockedBuilding>
+      <Name>System Research Network Uplink</Name>
+    </UnlockedBuilding>
+  </BuildingsUnlocked>
+  <ModulesUnlocked>
+    <UnlockedMod>
+      <ModuleUID>ColonyModuleResearch</ModuleUID>
+    </UnlockedMod>
+  </ModulesUnlocked>  
+  <BonusUnlocked />
+  <TroopsUnlocked />
+  <HullsUnlocked />
+</Technology>

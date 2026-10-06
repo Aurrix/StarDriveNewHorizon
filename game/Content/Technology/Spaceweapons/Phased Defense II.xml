@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <UID>Phased Defense II</UID>
+  <TechnologyType>ShipWeapons</TechnologyType>
+  <Cost>1200</Cost>
+  <RootNode>0</RootNode>
+  <Name>Phased Defense II</Name>
+  <NameIndex>50150</NameIndex>
+  <DescriptionIndex>50151</DescriptionIndex>
+  <LongDescription>Suppressive Fire AP</LongDescription>
+  <LeadsTo>
+    <LeadsToTech>
+      <UID>Phased Defense III</UID>
+    </LeadsToTech>
+  </LeadsTo>
+  <ModulesUnlocked>
+    <UnlockedMod>
+      <ModuleUID>LightACAP</ModuleUID>
+    </UnlockedMod>
+    <UnlockedMod>
+      <ModuleUID>AutoCannonAP</ModuleUID>
+    </UnlockedMod>
+    <UnlockedMod>
+      <ModuleUID>DroneCannon1x1AP</ModuleUID>
+    </UnlockedMod>		
+  </ModulesUnlocked>
+  <BuildingsUnlocked />
+  <BonusUnlocked />
+  <TroopsUnlocked />
+  <HullsUnlocked />
+</Technology>

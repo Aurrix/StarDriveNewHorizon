@@ -464,6 +464,9 @@
     <Compile Include="Ship_Game\ExtensionMethods\AABoundingBox2D.cs" />
     <Compile Include="Ship_Game\GameScreens\ShipDesign\ShipDesignStat.cs" />
     <Compile Include="Ship_Game\Pirates.cs" />
+    <Compile Include="Ship_Game\PirateUnderworld.cs" />
+    <Compile Include="Ship_Game\GameScreens\DiplomacyScreen\PirateUnderworldScreen.cs" />
+    <Compile Include="Ship_Game\GameScreens\DiplomacyScreen\PirateFactionPresentation.cs" />
     <Compile Include="Ship_Game\Empire_Trade.cs" />
     <Compile Include="Ship_Game\Commands\Goals\BuildConstructionShip.cs" />
     <Compile Include="Ship_Game\Commands\Goals\BuildOffensiveShips.cs" />
@@ -604,6 +607,7 @@
     <Compile Include="Ship_Game\Ships\ShipDesign_WriterParser.cs" />
     <Compile Include="Ship_Game\Ships\ShipGridInfo.cs" />
     <Compile Include="Ship_Game\Ships\ShipStats.cs" />
+    <Compile Include="Ship_Game\Ships\StarbaseRules.cs" />
     <Compile Include="Ship_Game\Ships\ShipEngines.cs" />
     <Compile Include="Ship_Game\Ships\Ship_ProjectorInfluence.cs" />
     <Compile Include="Ship_Game\Ships\Ship_Troop.cs" />
@@ -868,6 +872,9 @@
     <Compile Include="Ship_Game\Camera2d.cs" />
     <Compile Include="Ship_Game\Input\InputState.cs" />
     <Compile Include="Ship_Game\GameScreens\Universe\ResearchScreenNew.cs" />
+    <Compile Include="Ship_Game\GameScreens\Universe\ResearchScreenNew.Layout.cs" />
+    <Compile Include="Ship_Game\GameScreens\Universe\ResearchScreenNew.Search.cs" />
+    <Compile Include="Ship_Game\GameScreens\Universe\ResearchScreenNew.Branches.cs" />
     <Compile Include="Ship_Game\VariableUIElement.cs" />
     <Compile Include="Ship_Game\SpaceStation.cs" />
     <Compile Include="Ship_Game\CargoShuttles.cs" />

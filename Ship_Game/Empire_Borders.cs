@@ -489,9 +489,17 @@ public sealed partial class Empire
     {
         if (source is Ship s)
         {
+            bool wasBorderNode = false;
+            foreach (InfluenceNode node in OurBorderShips)
+                if (node.Source == s)
+                {
+                    wasBorderNode = true;
+                    Universe.Influence.Remove(this, s, node.Radius);
+                    break;
+                }
             RemoveBorderNode(source, OurBorderShips);
             RemoveBorderNode(source, OurSensorShips);
-            return IsBorderNode(s);
+            return wasBorderNode;
         }
         else if (source is Planet p)
         {
@@ -545,6 +553,7 @@ public sealed partial class Empire
         foreach (ref InfluenceNode n in borderShips)
         {
             Ship ship = (Ship)n.Source;
+            if (ship.IsStarbase) continue; // RefreshStationClaims owns active command range changes
             // Explicit claim modules own their radius.  Keep the legacy
             // sensor-radius behavior for pirate/remnant special ships, and
             // the static empire radius only for legacy border nodes.
@@ -567,17 +576,54 @@ public sealed partial class Empire
         foreach (ref InfluenceNode n in sensorShips)
         {
             n.Position = n.Source.Position;
+            n.Radius = n.Source is Ship ship ? ship.SensorRange : ((Planet)n.Source).SensorRange;
             n.KnownToPlayer = knownToPlayer;
         }
         foreach (ref InfluenceNode n in sensorPlanets)
         {
             n.Position = n.Source.Position;
+            n.Radius = n.Source is Ship ship ? ship.SensorRange : ((Planet)n.Source).SensorRange;
             n.KnownToPlayer = knownToPlayer;
+        }
+    }
+
+    // Run on the empire update thread, after module stats have settled. A damaged
+    // command core must not fall back to the legacy projector claim radius.
+    void RefreshStationClaims()
+    {
+        for (int i = OurBorderShips.Count - 1; i >= 0; --i)
+        {
+            InfluenceNode node = OurBorderShips[i];
+            var ship = (Ship)node.Source;
+            if (!ship.Active || ship.Dying || ship.Loyalty != this || !IsBorderNode(ship))
+            {
+                Universe.Influence.Remove(this, ship, node.Radius);
+                OurBorderShips.RemoveAtSwapLast(i);
+            }
+            else if (ship.BorderClaimRadius > 0 && node.Radius != ship.BorderClaimRadius)
+            {
+                Universe.Influence.Remove(this, ship, node.Radius);
+                OurBorderShips[i] = new(ship, ship.BorderClaimRadius, IsShipKnownToPlayer(ship));
+                Universe.Influence.Insert(this, ship);
+            }
+        }
+        foreach (InfluenceNode sensor in OurSensorShips)
+        {
+            var ship = (Ship)sensor.Source;
+            if (!ship.Active || ship.Dying || ship.Loyalty != this || !IsBorderNode(ship)) continue;
+            bool found = false;
+            foreach (InfluenceNode node in OurBorderShips)
+                if (node.Source == ship) { found = true; break; }
+            if (found) continue;
+            OurBorderShips.Add(new(ship, ship.BorderClaimRadius > 0 ? ship.BorderClaimRadius
+                : GetStaticBorderInfluenceRadius(), IsShipKnownToPlayer(ship)));
+            Universe.Influence.Insert(this, ship);
         }
     }
 
     void UpdateOurBorderNodes()
     {
+        RefreshStationClaims();
         bool knownToPlayer = IsThisEmpireKnownByPlayer();
 
         Span<InfluenceNode> borderShips = OurBorderShips.AsSpan();

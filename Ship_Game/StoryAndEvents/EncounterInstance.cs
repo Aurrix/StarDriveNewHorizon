@@ -57,6 +57,15 @@ namespace Ship_Game.StoryAndEvents
 
         public void OnResponseItemClicked(Response r)
         {
+            if (TargetEmpire.WeArePirates && Player.Universe.Screen != null)
+                Player.Universe.Screen.RunOnSimThread(() => ProcessResponse(r));
+            else ProcessResponse(r);
+        }
+
+        void ProcessResponse(Response r)
+        {
+            // A queued double-click must not buy twice or process a stale refusal.
+            if (!CurrentDialog.ResponseOptions.Contains(r)) return;
             if (r.DefaultIndex != -1)
             {
                 SetCurrentDialog(r.DefaultIndex);
@@ -70,6 +79,10 @@ namespace Ship_Game.StoryAndEvents
                 if (r.FailIfNotAlluring && Player.data.Traits.DiplomacyMod < 0.2)
                     ok = false;
 
+                bool piratePayment = money > 0 && TargetEmpire.WeArePirates && Encounter.PercentMoneyDemanded > 0;
+                if (ok && piratePayment)
+                    ok = Player.Universe.Underworld.PurchaseProtection(TargetEmpire, Player);
+
                 if (!ok)
                 {
                     SetCurrentDialog(r.FailIndex);
@@ -77,7 +90,7 @@ namespace Ship_Game.StoryAndEvents
                 else
                 {
                     SetCurrentDialog(r.SuccessIndex);
-                    if (money > 0 && Player.Money >= money)
+                    if (!piratePayment && money > 0 && Player.Money >= money)
                     {
                         Player.AddMoney(-money);
                     }
@@ -87,7 +100,7 @@ namespace Ship_Game.StoryAndEvents
             if (CurrentDialog.SetWar)
                 TargetEmpire.AI.DeclareWarFromEvent(Player, WarType.SkirmishWar);
 
-            if (CurrentDialog.EndWar)
+            if (CurrentDialog.EndWar && (!TargetEmpire.WeArePirates || !Player.Universe.Underworld.Locked(TargetEmpire, Player)))
                 TargetEmpire.AI.EndWarFromEvent(Player);
 
             Relationship rel = Player.GetRelations(TargetEmpire);
@@ -101,7 +114,7 @@ namespace Ship_Game.StoryAndEvents
         int NetMoneyDemand(int demandFromMessage)
         {
             if (Encounter.PercentMoneyDemanded > 0 && TargetEmpire.WeArePirates)
-                return TargetEmpire.Pirates.GetMoneyModifier(Player, Encounter.PercentMoneyDemanded);
+                return (int)Player.Universe.Underworld.ProtectionPrice(TargetEmpire, Player);
 
             return demandFromMessage;
         }

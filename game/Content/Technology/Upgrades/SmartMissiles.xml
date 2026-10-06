@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <UID>SmartMissiles</UID>
+  <TechnologyType>ShipWeapons</TechnologyType>
+  <Cost>750</Cost>
+  <RootNode>0</RootNode>
+  <Name>SmartMissiles</Name>
+  <NameIndex>51321</NameIndex>
+  <DescriptionIndex>51322</DescriptionIndex>
+  <LongDescription>See localization file</LongDescription>
+  <LeadsTo>
+    <LeadsToTech>
+      <UID>ECM v1</UID>
+    </LeadsToTech>	
+  </LeadsTo>
+  <ModulesUnlocked />
+  <BuildingsUnlocked />
+  <BonusUnlocked>
+    <UnlockedBonus>
+      <Name>Smart Missiles</Name>
+      <BonusIndex>51323</BonusIndex>
+    </UnlockedBonus>
+  </BonusUnlocked>
+  <TroopsUnlocked />
+  <HullsUnlocked />
+</Technology>

@@ -157,7 +157,7 @@ namespace Ship_Game
                 : Color.White;
 
             batch.Draw(ResourceManager.Texture($"NewUI/new_tech_base{techBaseRectSuffix}"), BaseRect, borderColor);
-            batch.Draw(TechIcon, IconRect, Color.White);
+            ResearchQueueUIComponent.DrawResearchIcon(batch, TechIcon, IconRect, Color.White);
             batch.Draw(ResourceManager.Texture($"NewUI/new_tech_base_title{techBaseRectSuffix}"), TitleRect, borderColor);
 
             // Draw the Title as multi-line centered text
@@ -223,11 +223,12 @@ namespace Ship_Game
             batch.DrawRectangleGlow(UnlocksRect);
         }
 
-        public bool HandleInput(InputState input, ScreenManager ScreenManager, Camera2D camera, UniverseScreen u)
+        public bool HandleInput(InputState input, ScreenManager ScreenManager, Camera2D camera, UniverseScreen u, bool screenSpace = false)
         {
-            RectF moddedRect = new(camera.GetScreenSpaceFromWorldSpace(BaseRect.Pos), BaseRect.Size);
-            RectF moddedRect2 = new(camera.GetScreenSpaceFromWorldSpace(UnlocksRect.Pos), UnlocksRect.Size);
-            RectF moddedRect3 = new(camera.GetScreenSpaceFromWorldSpace(IconRect.Pos), IconRect.Size);
+            Vector2 Position(Vector2 pos) => screenSpace ? pos : camera.GetScreenSpaceFromWorldSpace(pos);
+            RectF moddedRect = new(Position(BaseRect.Pos), BaseRect.Size);
+            RectF moddedRect2 = new(Position(UnlocksRect.Pos), UnlocksRect.Size);
+            RectF moddedRect3 = new(Position(IconRect.Pos), IconRect.Size);
 
             if (moddedRect.HitTest(input.CursorPosition) || moddedRect2.HitTest(input.CursorPosition))
             {
@@ -252,7 +253,7 @@ namespace Ship_Game
                 State = NodeState.Normal;
             }
 
-            RectF moddedPlusRect = new(camera.GetScreenSpaceFromWorldSpace(PlusRect.Pos), PlusRect.Size);
+            RectF moddedPlusRect = new(Position(PlusRect.Pos), PlusRect.Size);
             if (moddedPlusRect.HitTest(input.CursorPosition))
             {
                 ToolTip.CreateTooltip(new LocalizedText(GameText.ResearchUnlocksMoreThanFourItems).Text);
@@ -263,7 +264,7 @@ namespace Ship_Game
             {
                 foreach (UnlocksGrid.GridItem gi in UnlocksGrid.GridOfUnlocks)
                 {
-                    RectF moddedRect4 = new(camera.GetScreenSpaceFromWorldSpace(gi.Pos), gi.Rect.Size);
+                    RectF moddedRect4 = new(Position(gi.Pos), gi.Rect.Size);
                     if (moddedRect4.HitTest(input.CursorPosition))
                     {
                         ShipHull unlocked = gi.Item.hull;

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<UID>Velocity Stimulance Mk3</UID>
+	<TechnologyType>ShipGeneral</TechnologyType>
+	<Cost>2200</Cost>
+	<RootNode>0</RootNode>
+	<Name>Velocity Stimulance Mk3</Name>
+	<NameIndex>50228</NameIndex>
+	<DescriptionIndex>50754</DescriptionIndex>
+	<LeadsTo>
+		<LeadsToTech>
+			<UID>Velocity Stimulance Mk4</UID>
+		</LeadsToTech>
+	</LeadsTo>
+	<BuildingsUnlocked/>
+	<ModulesUnlocked>
+		<UnlockedMod>
+			<ModuleUID>thruster1x4</ModuleUID>
+		</UnlockedMod>
+		<UnlockedMod>
+			<ModuleUID>jumpdrive2x3</ModuleUID>
+		</UnlockedMod>		
+		<UnlockedMod>
+			<ModuleUID>OverdriveCapEngines</ModuleUID>
+		</UnlockedMod>		
+		<UnlockedMod>
+			<ModuleUID>Cruiser Turn Thrust</ModuleUID>
+		</UnlockedMod>		
+		<UnlockedMod>
+		  <ModuleUID>DroneEngine_III</ModuleUID>
+		</UnlockedMod>			
+	</ModulesUnlocked>
+	<BonusUnlocked/>
+	<TroopsUnlocked/>
+	<HullsUnlocked/>
+</Technology>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <UID>Shipyards</UID>
+  <TechnologyType>ShipHull</TechnologyType>
+  <Cost>250</Cost>
+  <RootNode>0</RootNode>
+  <Name>Shipyards</Name>
+  <NameIndex>2035</NameIndex>
+  <DescriptionIndex>2036</DescriptionIndex>
+  <LeadsTo>
+    <LeadsToTech>
+      <UID>SmallStations</UID>
+    </LeadsToTech> 
+    <LeadsToTech>
+      <UID>Maintenance</UID>
+    </LeadsToTech> 	
+    <LeadsToTech>
+      <UID>BuilderShipsEfficiency</UID>
+    </LeadsToTech> 		
+  </LeadsTo>
+  <ModulesUnlocked>
+	<UnlockedMod>
+		<ModuleUID>Advance ColonyModule</ModuleUID>
+	</UnlockedMod>	
+  </ModulesUnlocked>  
+  <BuildingsUnlocked />
+  <TroopsUnlocked />
+  <HullsUnlocked>
+      <UnlockedHull>
+      <ShipType>Cordrazine</ShipType>
+      <Name>Cordrazine/Cordrazine_Heavy_Platform</Name>
+    </UnlockedHull>	
+    <UnlockedHull>
+      <ShipType>Dauntless</ShipType>
+      <Name>Dauntless/Dauntless_Heavy_Platform</Name>
+    </UnlockedHull>
+    <UnlockedHull>
+      <ShipType>Draylok</ShipType>
+      <Name>Draylok/Draylok_Heavy_Platform</Name>
+    </UnlockedHull>	
+    <UnlockedHull>
+      <ShipType>Kulrathi</ShipType>
+      <Name>Kulrathi/Kulrathi_Heavy_Platform</Name>
+    </UnlockedHull>		
+    <UnlockedHull>
+      <ShipType>Opteris</ShipType>
+      <Name>Opteris/Opteris_Heavy_Platform</Name>
+    </UnlockedHull>			
+    <UnlockedHull>
+      <ShipType>Pollops</ShipType>
+      <Name>Pollops/Pollops_Heavy_Platform</Name>
+    </UnlockedHull>				
+    <UnlockedHull>
+      <ShipType>Ralyeh</ShipType>
+      <Name>Ralyeh/Ralyeh_Heavy_Platform</Name>
+    </UnlockedHull>				
+    <UnlockedHull>
+      <ShipType>Terran</ShipType>
+      <Name>Terran/Terran_Heavy_Platform</Name>
+    </UnlockedHull>			
+	<UnlockedHull>
+      <ShipType>Vulfen</ShipType>
+      <Name>Vulfen/Vulfen_Heavy_Platform</Name>
+    </UnlockedHull>			
+    <UnlockedHull>
+      <Name>Misc/Shipyards</Name>
+    </UnlockedHull>		
+  </HullsUnlocked>
+  <BonusUnlocked>
+    <UnlockedBonus>
+      <Name>Shipyards</Name><!-- this is a boolean; its presence enables shipyards-->
+      <Description></Description>
+      <BonusIndex>2037</BonusIndex>
+    </UnlockedBonus>
+  </BonusUnlocked>
+</Technology>

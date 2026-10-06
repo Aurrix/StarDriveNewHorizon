@@ -17,6 +17,8 @@ internal sealed class SavedBorderOverview
     [StarData] public byte[] SceneKey;
     [StarData] public byte[][] Tiles;
     [StarData] public byte[][] DetailTiles;
+    // Runtime-only provenance for exact, local reuse. Older saves need no migration.
+    internal BorderScene RuntimeScene;
     internal const int CurrentVersion = 5;
 }
 

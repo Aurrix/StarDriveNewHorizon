@@ -150,6 +150,7 @@ namespace Ship_Game
 
         public bool ShowingFTLOverlay;
         public bool ShowingRangeOverlay;
+        public bool ShowStationSensors = true, ShowStationBorders = true, ShowStationInhibition = true;
 
         /// <summary>
         /// Toggles Cinematic Mode (no UI) on or off

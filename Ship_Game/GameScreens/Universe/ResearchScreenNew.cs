@@ -9,10 +9,11 @@ using SDUtils;
 using Vector2 = SDGraphics.Vector2;
 using Rectangle = SDGraphics.Rectangle;
 using System.Linq;
+using Ship_Game.Graphics;
 
 namespace Ship_Game
 {
-    public sealed class ResearchScreenNew : GameScreen
+    public sealed partial class ResearchScreenNew : GameScreen
     {
         public override bool HelpKeyOpensCodex => true;
 
@@ -24,8 +25,7 @@ namespace Ship_Game
         public Map<string, TreeNode> SubNodes = new(StringComparer.OrdinalIgnoreCase);
 
         CloseButton Close;
-        UIButton Search;
-        Menu2 MainMenu;
+        UITextEntry Search;
         public EmpireUIOverlay empireUI;
 
         Vector2 MainMenuOffset;
@@ -55,58 +55,34 @@ namespace Ship_Game
 
         public override void LoadContent()
         {
-            camera = new Camera2D { Pos = new Vector2(Viewport.Width, Viewport.Height) / 2f };
-            var main = new Rectangle(0, 0, ScreenWidth, ScreenHeight);
-            MainMenu = new Menu2(main);
-            MainMenuOffset = new Vector2(main.X + 20, main.Y + 30);
-            Close = Add(new CloseButton(main.Right - 40, main.Y + 20));
-
+            camera = new Camera2D { Pos = GameBase.ScreenCenter };
+            CreateResearchLayout();
+            LoadResearchBranchStyles();
             RootNodes.Clear();
             SubNodes.Clear();
-
-            int numDiscoveredRoots = Player.TechEntries.Count(t => t.IsRoot && t.Discovered);
-
-            GridHeight = (main.Height - 40) / Math.Max(1, numDiscoveredRoots);
-            MainMenuOffset.Y = main.Y + 12 + GridHeight / 3;
-            if (ScreenHeight <= 720)
-            {
-                MainMenuOffset.Y += 8f;
-            }
-
-            Vector2 nodePos = Vector2.Zero;
-
             var rootTechs = Player.TechEntries.Filter(t => t.IsRoot && t.Discovered);
-            // sort the techs
             rootTechs = rootTechs.Sorted(t => t.Tech.RootNode);
-
             foreach (TechEntry tech in rootTechs)
             {
-                nodePos.X = 0f;
-                nodePos.Y = FindDeepestY() + 1;
-                SetRootNode(tech, ref nodePos);
+                var rootNode = new RootNode(Vector2.Zero, tech) { NodePosition = Vector2.Zero, isResearched = tech.Unlocked };
+                RootNodes[tech.UID] = rootNode;
+                Categories.AddItem(new CategoryRow(this, rootNode));
             }
-
-            GridHeight = (main.Height - 40) / 6;
-
-            if (!RootNodes.TryGetValue(Universe.UState.ResearchRootUIDToDisplay, out RootNode root))
-                root = RootNodes.Values.FirstOrDefault() ?? throw new("ResearchScreen has no RootNodes");
-
-            PopulateNodesFromRoot(root);
+            if (!RootNodes.TryGetValue(Universe.UState.ResearchRootUIDToDisplay ?? "", out RootNode root))
+                root = RootNodes.Values.FirstOrDefault();
+            if (root != null) PopulateNodesFromRoot(root);
 
             // Create queue once all techs are populated
-            var queue = new Rectangle(main.X + main.Width - 355, main.Y + 40, 330, main.Height - 100);
-            Queue = Add(new ResearchQueueUIComponent(this, queue));
-            Vector2 searchPos = new(main.X + main.Width - 360, main.Bottom - 55);
-            Search = Add(new UIButton(ButtonStyle.BigDip, searchPos, "Search"));
-            Search.OnClick = OnSearchButtonClicked;
+            Queue = Add(new ResearchQueueUIComponent(this, QueueBounds));
+            CreateResearchSearch();
 
             DebugUnlocks = Add(new ResearchDebugUnlocks(Universe, () =>
             {
-                Universe.UState.ResearchRootUIDToDisplay = GetCurrentlySelectedRootNode().Entry.UID;
+                Universe.UState.ResearchRootUIDToDisplay = GetCurrentlySelectedRootNode()?.Entry.UID ?? "";
                 ReloadContent();
             }));
             DebugUnlocks.AxisAlign = Align.BottomRight;
-            DebugUnlocks.SetLocalPos(-Queue.Width - 50, -25);
+            DebugUnlocks.SetLocalPos(-25, -Queue.Height - 40);
 
             base.LoadContent();
         }
@@ -127,25 +103,27 @@ namespace Ship_Game
             ScreenManager.FadeBackBufferToBlack(TransitionAlpha * 2 / 3);
 
             batch.SafeBegin();
-            batch.FillRectangle(new Rectangle(0, 0, ScreenWidth, ScreenHeight), Color.Black);
-            MainMenu.Draw(batch, elapsed);
+            DrawResearchChrome(batch);
             batch.SafeEnd();
 
-            batch.SafeBegin(SpriteBlendMode.AlphaBlend, sortImmediate:false, saveState:false, camera.Transform);
+            RenderStates.EnableScissorTest(batch.GraphicsDevice, TreeViewport);
+            batch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, rasterizerState: RenderStates.ScissorEnabled,
+                transformMatrix: camera.Transform);
+            try
             {
-                DrawConnectingLines(batch);
-
-                foreach (RootNode rootNode in RootNodes.Values)
+                if (!SearchResults.Visible)
                 {
-                    rootNode.Draw(batch);
-                }
-
-                foreach (TreeNode treeNode in SubNodes.Values)
-                {
-                    treeNode.Draw(batch);
+                    DrawResearchBands(batch);
+                    DrawConnectingLines(batch);
+                    foreach (TreeNode treeNode in SubNodes.Values)
+                        treeNode.Draw(batch);
                 }
             }
-            batch.SafeEnd();
+            finally
+            {
+                batch.SafeEnd();
+                RenderStates.DisableScissorTest(batch.GraphicsDevice);
+            }
 
             batch.SafeBegin();
             base.Draw(batch, elapsed);
@@ -231,9 +209,6 @@ namespace Ship_Game
 
         void DrawConnectingLines(SpriteBatch batch)
         {
-            RootNode root = GetCurrentlySelectedRootNode();
-
-            DrawConnectingLinesFromParentToChildren(batch, root);
             foreach (TreeNode from in SubNodes.Values)
             {
                 DrawConnectingLinesFromParentToChildren(batch, from);
@@ -287,17 +262,9 @@ namespace Ship_Game
 
         public override void ExitScreen()
         {
-            Universe.UState.ResearchRootUIDToDisplay = GetCurrentlySelectedRootNode().Entry.UID;
+            Search?.StopInput();
+            Universe.UState.ResearchRootUIDToDisplay = GetCurrentlySelectedRootNode()?.Entry.UID ?? "";
             base.ExitScreen();
-        }
-
-        int FindDeepestY()
-        {
-            int deepest = 0;
-            foreach (RootNode root in RootNodes.Values)
-                if (root.NodePosition.Y > deepest)
-                    deepest = (int) root.NodePosition.Y;
-            return deepest;
         }
 
         int FindDeepestYSubNodes()
@@ -311,39 +278,49 @@ namespace Ship_Game
 
         public override bool HandleInput(InputState input)
         {
-            if (input.MiddleMouseHeld())
-                camera.MoveClamped(input.CursorVelocity, ScreenCenter, new Vector2(3200));
-
-            foreach (RootNode root in RootNodes.Values)
+            if (!Visible || !Enabled || !IsActive) return false;
+            bool wasTyping = Search.HandlingInput;
+            if ((wasTyping || SearchResults.Visible) && input.Escaped)
             {
-                if (root.HandleInput(input,camera))
+                ClearResearchSearch();
+                return true;
+            }
+            if (Search.HandleInput(input)) return true;
+            if (!SearchResults.Visible && TreeViewport.HitTest(input.CursorPosition))
+            {
+                if (input.MiddleMouseHeld())
                 {
-                    GameAudio.ResearchSelect();
-                    PopulateNodesFromRoot(root);
+                    PanTree(input.CursorVelocity);
                     return true;
                 }
-            }
-
-            foreach (TreeNode node in SubNodes.Values)
-            {
-                if (node.HandleInput(input, ScreenManager, camera, Universe))
+                if (input.ScrollIn || input.ScrollOut)
                 {
-                    if (input.LeftMouseClick && !input.RightMouseClick)
+                    float delta = input.ScrollIn ? -90 : 90;
+                    PanTree(input.IsShiftKeyDown ? new Vector2(delta, 0) : new Vector2(0, delta));
+                    return true;
+                }
+                foreach (TreeNode node in SubNodes.Values)
+                {
+                    if (node.HandleInput(input, ScreenManager, camera, Universe))
                     {
-                        OnTechNodeClicked(node.Entry);
+                        if (input.LeftMouseClick && !input.RightMouseClick) OnTechNodeClicked(node.Entry);
+                        return true;
                     }
-                    return true; // input captured
                 }
             }
-
-            if (!Queue.HitTest(input.CursorPosition) && (input.ResearchExitScreen || input.RightMouseClick))
+            else
+            {
+                foreach (TreeNode node in SubNodes.Values) node.State = NodeState.Normal;
+            }
+            if (base.HandleInput(input)) return true;
+            if (input.ResearchExitScreen || input.RightMouseClick)
             {
                 GameAudio.EchoAffirmative();
                 ExitScreen();
                 return true;
             }
 
-            return base.HandleInput(input);
+            return false;
         }
 
         void OnTechNodeClicked(TechEntry tech)
@@ -391,7 +368,8 @@ namespace Ship_Game
 
         Vector2 GetCurrentCursorOffset(in Vector2 cursorPos, float yOffset = 0)
         {
-            var cursor = new Vector2(cursorPos.X, cursorPos.Y + yOffset);
+            // Category roots live in the sidebar/header, not in the research canvas.
+            var cursor = new Vector2(cursorPos.X - 1, cursorPos.Y + yOffset);
             return (MainMenuOffset + cursor*GridSize).Rounded();
         }
 
@@ -402,21 +380,23 @@ namespace Ship_Game
 
             int rows = 1;
             int cols = CalculateTreeDimensionsFromRoot(root.Entry, ref rows, 0, 0);
-            if (rows < 9) GridHeight = (MainMenu.Menu.Height - 40) / rows;
-            else          GridHeight = (MainMenu.Menu.Height - 40) / 9;
-
-            if (cols > 0 && cols < 9) GridWidth = (MainMenu.Menu.Width - 350) / cols;
-            else                      GridWidth = 165;
+            GridHeight = Math.Clamp((int)(TreeViewport.H - 60) / Math.Max(1, rows), 125, 170);
+            GridWidth = Math.Clamp((int)(TreeViewport.W - 60) / Math.Max(1, cols), 185, 245);
+            MainMenuOffset = new Vector2(TreeViewport.X + 16, TreeViewport.Y + 40);
+            root.RootRect = new Rectangle((int)MainMenuOffset.X, (int)TreeViewport.CenterY - 22, 112, 44);
+            camera.Pos = GameBase.ScreenCenter;
+            Universe.UState.ResearchRootUIDToDisplay = root.Entry.UID;
 
             BuildSubNodes(root);
 
             // the estimate counts merged-back branches and reused rows as new rows: rebuild at the rows laid out
-            int wantRows = Math.Min(FindDeepestYSubNodes() + 1, 9);
-            if (wantRows != Math.Min(rows, 9))
+            int wantRows = FindDeepestYSubNodes() + 1;
+            if (wantRows != rows)
             {
-                GridHeight = (MainMenu.Menu.Height - 40) / wantRows;
+                GridHeight = Math.Clamp((int)(TreeViewport.H - 60) / wantRows, 125, 170);
                 BuildSubNodes(root);
             }
+            LayoutResearchBands(root);
         }
 
         void BuildSubNodes(RootNode root)
@@ -467,17 +447,6 @@ namespace Ship_Game
             }
         }
 
-        void SetRootNode(TechEntry tech, ref Vector2 nodePos)
-        {
-            UpdateCursorAndClaimedSpots(ref nodePos, true);
-
-            RootNodes[tech.UID] = new RootNode(GetCurrentCursorOffset(nodePos, -1), tech)
-            {
-                NodePosition = nodePos,
-                isResearched = tech.Unlocked
-            };
-        }
-        
         void UpdateCursorAndClaimedSpots(ref Vector2 nodePos, bool addToClaimed)
         {
             if (PositionIsClaimed(nodePos))

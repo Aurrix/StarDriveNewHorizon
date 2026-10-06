@@ -61,7 +61,6 @@ namespace Ship_Game
             DismissButton = Button(ButtonStyle.EventConfirm, GameText.Ok, b => ExitScreen());
             DismissButton.Font = Fonts.Arial14Bold;
             DismissButton.SetPosToCenterOf(this).SetDistanceFromBottomOf(this, 32);
-
             if (Instance.TargetEmpire != null)
             {
                 Panel(EmpireFlagRect, Color.Black);

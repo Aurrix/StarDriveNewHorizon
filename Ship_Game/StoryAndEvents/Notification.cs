@@ -50,6 +50,9 @@ public sealed class Notification
         {
             switch (Action)
             {
+                case "PirateUnderworld":
+                    m.ScreenManager.AddScreen(new PirateUnderworldScreen(m.Screen));
+                    break;
                 case "SnapToPlanet":
                     m.SnapToPlanet(ReferencedItem1 as Planet);
                     break;

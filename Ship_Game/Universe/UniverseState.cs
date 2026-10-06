@@ -46,6 +46,8 @@ namespace Ship_Game.Universe
         [StarData] public Empire Remnants;
         [StarData] public Empire Unknown;
         [StarData] public Empire Corsairs;
+        [StarData] PirateUnderworld SavedUnderworld;
+        public PirateUnderworld Underworld => SavedUnderworld ??= new PirateUnderworld();
 
         [StarData] public UnivScreenState ViewState;
         public bool IsSectorViewOrCloser => ViewState <= UnivScreenState.SectorView;

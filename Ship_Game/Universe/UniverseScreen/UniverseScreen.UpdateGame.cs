@@ -309,6 +309,7 @@ namespace Ship_Game
             {
                 EmpireUpdatePerf.Start();
                 updated = UpdateEmpires(timeStep);
+                if (updated.Any(e => e.isPlayer)) UState.Underworld.Update(UState);
                 EmpireUpdatePerf.Stop();
             }
             return updated ?? new();

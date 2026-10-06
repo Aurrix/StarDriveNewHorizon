@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology>
+  <UID>StationInterdiction</UID><RootNode>0</RootNode><TechnologyType>General</TechnologyType>
+  <Cost>2000</Cost><NameIndex>62004</NameIndex><DescriptionIndex>62005</DescriptionIndex>
+  <IconPath>SubspaceTheory</IconPath>
+  <LeadsTo></LeadsTo>
+  <ModulesUnlocked><UnlockedMod><ModuleUID>Station Warp Inhibitor</ModuleUID></UnlockedMod></ModulesUnlocked>
+</Technology>

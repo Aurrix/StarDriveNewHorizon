@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <UID>Frigate Hulls II</UID>
+  <TechnologyType>ShipHull</TechnologyType>
+  <Cost>600</Cost>
+  <RootNode>0</RootNode>
+  <Name>Frigate Hulls II</Name>
+  <NameIndex>51262</NameIndex>
+  <DescriptionIndex>51263</DescriptionIndex>
+  <LongDescription>This hull represents our first effort at a combat ready hull.  It is larger and sleeker than our shuttlecraft hull and is capable of filling the role of a heavy scout or fighter. </LongDescription>
+  <LeadsTo>
+  </LeadsTo>
+  <ModulesUnlocked>
+  </ModulesUnlocked>
+  <HullsUnlocked>  
+    <UnlockedHull>
+	  <Name>Kulrathi/Chela</Name>
+      <ShipType>Kulrathi</ShipType>
+    </UnlockedHull>	
+  	<UnlockedHull>
+	  <ShipType>Terran</ShipType>	
+	  <Name>Terran/Destroyer</Name>
+	</UnlockedHull>		
+  </HullsUnlocked>	
+  <HiddenFromAllExcept>
+    <RaceRequirements>
+      <ShipType>Kulrathi</ShipType>
+    </RaceRequirements>
+    <RaceRequirements>
+      <ShipType>Terran</ShipType>
+    </RaceRequirements>
+  </HiddenFromAllExcept>        
+</Technology>

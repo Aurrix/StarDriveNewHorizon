@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="AITests\Empire\BudgetTests.cs" />
     <Compile Include="Planets\GlobalConstructionTests.cs" />
+    <Compile Include="UI\ResearchScreenTests.cs" />
     <Compile Include="UI\EmpireAssetsPanelTests.cs" />
     <Compile Include="AITests\Empire\OpenBordersOfferTests.cs" />
     <Compile Include="AITests\Empire\TrustGainTests.cs" />
@@ -160,6 +161,7 @@
     <Compile Include="Ships\TroopLandingTests.cs" />
     <Compile Include="Ships\OrdnanceShuttleTests.cs" />
     <Compile Include="Ships\PirateBaseLandingTests.cs" />
+    <Compile Include="Ships\PirateUnderworldTests.cs" />
     <Compile Include="Ships\ShipLaunchPlaceTests.cs" />
     <Compile Include="Ships\ExplosionShieldTests.cs" />
     <Compile Include="Ships\ModuleResistTests.cs" />

@@ -10,19 +10,19 @@ public sealed partial class EmpireAssetsPanel
 {
     internal enum SidebarAction
     {
-        Assets, Automation, Colonies, Research, Economy, Empire, Diplomacy, Fleets,
+        Assets, Automation, Colonies, Research, Economy, Empire, Diplomacy, Pirates, Fleets,
         Espionage, Shipyard, Ships, Blueprints, Construction, Help
     }
     static readonly string[] NavigationIcons =
     {
-        "assets", "automation", "colonies", "research", "economy", "empire", "diplomacy", "fleets",
+        "assets", "automation", "colonies", "research", "economy", "empire", "diplomacy", "pirates", "fleets",
         "espionage", "shipyard", "ships", "blueprints", "construction", "help"
     };
     static readonly string[] NavigationTips =
     {
         "Empire Assets", "AI Automation (H)", "Colonization planner / planet reconnaissance (L)",
         "Research (R)", "Economic overview (T)", "Empire and colony management (U)", "Diplomacy (I)",
-        "Fleet manager (J)", "Espionage (E)", "Ship designer (Y)", "Ship roster (K)",
+        "Pirates: bounties, hired fleets and protection", "Fleet manager (J)", "Espionage (E)", "Ship designer (Y)", "Ship roster (K)",
         "Colony blueprints (F)", "Deep-space construction (B)", "Help / Codex (F1)"
     };
     int NavigationOffset;

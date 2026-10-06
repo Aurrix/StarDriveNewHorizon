@@ -11,7 +11,7 @@ namespace Ship_Game.Ships.Components
             None,
             Spawn,
             Boarded, BoardedNotify,
-            Absorbed, AbsorbedNotify
+            Absorbed, AbsorbedNotify, PirateLease
         }
 
         sealed class Pending
@@ -60,6 +60,12 @@ namespace Ship_Game.Ships.Components
             Change = new(loyalty, addNotification ? Type.AbsorbedNotify : Type.Absorbed);
         }
 
+        internal void SetLoyaltyForLease(Empire loyalty)
+        {
+            // A boarding capture already queued this frame takes precedence over recall.
+            Interlocked.CompareExchange(ref Change, new Pending(loyalty, Type.PirateLease), null);
+        }
+
         /// <returns>TRUE if loyalty changed</returns>
         public bool Update(Ship ship)
         {
@@ -90,6 +96,10 @@ namespace Ship_Game.Ships.Components
                 case Type.BoardedNotify:  LoyaltyChangeDueToBoarding(ship, changeTo, true);    break;
                 case Type.Absorbed:       LoyaltyChangeDueToFederation(ship, changeTo, false); break;
                 case Type.AbsorbedNotify: LoyaltyChangeDueToFederation(ship, changeTo, true);  break;
+                case Type.PirateLease:
+                    ship.PirateLeaseId = 0;
+                    SafelyTransferShip(ship, ship.Loyalty, changeTo);
+                    break;
             }
 
             return true;
@@ -105,6 +115,7 @@ namespace Ship_Game.Ships.Components
         static void LoyaltyChangeDueToBoarding(Ship ship, Empire newLoyalty, bool notification)
         {
             Empire oldLoyalty = ship.Loyalty;
+            ship.Universe.Underworld.RecordAssetLoss(ship, oldLoyalty, newLoyalty, captured: true);
             if (ship.IsSubspaceProjector)
                 oldLoyalty.AI.SpaceRoadsManager.RemoveProjectorFromRoadList(ship);
 

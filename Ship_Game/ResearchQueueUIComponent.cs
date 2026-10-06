@@ -1,180 +1,216 @@
 using System;
+using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
-using Color = Microsoft.Xna.Framework.Color;
 using SDGraphics;
-using SDUtils;
-using Ship_Game.UI;
-using Vector2 = SDGraphics.Vector2;
-using Rectangle = SDGraphics.Rectangle;
+using Color = Microsoft.Xna.Framework.Color;
 
-namespace Ship_Game
+namespace Ship_Game;
+
+// Fixed screen-space dock. EmpireResearch owns ordering and prerequisite validation.
+public sealed class ResearchQueueUIComponent : UIPanel
 {
-    public sealed class ResearchQueueUIComponent : UIPanel
+    readonly ResearchScreenNew Screen;
+    EmpireResearch Research => Screen.Player.Research;
+    static readonly Color Cyan = new(108, 206, 217);
+    static readonly Color Muted = new(156, 177, 190);
+    static readonly Color Gold = new(212, 185, 130);
+    readonly UIButton Previous, Next, Earlier, Later, Prioritize, RemoveButton;
+    string[] QueueIds = Array.Empty<string>();
+    string HoveredUid;
+    public string SelectedUid { get; private set; }
+    public int FirstVisible { get; private set; }
+    public int VisibleCapacity => Math.Max(1, (int)(Width - ActiveWidth - 82) / 58);
+    float ActiveWidth => Width < 900 ? 280 : 365;
+    public RectF ActiveIcon => new(X + 16, Y + 30, 62, 62);
+    RectF QueuedIcon(int index) => new(X + ActiveWidth + 38 + index * 58, Y + 33, 46, 46);
+
+    public ResearchQueueUIComponent(ResearchScreenNew screen, in Rectangle container)
+        : base(container, new Color(5, 17, 29))
     {
-        readonly ResearchScreenNew Screen;
-        Empire Player => Screen.Player;
-
-        readonly Submenu CurrentResearchPanel;
-        readonly UIPanel TimeLeft;
-        readonly UILabel TimeLeftLabel;
-        readonly UIPanel SpyDisruption;
-        readonly UILabel SpyDisruptionLabel;
-
-        ResearchQItem CurrentResearch;
-        readonly ScrollList<ResearchQItem> ResearchQueueList;
-        readonly UIButton BtnShowQueue;
-
-        public ResearchQueueUIComponent(ResearchScreenNew screen, in Rectangle container)  : base(container, Color.Black)
+        Screen = screen;
+        Name = "ResearchQueueDock";
+        Previous = Control("<", "ResearchQueuePrevious", "Previous queued technologies", _ => Scroll(-VisibleCapacity));
+        Next = Control(">", "ResearchQueueNext", "More queued technologies", _ => Scroll(VisibleCapacity));
+        Earlier = Control("<", "ResearchQueueEarlier", "Move earlier (respects prerequisites)", _ => MoveSelected(-1));
+        Later = Control(">", "ResearchQueueLater", "Move later (respects prerequisites)", _ => MoveSelected(1));
+        Prioritize = Control("^", "ResearchQueuePrioritize", "Prioritize with prerequisites", _ =>
         {
-            Screen = screen;
-
-            BtnShowQueue = Button(ButtonStyle.BigDip, 
-                new Vector2(container.Right - 170, screen.ScreenHeight - 55), "", OnBtnShowQueuePressed);
-
-            RectF current = new(container.X, container.Y, container.Width, 150);
-            RectF timeLeftRect = new(current.X + current.W - 119, current.Y + current.H - 24, 111, 20);
-            TimeLeft = Panel(timeLeftRect, Color.White, ResourceManager.Texture("ResearchMenu/timeleft"));
-            
-            var labelPos = new Vector2(TimeLeft.X + 26,
-                                       TimeLeft.Y + TimeLeft.Height / 2 - Fonts.Verdana14Bold.LineSpacing / 2);
-            TimeLeftLabel = TimeLeft.Label(labelPos, "", Fonts.Verdana14Bold, new Color(205, 229, 255));
-
-            CurrentResearchPanel = Add(new Submenu(current, GameText.CurrentResearch, SubmenuStyle.Blue));
-
-            // Disruption indicator inline with the "Current Research" tab
-            // title. 80% of the 25px tab height. Added AFTER the Submenu so
-            // it draws on top of the tab bar.
-            const int spyIconSize = 20;
-            float titleW = Fonts.Pirulen12.MeasureString(Localizer.Token(GameText.CurrentResearch)).X;
-            var spyIconRect = new Rectangle((int)(current.X + titleW + 50),
-                                            (int)current.Y -3 + (25 - spyIconSize) / 2,
-                                            spyIconSize, spyIconSize);
-            SpyDisruption = Add(new UIPanel(spyIconRect, ResourceManager.Texture("UI/icon_spy")));
-            SpyDisruption.Tooltip = GameText.ResearchDisruptedByInfiltrationTip;
-            var spyLabelPos = new Vector2(spyIconRect.X + spyIconRect.Width + 4,
-                                          spyIconRect.Y + 3 + spyIconRect.Height / 2 - Fonts.Arial12Bold.LineSpacing / 2);
-            SpyDisruptionLabel = Add(new UILabel(spyLabelPos, "", Fonts.Arial12Bold, new Color(255, 96, 96),
-                                                 GameText.ResearchDisruptedByInfiltrationTip));
-            SpyDisruption.Visible = false;
-            SpyDisruptionLabel.Visible = false;
-            
-            RectF queue = new(current.X, current.Y + 165, container.Width, container.Height - 165);
-            var queueSub = Add(new SubmenuScrollList<ResearchQItem>(queue, GameText.ResearchQueue, 125, ListStyle.Blue));
-            ResearchQueueList = queueSub.List;
-
-            // FB Disabled due to being able to drag stuff to be before other research mandatory for it.
-            //ResearchQueueList.OnDragReorder = OnResearchItemReorder; 
+            int index = Research.IndexInQueue(SelectedUid);
+            if (index > 0) Research.MoveToTopWithPreReqs(index);
             ReloadResearchQueue();
-        }
-
-        // TODO: check if we are moving item up before allowed item
-        void OnResearchItemReorder(ResearchQItem item, int relativeChange)
+        });
+        RemoveButton = Control("X", "ResearchQueueRemove", "Remove selected research and dependent queued technologies", _ =>
         {
-            // we use +1 here, because [0] is the current research item
-            // which is not in the ScrollList
-            //Screen.Player.Research.ReorderTech(oldIndex+1, newIndex+1);
-        }
+            if (SelectedUid != null) Research.RemoveTechFromQueue(SelectedUid);
+            ReloadResearchQueue();
+        });
+        ReloadResearchQueue();
+    }
 
-        void OnBtnShowQueuePressed(UIButton button)
-        {
-            SetQueueVisible(!ResearchQueueList.Visible);
-        }
+    UIButton Control(string text, string name, string tooltip, Action<UIButton> action)
+    {
+        var button = Add(new UIButton(ButtonStyle.Default, text));
+        button.Name = name;
+        button.Tooltip = tooltip;
+        button.OnClick = action;
+        button.Normal = button.Hover = button.Pressed = null;
+        button.DefaultColor = new Color(18, 40, 54);
+        button.HoverColor = new Color(32, 69, 83);
+        return button;
+    }
 
-        void SetQueueVisible(bool visible)
+    void Scroll(int amount)
+    {
+        FirstVisible = Math.Clamp(FirstVisible + amount, 0, Math.Max(0, QueueIds.Length - 1 - VisibleCapacity));
+        PerformLayout();
+    }
+
+    void MoveSelected(int direction)
+    {
+        int index = Research.IndexInQueue(SelectedUid);
+        if (index < 0) return;
+        if (direction < 0) Research.MoveUp(index);
+        else Research.MoveDown(index);
+        ReloadResearchQueue();
+    }
+
+    public override void PerformLayout()
+    {
+        if (Previous == null) return;
+        Previous.RectF = new RectF(X + ActiveWidth + 4, Y + 42, 26, 28);
+        Next.RectF = new RectF(Right - 32, Y + 42, 26, 28);
+        Previous.Visible = FirstVisible > 0;
+        Next.Visible = FirstVisible + VisibleCapacity < QueueIds.Length - 1;
+        int index = SelectedUid == null ? -1 : Research.IndexInQueue(SelectedUid);
+        float controlsX = X + ActiveWidth + 38;
+        Earlier.RectF = new RectF(controlsX, Y + 94, 26, 24);
+        RemoveButton.RectF = new RectF(controlsX + 30, Y + 94, 26, 24);
+        Later.RectF = new RectF(controlsX + 60, Y + 94, 26, 24);
+        Prioritize.RectF = new RectF(controlsX + 90, Y + 94, 26, 24);
+        Earlier.Visible = Later.Visible = Prioritize.Visible = RemoveButton.Visible = index >= 0;
+        Earlier.Enabled = index >= 0 && Research.CanMoveUp(index);
+        Later.Enabled = index >= 0 && Research.CanMoveDown(index);
+        Prioritize.Enabled = index > 0;
+        base.PerformLayout();
+    }
+
+    public override bool HandleInput(InputState input)
+    {
+        if (!Visible || !Enabled) return false;
+        HoveredUid = null;
+        if (base.HandleInput(input)) return true;
+        if (!HitTest(input.CursorPosition)) return false;
+        if (input.ScrollIn || input.ScrollOut)
         {
-            if (CurrentResearch != null)
+            Scroll(input.ScrollIn ? -1 : 1);
+            return true;
+        }
+        if (QueueIds.Length > 0 && ActiveIcon.HitTest(input.CursorPosition)) HoveredUid = QueueIds[0];
+        for (int i = 0; i < VisibleCapacity && FirstVisible + i + 1 < QueueIds.Length; ++i)
+            if (QueuedIcon(i).HitTest(input.CursorPosition)) HoveredUid = QueueIds[FirstVisible + i + 1];
+        if (HoveredUid != null)
+        {
+            TechEntry tech = Screen.Player.GetTechEntry(HoveredUid);
+            ToolTip.CreateTooltip($"{tech.Tech.Name.Text} - {tech.TechCost:0} research\n{tech.Tech.Description.Text}");
+            if (input.RightMouseClick)
+                Screen.ScreenManager.AddScreen(new ResearchPopup(Screen.Universe, HoveredUid));
+            else if (input.LeftMouseClick)
             {
-                TimeLeft.Visible = visible;
-                CurrentResearch.Visible = visible;
-            }
-            else
-            {
-                TimeLeft.Visible = false;
-            }
-
-            ResearchQueueList.Visible = visible;
-            ResearchQueueList.Parent.Visible = visible;
-            CurrentResearchPanel.Visible = visible;
-            if (!visible)
-            {
-                SpyDisruption.Visible = false;
-                SpyDisruptionLabel.Visible = false;
-            }
-            BtnShowQueue.Text = ResearchQueueList.Visible ? GameText.HideQueue : GameText.ShowQueue;
-        }
-
-        public override bool HandleInput(InputState input)
-        {
-            if (CurrentResearch != null && CurrentResearch.HandleInput(input))
-                return true;
-
-            if (ResearchQueueList.Visible && input.RightMouseClick && ResearchQueueList.Any(item => item.HitTest(input.CursorPosition)))
-                return base.HandleInput(input);
-
-            if (input.Escaped || input.RightMouseClick)
-            {
-                Screen.ExitScreen();
-                return true;
-            }
-
-            return base.HandleInput(input);
-        }
-
-        public override void Draw(SpriteBatch batch, DrawTimes elapsed)
-        {
-            base.Draw(batch, elapsed);
-
-            if (ResearchQueueList.Visible && CurrentResearch != null)
-            {
-                CurrentResearch.Draw(batch, elapsed);
-
-                float remaining = CurrentResearch.Tech.TechCost - CurrentResearch.Tech.Progress;
-                float numTurns = (float)Math.Ceiling(remaining / (0.01f + Screen.Player.Research.NetResearch));
-                TimeLeftLabel.Text = (numTurns > 999f) ? ">999 turns" : numTurns.String(0)+" turns";
-
-                float multiplier = Screen.Player.Research.DisruptionMultiplier;
-                bool disrupted = multiplier < 1f;
-                SpyDisruption.Visible = disrupted;
-                SpyDisruptionLabel.Visible = disrupted;
-                if (disrupted)
-                    SpyDisruptionLabel.Text = $"({(int)Math.Round(multiplier * 100f)}%)";
-            }
-        }
-
-        ResearchQItem CreateQueueItem(TechEntry tech)
-        {
-            var defaultPos = new Vector2(CurrentResearchPanel.X + 5, CurrentResearchPanel.Y + 30);
-            return new(Screen, tech, defaultPos) { List = ResearchQueueList };
-        }
-
-        public void AddToResearchQueue(TechEntry tech)
-        {
-            if (Player.Research.AddToQueue(tech.UID))
-            {
-                if (CurrentResearch == null)
-                    CurrentResearch = CreateQueueItem(tech);
-                else
-                    ResearchQueueList.AddItem(CreateQueueItem(tech));
-
-                SetQueueVisible(true);
+                SelectedUid = HoveredUid;
+                PerformLayout();
             }
         }
+        return input.LeftMouseClick || input.RightMouseClick;
+    }
 
-        public void ReloadResearchQueue()
+    public override void Update(float fixedDeltaTime)
+    {
+        if (!QueueIds.SequenceEqual(Screen.Player.data.ResearchQueue)) ReloadResearchQueue();
+        base.Update(fixedDeltaTime);
+    }
+
+    public static SubTexture TechIcon(TechEntry tech)
+        => ResourceManager.TextureOrDefault("TechIcons/" + (tech.Tech.IconPath ?? tech.UID), "NewUI/icon_science");
+
+    public static void DrawResearchIcon(SpriteBatch batch, SubTexture texture, RectF bounds, Color color)
+    {
+        float scale = Math.Min(bounds.W / texture.Width, bounds.H / texture.Height);
+        float width = texture.Width * scale, height = texture.Height * scale;
+        batch.Draw(texture, new RectF(bounds.X + (bounds.W - width) / 2,
+            bounds.Y + (bounds.H - height) / 2, width, height), color);
+    }
+
+    void DrawIcon(SpriteBatch batch, string uid, RectF rect, string badge = null)
+    {
+        batch.FillRectangle(rect, new Color(14, 30, 42));
+        DrawResearchIcon(batch, TechIcon(Screen.Player.GetTechEntry(uid)), rect.Bevel(-5), Color.White);
+        batch.DrawRectangle(rect, uid == Research.Topic || uid == SelectedUid || uid == HoveredUid ? Cyan : Muted.Alpha(.6f));
+        if (badge != null)
         {
-            CurrentResearch = Player.Research.HasTopic
-                            ? CreateQueueItem(Player.Research.Current)
-                            : null;
-
-            var items = new Array<ResearchQItem>();
-            foreach (string tech in Player.Research.QueuedItems)
-            {
-                TechEntry queuedTech = Player.GetTechEntry(tech);
-                items.Add(CreateQueueItem(queuedTech));
-            }
-            ResearchQueueList.SetItems(items);
-
-            SetQueueVisible(Player.Research.HasTopic);
+            batch.FillRectangle(new RectF(rect.X, rect.Y, 16, 16), new Color(5, 17, 29));
+            batch.DrawString(Fonts.Arial10, badge, rect.Pos + new Vector2(3, 1), Colors.Cream);
         }
+    }
+
+    public override void Draw(SpriteBatch batch, DrawTimes elapsed)
+    {
+        base.Draw(batch, elapsed);
+        batch.DrawRectangle(RectF, Gold.Alpha(.65f));
+        batch.DrawString(Fonts.Pirulen12, "ACTIVE RESEARCH", new Vector2(X + 16, Y + 9), Gold);
+        batch.DrawString(Fonts.Pirulen12, "UP NEXT", new Vector2(X + ActiveWidth + 20, Y + 9), Gold);
+        batch.FillRectangle(new RectF(X + ActiveWidth, Y + 16, 1, Height - 32), Gold.Alpha(.5f));
+        if (QueueIds.Length == 0)
+        {
+            batch.DrawString(Fonts.Arial12, "Select a technology\nto begin research.", new Vector2(X + 16, Y + 44), Muted);
+        }
+        else
+        {
+            TechEntry tech = Research.Current;
+            DrawIcon(batch, tech.UID, ActiveIcon);
+            float progress = tech.TechCost > 0 ? Math.Clamp(tech.PercentResearched, 0, 1) : 1;
+            RectF bar = new(ActiveIcon.X, ActiveIcon.Bottom + 6, ActiveIcon.W, 5);
+            batch.FillRectangle(bar, new Color(31, 55, 69));
+            batch.FillRectangle(new RectF(bar.X, bar.Y, bar.W * progress, bar.H), Cyan);
+            string title = tech.Tech.Name.Text;
+            while (title.Length > 0 && Fonts.Arial12Bold.TextWidth(title) > ActiveWidth - 110)
+                title = title.Substring(0, title.Length - 1);
+            if (title != tech.Tech.Name.Text && title.Length > 3) title = title.Substring(0, title.Length - 3) + "...";
+            batch.DrawString(Fonts.Arial12Bold, title, new Vector2(X + 92, Y + 36), Colors.Cream);
+            float turns = MathF.Ceiling(Math.Max(0, tech.TechCost - tech.Progress) / Math.Max(.01f, Research.NetResearch));
+            string time = Research.NetResearch <= 0 ? "No research output" : turns > 999 ? ">999 turns" : $"{turns:0} turns";
+            batch.DrawString(Fonts.Arial10, $"{progress:P0}", new Vector2(ActiveIcon.X, ActiveIcon.Bottom + 13), Cyan);
+            batch.DrawString(Fonts.Arial12, time, new Vector2(X + 92, Y + 60), Cyan);
+            if (Research.DisruptionMultiplier < 1)
+            {
+                RectF warning = new(X + 92, Y + 83, ActiveWidth - 104, 22);
+                batch.DrawString(Fonts.Arial10, $"Disrupted: {Research.DisruptionMultiplier:P0} output", warning.Pos, Color.OrangeRed);
+                if (warning.HitTest(Screen.ScreenManager.input.CursorPosition)) ToolTip.CreateTooltip(GameText.ResearchDisruptedByInfiltrationTip);
+            }
+        }
+        for (int i = 0; i < VisibleCapacity && FirstVisible + i + 1 < QueueIds.Length; ++i)
+            DrawIcon(batch, QueueIds[FirstVisible + i + 1], QueuedIcon(i), (FirstVisible + i + 1).ToString());
+        if (QueueIds.Length <= 1)
+            batch.DrawString(Fonts.Arial12, "Queue technologies from the tree or search.", new Vector2(X + ActiveWidth + 38, Y + 44), Muted);
+        if (SelectedUid != null)
+        {
+            string selected = Screen.Player.GetTechEntry(SelectedUid).Tech.Name.Text;
+            float availableWidth = Width - ActiveWidth - 180;
+            while (selected.Length > 0 && Fonts.Arial10.TextWidth(selected) > availableWidth)
+                selected = selected.Substring(0, selected.Length - 1);
+            batch.DrawString(Fonts.Arial10, selected, new Vector2(X + ActiveWidth + 162, Y + 100), Muted);
+        }
+    }
+
+    public void AddToResearchQueue(TechEntry tech)
+    {
+        if (Research.AddToQueue(tech.UID)) ReloadResearchQueue();
+    }
+
+    public void ReloadResearchQueue()
+    {
+        QueueIds = Screen.Player.data.ResearchQueue.ToArray();
+        if (SelectedUid == null || !QueueIds.Contains(SelectedUid)) SelectedUid = QueueIds.FirstOrDefault();
+        FirstVisible = Math.Clamp(FirstVisible, 0, Math.Max(0, QueueIds.Length - 1 - VisibleCapacity));
+        PerformLayout();
     }
 }

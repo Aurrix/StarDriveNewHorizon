@@ -106,6 +106,48 @@ namespace Ship_Game.Ships
             OrdersButtons = new ShipStanceButtons(universe, ordersBarPos);
         }
 
+        RectF StationPanel => new(Housing.X + 8, Housing.Y - 110, 380, 106);
+
+        bool ShowStationPanel => Ship is { IsPlatformOrStation: true } && Ship.Loyalty.CanBeScannedByPlayer;
+
+        void DrawStationCapabilities(SpriteBatch batch, Ship s)
+        {
+            if (!ShowStationPanel) return;
+            RectF rect = StationPanel;
+            batch.FillRectangle(rect, new Color(4, 15, 25).Alpha(.94f));
+            batch.DrawRectangle(rect, s.Loyalty.EmpireColor.Alpha(.65f));
+            batch.DrawString(Fonts.Arial12Bold, s.IsStarbase ? "STARBASE" : "STATION", rect.X + 10, rect.Y + 6, Color.White);
+            void Row(int row, string label, float radius, bool enabled, Color color)
+            {
+                string value = radius > 0 ? radius.String(0) : "Offline / not fitted";
+                batch.DrawString(Fonts.Arial10, $"[{(enabled ? "x" : " ")}] {label}: {value}",
+                    rect.X + 10, rect.Y + 26 + row * 18, color);
+            }
+            Row(0, "Sensors", s.SensorRange, Universe.ShowStationSensors, Color.Cyan);
+            Row(1, "Borders", s.BorderClaimRadius, Universe.ShowStationBorders, s.Loyalty.EmpireColor);
+            Row(2, "Inhibition", s.InhibitionRadius, Universe.ShowStationInhibition, Color.Orange);
+            string status = "Click a range to toggle its overlay";
+            if (s.IsStarbase && s.BorderClaimRadius <= 0) status = "Command core offline - territorial claim lost";
+            foreach (var goal in s.Loyalty.AI.Goals)
+            {
+                if (goal.Type != GoalType.RefitOrbital || goal.OldShip != s) continue;
+                status = "Refit: preparing construction";
+                if (goal.FinishedShip is { Active: true } builder)
+                {
+                    var construction = builder.Construction;
+                    status = construction.ConstructionAdded > 0
+                        ? $"Refit assembly: {(100 * construction.ConstructionAdded / construction.ConstructionNeeded.LowerBound(1)).String(0)}%"
+                        : "Refit: constructor en route";
+                }
+                else if (goal.PlanetBuildingAt != null)
+                    foreach (var item in goal.PlanetBuildingAt.ConstructionQueue)
+                        if (item.Goal == goal)
+                            status = $"Refit production: {(100 * item.ProductionSpent / item.ActualCost.LowerBound(1)).String(0)}%";
+                break;
+            }
+            batch.DrawString(Fonts.Arial10, status, rect.X + 10, rect.Y + 84, Color.LightGray);
+        }
+
         void DrawOrderButtons(SpriteBatch batch, float transitionOffset)
         {
             foreach (OrdersButton ob in Orders)
@@ -129,6 +171,8 @@ namespace Ship_Game.Ships
             batch.Draw(ResourceManager.Texture("SelectionBox/unitselmenu_main"), Housing, Color.White);
             if (s.Loyalty.CanBeScannedByPlayer)
                 GridButton.Draw(batch, elapsed);
+
+            DrawStationCapabilities(batch, s);
 
             Vector2 namePos       = new(Housing.X + 30, Housing.Y + 63);
             Vector2 shipSuperName = new(Housing.X + 30, Housing.Y + 79);
@@ -195,6 +239,11 @@ namespace Ship_Game.Ships
                 DrawMiningStatus(batch, mousePos);
                 DrawCarrierStatus(mousePos, s);
                 DrawResupplyReason(batch, s);
+                if (s.PirateLeaseId != 0)
+                {
+                    DrawIconWithTooltip(batch, ResourceManager.Texture("NewUI/icon_spy_notification"),
+                        () => s.Universe.Underworld.LeaseDescription(s.PirateLeaseId), mousePos, Color.Gold, numStatus++);
+                }
                 DrawRadiationDamageWarning(s);
                 DrawPack(batch, mousePos, s, ref numStatus);
                 DrawFTL(batch, mousePos, s, ref numStatus);
@@ -511,6 +560,22 @@ namespace Ship_Game.Ships
             {
                 ShipNameArea.StopInput();
                 return false;
+            }
+
+            if (ShowStationPanel && StationPanel.HitTest(input.CursorPosition))
+            {
+                if (input.LeftMouseClick)
+                {
+                    int row = (int)((input.CursorPosition.Y - StationPanel.Y - 26) / 18);
+                    if (input.CursorPosition.Y >= StationPanel.Y + 26 && row >= 0 && row < 3)
+                    {
+                        if (row == 0) Universe.ShowStationSensors = !Universe.ShowStationSensors;
+                        if (row == 1) Universe.ShowStationBorders = !Universe.ShowStationBorders;
+                        if (row == 2) Universe.ShowStationInhibition = !Universe.ShowStationInhibition;
+                        Universe.ShowingRangeOverlay = true;
+                    }
+                }
+                return true;
             }
 
             if (SlidingElement.HandleInput(input))

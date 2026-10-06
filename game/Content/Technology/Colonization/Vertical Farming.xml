@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/ XMLSchema"> 
-  <Version>2</Version>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <UID>Vertical Farming</UID>
   <TechnologyType>Colonization</TechnologyType>
   <Cost>2000</Cost>
+  <RootNode>0</RootNode>
+  <Name>Vertical Farming</Name>
   <NameIndex>2293</NameIndex>
   <DescriptionIndex>2294</DescriptionIndex>
   <LeadsTo>
     <LeadsToTech>
-      <UID>WeatherManipulation</UID>
+      <UID>Farming Colony Development I</UID>
     </LeadsToTech>
   </LeadsTo>
-  <HiddenFrom>
-    <RaceRequirements>
-      <RacialTrait>Cybernetic</RacialTrait>
-    </RaceRequirements>
-  </HiddenFrom>
   <ModulesUnlocked />
   <BuildingsUnlocked>
     <UnlockedBuilding>
       <Name>Vertical Farm</Name>
     </UnlockedBuilding>
   </BuildingsUnlocked>
+  <HiddenFrom>
+    <RaceRequirements>
+      <RacialTrait>Cybernetic</RacialTrait>
+    </RaceRequirements>
+  </HiddenFrom>  
   <BonusUnlocked />
   <TroopsUnlocked />
   <HullsUnlocked />

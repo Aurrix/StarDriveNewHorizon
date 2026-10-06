@@ -71,6 +71,7 @@ namespace Ship_Game.Commands.Goals  // Created by Fat Bastard
 
         GoalStep FindShipAndPlanetToRefit()
         {
+            if (OldShip?.PirateLeaseId != 0) return GoalStep.GoalFailed;
             if (OldShip.Loyalty != Owner)
             {
                 RemoveGoalFromFleet();

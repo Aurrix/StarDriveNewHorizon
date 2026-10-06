@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <UID>StarshipConstruction</UID>
+  <TechnologyType>General</TechnologyType>
+  <Cost>50</Cost>
+  <RootNode>10</RootNode>
+  <Name>Starship Construction</Name>
+  <NameIndex>663</NameIndex>
+  <IconPath>icons_techroot_starships</IconPath>
+  <DescriptionIndex>664</DescriptionIndex>
+  <LongDescription>A core of basic starship design knowledge was needed for us to even begin reaching into the stars.  This core technology represents having discovered basic starship command, propulsion, and hull technologies.</LongDescription>
+  <LeadsTo>
+    <LeadsToTech>
+      <UID>Fighter Hulls I</UID>
+    </LeadsToTech>
+    <LeadsToTech>      
+	  <UID>CorvetteHulls</UID>
+    </LeadsToTech>
+  </LeadsTo>
+  <ModulesUnlocked>
+    <UnlockedMod>
+      <ModuleUID>BasicCargoHold</ModuleUID>
+    </UnlockedMod>
+    <UnlockedMod>
+      <ModuleUID>PowerConduit</ModuleUID>
+    </UnlockedMod>
+    <UnlockedMod>
+      <ModuleUID>Cockpit</ModuleUID>
+    </UnlockedMod>
+    <UnlockedMod>
+      <ModuleUID>Engine</ModuleUID>
+    </UnlockedMod>
+    <UnlockedMod>
+      <ModuleUID>WarpEngine_1x1</ModuleUID>
+    </UnlockedMod>
+    <UnlockedMod>
+      <ModuleUID>Internal Bulkhead</ModuleUID>
+    </UnlockedMod>
+    <UnlockedMod>
+      <ModuleUID>Reinforced Bulkhead</ModuleUID>
+    </UnlockedMod>
+    <UnlockedMod>
+      <ModuleUID>VernierThruster</ModuleUID>
+    </UnlockedMod>
+    <UnlockedMod>
+      <ModuleUID>PowerSolar</ModuleUID>
+    </UnlockedMod>
+    <UnlockedMod>
+      <ModuleUID>PowerSolar2x2</ModuleUID>
+    </UnlockedMod>	
+	<UnlockedMod>
+      <ModuleUID>270FlakTurret</ModuleUID>
+    </UnlockedMod>
+    <UnlockedMod>
+      <ModuleUID>engine_fighter_1x1</ModuleUID>
+    </UnlockedMod>
+    <UnlockedMod>
+      <ModuleUID>engine_fighter_1x1</ModuleUID>
+    </UnlockedMod>	
+  <!-- for Remnant ships review only	
+	<UnlockedMod> 
+  	  <ModuleUID>MeteorPart</ModuleUID>
+	</UnlockedMod> 
+	<UnlockedMod> 
+  	  <ModuleUID>RESubspaceSensors</ModuleUID>
+	</UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>Pirate Inhibitor</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>PirateAssaultBay</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>SniperRifle</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>SniperRifleAP</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>SniperRifleHEAP</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>REAPMineBay</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>REEmpMineBay</ModuleUID>
+    </UnlockedMod>	
+	<UnlockedMod>
+      <ModuleUID>REFighterShield</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>REGreenHLaserCannon</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>RECockpit</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>REBridge</ModuleUID>
+    </UnlockedMod>	
+	<UnlockedMod>
+      <ModuleUID>AncientShield2kw</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>REBlaster</ModuleUID>
+    </UnlockedMod>	
+	<UnlockedMod>
+      <ModuleUID>REEmpBlaster</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>REEngine</ModuleUID>
+    </UnlockedMod>		
+	<UnlockedMod>
+      <ModuleUID>RegenArmorSmall</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>REHeavyCannon</ModuleUID>
+    </UnlockedMod>	
+	<UnlockedMod>
+      <ModuleUID>RELaserGreen</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>REMac</ModuleUID>
+    </UnlockedMod>			
+	<UnlockedMod>
+      <ModuleUID>REMac2x2</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>RELaserGreen</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>RemnantPlanetNuker</ModuleUID>
+    </UnlockedMod>				
+	<UnlockedMod>
+      <ModuleUID>RemnantSmallFuelCell</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>RemnantSmallReactor</ModuleUID>
+    </UnlockedMod>	
+	<UnlockedMod>
+      <ModuleUID>REPD</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>REPD2x2</ModuleUID>
+    </UnlockedMod>	
+	<UnlockedMod>
+      <ModuleUID>REPlasmaProjectorMod</ModuleUID>
+    </UnlockedMod>		
+	<UnlockedMod>
+      <ModuleUID>REWarp Inhibitor</ModuleUID>
+    </UnlockedMod>			
+	<UnlockedMod>
+      <ModuleUID>REDisintegratorArray</ModuleUID>
+    </UnlockedMod>				
+	<UnlockedMod>
+      <ModuleUID>REDisruptorTurret2x2</ModuleUID>
+    </UnlockedMod>				
+	<UnlockedMod>
+      <ModuleUID>REPhasorTurret2x2</ModuleUID>
+    </UnlockedMod>			
+	<UnlockedMod>
+      <ModuleUID>RENuclearBombBay2x2</ModuleUID>
+    </UnlockedMod>				
+	<UnlockedMod>
+      <ModuleUID>RECanopyShield</ModuleUID>
+    </UnlockedMod>						
+	<UnlockedMod>
+      <ModuleUID>RECompositeAlloys Small</ModuleUID>
+    </UnlockedMod>							
+	<UnlockedMod>
+      <ModuleUID>RECompositeAlloys Med</ModuleUID>
+    </UnlockedMod>							
+	<UnlockedMod>
+      <ModuleUID>RECompositeAlloys Large</ModuleUID>
+    </UnlockedMod>							
+	<UnlockedMod>
+      <ModuleUID>REJumpengine</ModuleUID>
+    </UnlockedMod>							
+	<UnlockedMod>
+      <ModuleUID>REJumpengine2</ModuleUID>
+    </UnlockedMod>		
+	<UnlockedMod>
+      <ModuleUID>REengine4x4Normal</ModuleUID>
+    </UnlockedMod>							
+	<UnlockedMod>
+      <ModuleUID>REengine3x3</ModuleUID>
+    </UnlockedMod>						
+		<UnlockedMod>
+      <ModuleUID>ReEngine2x2</ModuleUID>
+    </UnlockedMod>						
+	<UnlockedMod>
+      <ModuleUID>REInhibitor</ModuleUID>
+    </UnlockedMod>						
+	<UnlockedMod>
+      <ModuleUID>REAmplifier</ModuleUID>
+    </UnlockedMod>		
+	<UnlockedMod>
+	  <ModuleUID>REDisintegratorArray</ModuleUID>	
+	</UnlockedMod>		
+	<UnlockedMod>
+	  <ModuleUID>RemnantPort</ModuleUID>	
+	</UnlockedMod>		
+	<UnlockedMod>
+	  <ModuleUID>RemnantPort3x3</ModuleUID>	
+	</UnlockedMod>			
+	<UnlockedMod>
+	  <ModuleUID>REDisintegratorArray_Assault</ModuleUID>	
+	</UnlockedMod>			
+	<UnlockedMod>
+      <ModuleUID>REReactor</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>REQTCannon2x5</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>REQTCannon3x8</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+      <ModuleUID>RERAD</ModuleUID>
+    </UnlockedMod>	
+	<UnlockedMod>
+      <ModuleUID>REEmpProjectorMod</ModuleUID>
+    </UnlockedMod>		
+	<UnlockedMod>
+      <ModuleUID>REDisintigratorTurret4x4</ModuleUID>
+    </UnlockedMod>			
+	<UnlockedMod>
+      <ModuleUID>RegenArmorSmallPortal</ModuleUID>
+    </UnlockedMod>				
+	<UnlockedMod>
+      <ModuleUID>REDisintegratorArray_small</ModuleUID>
+    </UnlockedMod> -->
+  </ModulesUnlocked>
+  <BuildingsUnlocked />
+  <BonusUnlocked />
+  <TroopsUnlocked />
+  <HullsUnlocked>
+    <UnlockedHull>
+      <ShipType>Corsair</ShipType>
+      <Name>Corsairs/CorsairFighterBasic</Name>
+    </UnlockedHull>
+    <UnlockedHull>
+      <ShipType>Draug</ShipType>
+      <Name>Draugar/Draug Fighter</Name>
+    </UnlockedHull>
+    <UnlockedHull>
+      <ShipType>Terran</ShipType>
+      <Name>Misc/HaulerSmall</Name>
+    </UnlockedHull>
+    <UnlockedHull>
+      <ShipType>Kulrathi</ShipType>
+      <Name>Kulrathi/Kuma Sukoshi</Name>
+    </UnlockedHull>
+    <UnlockedHull>
+      <ShipType>Vulfen</ShipType>
+      <Name>Vulfen/Type WI</Name>
+    </UnlockedHull>
+    <UnlockedHull>
+      <Name>Opteris/Creeper</Name>
+      <ShipType>Opteris</ShipType>
+    </UnlockedHull>
+    <UnlockedHull>
+      <Name>Opteris/Drone</Name>
+      <ShipType>Opteris</ShipType>
+    </UnlockedHull>
+    <UnlockedHull>
+      <Name>Terran/Shuttle</Name>
+      <ShipType>Terran</ShipType>
+    </UnlockedHull>
+    <UnlockedHull>
+      <Name>Ralyeh/Inquisitor</Name>
+      <ShipType>Ralyeh</ShipType>
+    </UnlockedHull>
+    <UnlockedHull>
+      <Name>Ralyeh/Vessel S</Name>
+      <ShipType>Ralyeh</ShipType>
+    </UnlockedHull>
+    <UnlockedHull>
+      <Name>Pollops/Thorn</Name>
+      <ShipType>Pollops</ShipType>
+    </UnlockedHull>
+    <UnlockedHull>
+      <Name>Pollops/Seeder</Name>
+      <ShipType>Pollops</ShipType>
+    </UnlockedHull>
+    <UnlockedHull>
+      <Name>Cordrazine/Ving</Name>
+      <ShipType>Cordrazine</ShipType>
+    </UnlockedHull>
+    <UnlockedHull>
+      <Name>Cordrazine/Owl1</Name>
+      <ShipType>Cordrazine</ShipType>
+    </UnlockedHull>
+    <UnlockedHull>
+      <Name>Kulrathi/Fang</Name>
+      <ShipType>Kulrathi</ShipType>
+    </UnlockedHull>
+    <UnlockedHull>
+      <Name>Vulfen/Type I</Name>
+      <ShipType>Vulfen</ShipType>
+    </UnlockedHull>
+    <UnlockedHull>
+      <Name>Draylok/Wisp</Name>
+      <ShipType>Draylok</ShipType>
+    </UnlockedHull>
+    <UnlockedHull>
+      <Name>Draylok/Draylok Tx Small</Name>
+      <ShipType>Draylok</ShipType>
+    </UnlockedHull>
+    <UnlockedHull>
+      <Name>Dauntless/ts2_modE2</Name>
+	  <ShipType>Dauntless</ShipType>
+    </UnlockedHull>
+    <UnlockedHull>
+      <Name>Dauntless/ts2_modG</Name>
+	  <ShipType>Dauntless</ShipType>
+    </UnlockedHull>
+<!-- for faction ships review only
+    <UnlockedHull>
+      <Name>Meteors/Meteor A</Name>
+    </UnlockedHull>		
+    <UnlockedHull>
+      <Name>Meteors/Meteor B</Name>
+    </UnlockedHull>		
+    <UnlockedHull>
+      <Name>Meteors/Meteor C</Name>
+    </UnlockedHull>			
+    <UnlockedHull>
+      <Name>Meteors/Meteor D</Name>
+    </UnlockedHull>				
+    <UnlockedHull>
+      <Name>Meteors/Meteor E</Name>
+    </UnlockedHull>				
+    <UnlockedHull>
+      <Name>Meteors/Meteor F</Name>
+    </UnlockedHull>				
+	<UnlockedHull>
+      <Name>Meteors/Meteor G</Name>
+    </UnlockedHull>				
+    <UnlockedHull>
+      <Name>Draugar/Draug Asteroid Base</Name>
+    </UnlockedHull>	
+    <UnlockedHull>
+      <Name>Draugar/Draug Fighter Advanced</Name>
+    </UnlockedHull>	
+    <UnlockedHull>
+      <Name>Draugar/Draug Fighter Improved</Name>
+    </UnlockedHull>	
+    <UnlockedHull>
+      <Name>Draugar/Draug Fighter</Name>
+    </UnlockedHull>	
+    <UnlockedHull>
+      <Name>Draugar/Draug Flagship Hull</Name>
+    </UnlockedHull>	
+	<UnlockedHull>
+      <Name>Draugar/Draug1</Name>
+    </UnlockedHull>	
+	<UnlockedHull>
+      <Name>Draugar/Draug2</Name>
+    </UnlockedHull>	
+	<UnlockedHull>
+      <Name>Draugar/Draug3</Name>
+    </UnlockedHull>	
+	<UnlockedHull>
+      <Name>Draugar/DraugSlaver1</Name>
+    </UnlockedHull>	
+	<UnlockedHull>
+      <Name>Draugar/DraugSlaver2</Name>
+    </UnlockedHull>	
+	<UnlockedHull>
+      <Name>Draugar/DraugSlaver3</Name>
+    </UnlockedHull>	
+	<UnlockedHull>
+      <Name>Draugar/DraugStation1</Name>
+    </UnlockedHull>	
+	<UnlockedHull>
+      <Name>Draugar/DraugStation2</Name>
+    </UnlockedHull>	
+    <UnlockedHull>
+      <Name>Corsairs/Corsair Asteroid Base</Name>
+    </UnlockedHull>	
+    <UnlockedHull>
+      <Name>Corsairs/CorsairFighterAdvanced</Name>
+    </UnlockedHull>		
+    <UnlockedHull>
+      <Name>Corsairs/CorsairFighterBasic</Name>
+    </UnlockedHull>		
+	    <UnlockedHull>
+      <Name>Corsairs/CorsairFighterImproved</Name>
+    </UnlockedHull>		
+    <UnlockedHull>
+      <Name>Corsairs/CorsairFlagShip</Name>
+    </UnlockedHull>			
+    <UnlockedHull>
+      <Name>Corsairs/Corsair-Frigate</Name>
+    </UnlockedHull>				
+    <UnlockedHull>
+      <Name>Corsairs/CorsairStation1</Name>
+    </UnlockedHull>				
+    <UnlockedHull>
+      <Name>Corsairs/CorsairStation2</Name>
+    </UnlockedHull>				
+	    <UnlockedHull>
+      <Name>Corsairs/HeavyFrigate</Name>
+    </UnlockedHull>				
+    <UnlockedHull>
+      <Name>Remnant/Xeno Fighter</Name>
+    </UnlockedHull>	
+    <UnlockedHull>
+      <Name>Remnant/Xeno Drone</Name>
+    </UnlockedHull>		
+    <UnlockedHull>
+      <Name>Remnant/XenoGunship</Name>
+    </UnlockedHull>		
+    <UnlockedHull>
+      <Name>Remnant/Mothership</Name>
+    </UnlockedHull>		
+    <UnlockedHull>
+      <Name>Remnant/Xeno Cruiser</Name>
+    </UnlockedHull>			
+    <UnlockedHull>
+      <Name>Remnant/XenoHeavyCruiser</Name>
+    </UnlockedHull>
+    <UnlockedHull>
+      <Name>Remnant/AncientFrigate</Name>
+    </UnlockedHull>	
+    <UnlockedHull>
+      <Name>Remnant/RemnantPortal</Name>
+    </UnlockedHull>
+    <UnlockedHull>
+      <Name>Remnant/Behemoth</Name>	  
+    </UnlockedHull>	 	 -->
+  </HullsUnlocked>
+</Technology>

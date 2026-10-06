@@ -27,8 +27,7 @@ namespace Ship_Game
         // If the player or the AI refuse to pay, the payment Director will create a Raid
         // Director goal for the relevant empire, and that raid director will decide which
         // raids to launch vs the target empire. 
-        // Pirates go up in levels when successfully completing raids, but its harder for
-        // them to level when they are get more powerful. 
+        // Payments and successful raids fund deterministic investment-based expansion.
         // When Pirates level up, they create more bases in the galaxy - in asteroid belts,
         // Lone systems and even in deep space not located in sensor ranges.
         // Pirates have threat level per empire and this sets how aggressive and how many
@@ -49,6 +48,8 @@ namespace Ship_Game
         [StarData] public Array<int> SpawnedShips { get; private set; }       = new();
         [StarData] public Array<string> ShipsWeCanSpawn { get; private set; } = new();
         [StarData] public int Level { get; private set; }
+        [StarData] PirateFactionMarket SavedMarket;
+        public PirateFactionMarket Market => SavedMarket ??= new PirateFactionMarket();
 
         // whether to log Pirates status
         public bool Verbose;
@@ -65,7 +66,7 @@ namespace Ship_Game
 
         public int MinimumColoniesForPayment   => Owner.data.MinimumColoniesForStartPayment;
         int PaymentPeriodTurns                 => (int)(Owner.data.PiratePaymentPeriodTurns * Owner.Universe.ProductionPace);
-        public bool PaidBy(Empire victim)      => !Owner.IsAtWarWith(victim);
+        public bool PaidBy(Empire victim)      => Universe.Underworld.Protected(Owner, victim);
 
         public void AddGoalDirectorPayment(Empire victim) => 
             AddGoal(victim, GoalType.PirateDirectorPayment, null);
@@ -226,6 +227,7 @@ namespace Ship_Game
 
         public void LevelDown()
         {
+            Market.Investment = 0;
             var empires = Universe.MajorEmpires;
             for (int i = 0; i < empires.Length; i++)
             {
@@ -249,19 +251,20 @@ namespace Ship_Game
 
         public void TryLevelUp(UniverseState u, bool alwaysLevelUp = false)
         {
+            if (!alwaysLevelUp)
+            {
+                Market.Investment += u.Underworld.Settings.LootInvestment;
+                return;
+            }
             if (Level == MaxLevel)
                 return;
 
-            int dieRoll = (int)(Level * Universe.P.Pace + Universe.ActiveMajorEmpires.Length / 2f);
-            if (alwaysLevelUp || Random.RollDie(dieRoll) == 1)
+            int newLevel = Level + 1;
+            if (NewLevelOperations(u, newLevel))
             {
-                int newLevel = Level + 1;
-                if (NewLevelOperations(u, newLevel))
-                {
-                    IncreaseLevel();
-                    AlertPlayerAboutPirateOps(PirateOpsWarning.LevelUp);
-                    Log.Info(ConsoleColor.Green, $"---- Pirates: {Owner.Name} are now level {Level} ----");
-                }
+                IncreaseLevel();
+                AlertPlayerAboutPirateOps(PirateOpsWarning.LevelUp);
+                Log.Info(ConsoleColor.Green, $"---- Pirates: {Owner.Name} are now level {Level} ----");
             }
         }
 
@@ -575,7 +578,7 @@ namespace Ship_Game
 
         public void TakeInLandedShip(Ship ship)
         {
-            if (ship.IsDefaultAssaultShuttle || SpawnedShips.Contains(ship.Id))
+            if (ship.WasPirateLease || ship.IsDefaultAssaultShuttle || SpawnedShips.Contains(ship.Id))
             {
                 // We cannot salvage ships that we spawned
                 // remove it with no benefits
@@ -642,7 +645,7 @@ namespace Ship_Game
             public readonly string FlagShip;
             public readonly string Random;
 
-            public PirateForces(Empire pirates, int level) : this()
+            public PirateForces(Empire pirates, int level, bool chooseRandom = true) : this()
             {
                 FlagShip = pirates.data.PirateFlagShip;
                 float levelMultiplier = 1; 
@@ -678,8 +681,9 @@ namespace Ship_Game
                     Station      = pirates.data.PirateStationAdvanced;
                 }
 
-                Random = GetRandomShipFromSpawnList(pirates, out string shipName)
-                       ? shipName : GetRandomDefaultShip(pirates);
+                if (chooseRandom)
+                    Random = GetRandomShipFromSpawnList(pirates, out string shipName)
+                           ? shipName : GetRandomDefaultShip(pirates);
             }
 
             bool GetRandomShipFromSpawnList(Empire empire, out string shipName)

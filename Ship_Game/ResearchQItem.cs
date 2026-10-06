@@ -45,7 +45,7 @@ namespace Ship_Game
 
         public override bool HandleInput(InputState input)
         {
-            if (Node.HandleInput(input, Screen.ScreenManager, Screen.camera, Screen.Universe))
+            if (Node.HandleInput(input, Screen.ScreenManager, Screen.camera, Screen.Universe, screenSpace: true))
                 return true;
 
             return base.HandleInput(input);

@@ -294,6 +294,8 @@ namespace Ship_Game
         [StarData] public string PirateStationAdvanced;
         [StarData] public string PirateFlagShip;
         [StarData] public bool IsPirateFaction;
+        // Optional texture path relative to Content/Textures, without extension.
+        [StarData] public string PirateArtwork;
         [StarData] public int PiratePaymentPeriodTurns = 100; 
         [StarData] public int MinimumColoniesForStartPayment = 3;
 

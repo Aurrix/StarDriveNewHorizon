@@ -1,0 +1,81 @@
+# Optional presentation mapping. Mods may override this file.
+- ResearchBranchStyle:
+  Root: Colonization
+  Label: Agriculture & Habitation
+  Texture: ResearchMenu/Backgrounds/agriculture
+  Seeds: [ Aeroponics ]
+- ResearchBranchStyle:
+  Root: Colonization
+  Label: Science & Development
+  Texture: ResearchMenu/Backgrounds/science
+  Seeds: [ ScientificFoundations ]
+- ResearchBranchStyle:
+  Root: Colonization
+  Label: Industry & Mining
+  Texture: ResearchMenu/Backgrounds/industry
+  Seeds: [ IndustrialFoundations ]
+- ResearchBranchStyle:
+  Root: Colonization
+  Label: Government & Economy
+  Texture: ResearchMenu/Backgrounds/economy
+  Seeds: [ IS Government ]
+- ResearchBranchStyle:
+  Root: SpaceWeapons
+  Label: Kinetic Weapons
+  Texture: ResearchMenu/Backgrounds/ballistics
+  Seeds: [ Magnetic Artillery, Shotguns, Point Defense ]
+- ResearchBranchStyle:
+  Root: Defense
+  Label: Armor & Shields
+  Texture: ResearchMenu/Backgrounds/defenses
+  Seeds: [ ArmorTheory, Plasteel, ElectronicArmors, Shields ]
+- ResearchBranchStyle:
+  Root: Energy
+  Label: Directed Energy
+  Texture: ResearchMenu/Backgrounds/energy
+  Seeds: [ Energy Weapons, Ionic Weaponry, PlasmaThrowers ]
+- ResearchBranchStyle:
+  Root: MissileWeapons
+  Label: Missiles & Guidance
+  Texture: ResearchMenu/Backgrounds/missiles
+  Seeds: [ BasicMissileTheory, Missile Defense ]
+- ResearchBranchStyle:
+  Root: Logistics
+  Label: Supply & Infrastructure
+  Texture: ResearchMenu/Backgrounds/logistics
+  Seeds: [ SubSpaceProjectors, Fleet Supply, SolarArraysV1 ]
+- ResearchBranchStyle:
+  Root: Physics
+  Label: Reactors & Power Systems
+  Texture: ResearchMenu/Backgrounds/physics
+  Seeds: [ Fusion Reactor, WirelessPower ]
+- ResearchBranchStyle:
+  Root: Physics
+  Label: Propulsion & Subspace
+  Texture: ResearchMenu/Backgrounds/propulsion
+  Seeds: [ SubspaceTheory ]
+- ResearchBranchStyle:
+  Root: Engineering
+  Label: Science & Engineering
+  Texture: ResearchMenu/Backgrounds/science
+  Seeds: [ AdvancedEducation ]
+- ResearchBranchStyle:
+  Root: StarshipConstruction
+  Label: Hulls & Shipyards
+  Texture: ResearchMenu/Backgrounds/shipyards
+  Seeds: [ Fighter Hulls I, CorvetteHulls ]
+- ResearchBranchStyle:
+  Root: Upgrades
+  Label: Fleet Upgrades
+  Texture: ResearchMenu/Backgrounds/industry
+  Seeds: [ Velocity Stimulance Mk1, Advanced Materials, ShieldsV1, Nanoweave Metallurgy, Reactive Armor, SmartMissiles, FuelCell1, Ordnance Payload I ]
+- ResearchBranchStyle:
+  Root: Secret
+  Label: Ancient & Alien Technology
+  Texture: ResearchMenu/Backgrounds/secrets
+  Seeds: [ Remnant Tech, Remnant Studies, Ancient Ion Technology, Owlwok Freedom, Experimental Phasors, S_cannon, RAD, ScrappyBeam2x4, Energizer3x3, RemnantNuker, Magnetrom, TritaniumMissiles, Enforcer, Cyclone, AtomizingBattery, Black matter weaponry, StorageShield, AncientArmor, Remnant Assembly, Remnant Metallurgy, Slip Streams ]
+- ResearchBranchStyle:
+  Root: Logistics
+  Label: Starbase Infrastructure
+  Texture: ResearchMenu/Backgrounds/shipyards
+  Seeds: [ StarbaseInfrastructure ]

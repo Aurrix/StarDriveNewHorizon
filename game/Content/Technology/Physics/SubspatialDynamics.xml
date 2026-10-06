@@ -1,34 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/ XMLSchema"> 
-  <Version>2</Version>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <UID>SubspatialDynamics</UID>
-  <TechnologyType>ShipGeneral</TechnologyType>
-  <Cost>700</Cost>
+  <TechnologyType>Economic</TechnologyType>
+  <Cost>1800</Cost>
+  <RootNode>0</RootNode>
+  <Name>Subspatial Dynamics</Name>
   <NameIndex>675</NameIndex>
   <DescriptionIndex>676</DescriptionIndex>
-  <LeadsTo />
+  <LongDescription>We have discovered that the efficiency of traveling through subspace is affected by the shape of a ship's subspace bubble.  This technology allows for the construction of subspace "plows", which manipulate that shape to increase a ship's speed at warp. </LongDescription>
+  <LeadsTo>
+    <LeadsToTech>
+      <UID>Tachyon Scanning</UID>
+    </LeadsToTech>   
+  </LeadsTo>
   <ModulesUnlocked>
     <UnlockedMod>
       <ModuleUID>Warp Inhibitor</ModuleUID>
-    </UnlockedMod>
-    <UnlockedMod>
-      <ModuleUID>StationWarpInhibitor</ModuleUID>
     </UnlockedMod>
   </ModulesUnlocked>
   <BuildingsUnlocked />
   <BonusUnlocked>
     <UnlockedBonus>
-      <Name>FTL Efficiency</Name>
-      <BonusType>FTL Efficiency Bonus</BonusType>
-      <Bonus>0.2</Bonus>
-      <BonusIndex>677</BonusIndex>
-    </UnlockedBonus>
-    <UnlockedBonus>
       <Name>Slipstreams</Name>
-      <BonusType>FTL Speed Bonus</BonusType>
-      <Bonus>0.7</Bonus>
+      <Bonus>0.5</Bonus>
+      <Description>Ships traveling within your own empire's borders gain 50% bonus to their FTL speeds. </Description>
       <BonusIndex>678</BonusIndex>
     </UnlockedBonus>
+    <UnlockedBonus>
+      <Name>Enhanced Projection Level</Name>
+      <BonusType>Counter Enemy Planet Inhibition Bonus</BonusType>
+      <Bonus>0.1</Bonus>
+      <Description></Description>
+      <BonusIndex>51427</BonusIndex>
+    </UnlockedBonus>		
   </BonusUnlocked>
   <TroopsUnlocked />
   <HullsUnlocked />

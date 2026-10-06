@@ -129,12 +129,13 @@ namespace Ship_Game.Universe
             }
         }
 
-        public void Remove(Empire owner, GameObject source)
+        public void Remove(Empire owner, GameObject source, float previousRadius = 0)
         {
             if (IsSourceSystemInOurBorderSystems(owner, source))
                 return;
 
             (Vector2 center, float _, float maxRadius) = GetInfluenceCenterAndMaxRadius(source, owner);
+            maxRadius = Math.Max(maxRadius, previousRadius * (1f + Empire.BorderShapeMaxVariation));
             AABoundingBox2Di cb = GetCellBounds(center, maxRadius);
 
             float origin = WorldOrigin;

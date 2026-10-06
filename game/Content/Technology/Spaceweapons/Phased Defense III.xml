@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <UID>Phased Defense III</UID>
+  <TechnologyType>ShipWeapons</TechnologyType>
+  <Cost>3000</Cost>
+  <RootNode>0</RootNode>
+  <Name>Phased Defense III</Name>
+  <NameIndex>50152</NameIndex>
+  <DescriptionIndex>50153</DescriptionIndex>
+  <LongDescription>Suppressive Fire HEAP</LongDescription>
+  <LeadsTo />
+  <ModulesUnlocked>
+    <UnlockedMod>
+      <ModuleUID>LightACHEAP</ModuleUID>
+    </UnlockedMod>
+    <UnlockedMod>
+      <ModuleUID>AutoCannonHEAP</ModuleUID>
+    </UnlockedMod>
+    <UnlockedMod>
+      <ModuleUID>DroneCannon1x1HE</ModuleUID>
+    </UnlockedMod>		
+  </ModulesUnlocked>
+  <BuildingsUnlocked />
+  <BonusUnlocked />
+  <TroopsUnlocked />
+  <HullsUnlocked />
+</Technology>

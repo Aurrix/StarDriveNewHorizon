@@ -383,7 +383,78 @@ public partial class BorderVisualTests : StarDriveTest
         Assert.IsFalse(stale.RestoreOverview(saved,scene,300000));
         saved.Version--;
         saved.Tiles[0] = new byte[]{1,2,3};
-        Assert.IsFalse(stale.RestoreOverview(saved,scene,300000));
+        Assert.IsTrue(stale.RestoreOverview(saved,scene,300000));
+        Assert.IsTrue(SpinWait.SpinUntil(() =>
+        {
+            stale.Update(scene,300000,view,view.W/450,overviewOnly:true);
+            return stale.DisplayedScene != null;
+        },30000), "Corrupt caches must fall back to rebuilding after asynchronous validation");
+        Assert.IsTrue(stale.JobsStarted > 0);
+    }
+
+    [TestMethod]
+    public void ParallelBorderSaveMatchesSerialPixelsAndReusesUnaffectedTiles()
+    {
+        SetField(Player,(new Vector2(1000,1000),10000));
+        var scene = new BorderScene(new[]{Player});
+        const float radius = 300000;
+        var allKeys = BorderVisualRenderer.PresentationKeys(scene,radius);
+        var keys = new List<BorderVisualTile.Key> { allKeys[0], allKeys.Find(key => key.X == 0 && key.Y == 0) };
+        var parallel = BorderSavePreparation.BuildTiles(scene,keys);
+        for (int i = 0; i < keys.Count; ++i)
+            CollectionAssert.AreEqual(new BorderVisualTile(scene,keys[i]).Save(),parallel[i],
+                "Scheduling must not change saved bytes");
+        var previous = new SavedBorderOverview { Version = SavedBorderOverview.CurrentVersion,
+            Radius = radius, RuntimeScene = scene, Tiles = new byte[allKeys.Count][] };
+        for (int i = 0; i < keys.Count; ++i) previous.Tiles[allKeys.IndexOf(keys[i])] = parallel[i];
+        var reused = BorderSavePreparation.BuildTiles(scene,keys,previous);
+        for (int i = 0; i < keys.Count; ++i) Assert.AreSame(parallel[i],reused[i]);
+
+        Player.EmpireColor = Color.Magenta;
+        var changed = new BorderScene(new[]{Player});
+        var rebuilt = BorderSavePreparation.BuildTiles(changed,keys,previous);
+        for (int i = 0; i < keys.Count; ++i)
+            CollectionAssert.AreEqual(new BorderVisualTile(changed,keys[i]).Save(),rebuilt[i]);
+        Assert.IsTrue(keys.Select((key,i) => ReferenceEquals(parallel[i],rebuilt[i])).Any(x => x),
+            "Tiles outside changed field support should survive a palette change");
+        Assert.IsTrue(keys.Select((key,i) => ReferenceEquals(parallel[i],rebuilt[i])).Any(x => !x),
+            "Tiles touching the changed field must be rebuilt");
+    }
+
+    [TestMethod]
+    public void ParallelBorderDecodeValidatesWholeCacheBeforePublication()
+    {
+        SetField(Player,(new Vector2(1000,1000),10000));
+        var scene = new BorderScene(new[]{Player});
+        var keys = new List<BorderVisualTile.Key> { new(0,0,0), new(0,1,0) };
+        byte[][] tiles = BorderSavePreparation.BuildTiles(scene,keys);
+        var saved = new SavedBorderOverview { Tiles = tiles };
+        var decoded = BorderVisualRenderer.DecodeOverview(saved,keys,1);
+        Assert.IsNotNull(decoded);
+        for (int i = 0; i < keys.Count; ++i)
+        {
+            Assert.AreEqual(keys[i],decoded[i].Address);
+            CollectionAssert.AreEqual(tiles[i],decoded[i].Save());
+        }
+        saved.Tiles = new[] { tiles[0], tiles[0] };
+        Assert.IsNull(BorderVisualRenderer.DecodeOverview(saved,keys,1),"Duplicate addresses are invalid");
+        saved.Tiles = new[] { tiles[0], new byte[] { 1,2,3 } };
+        Assert.IsNull(BorderVisualRenderer.DecodeOverview(saved,keys,1),"Never publish a partial corrupt cache");
+    }
+
+    [TestMethod]
+    public void SavedTileReuseRejectsVisibilityAndGeometryChanges()
+    {
+        SetField(Player,(new Vector2(1000,1000),10000));
+        var before = new BorderScene(new[]{Player});
+        var bounds = new RectF(-20000,-20000,40000,40000);
+        var hidden = new BorderScene(new[]{Player});
+        hidden.Empires[0].Known = false;
+        Assert.IsFalse(hidden.CanReuseSavedTile(before,bounds));
+        SetField(Player,(new Vector2(5000,0),10000));
+        var moved = new BorderScene(new[]{Player});
+        Assert.IsFalse(moved.CanReuseSavedTile(before,bounds));
+        Assert.IsTrue(moved.CanReuseSavedTile(before,new RectF(1000000,1000000,10000,10000)));
     }
 
     [TestMethod]

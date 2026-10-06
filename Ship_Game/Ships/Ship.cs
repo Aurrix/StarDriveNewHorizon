@@ -73,6 +73,7 @@ namespace Ship_Game.Ships
         public bool EnginesKnockedOut;
         public float InhibitionRadius;
         public float BorderClaimRadius;
+        public bool IsStarbase => StarbaseRules.IsStarbase(ShipData);
         public bool IsPlatform;
         public bool IsGuardian; // All Remnant ships are guardians
         SceneObject ShipSO;
@@ -86,7 +87,14 @@ namespace Ship_Game.Ships
         [StarData] public Empire Loyalty;
         public LoyaltyChanges LoyaltyTracker { get; private set; }
         public void LoyaltyChangeFromBoarding(Empire empire, bool addNotification = true) => LoyaltyTracker.SetBoardingLoyalty(empire, addNotification);
-        public void LoyaltyChangeByGift(Empire empire, bool addNotification = true) => LoyaltyTracker.SetLoyaltyForAbsorbedShip(empire, addNotification);
+        public void LoyaltyChangeByGift(Empire empire, bool addNotification = true)
+        {
+            if (PirateLeaseId == 0) LoyaltyTracker.SetLoyaltyForAbsorbedShip(empire, addNotification);
+        }
+        internal void LoyaltyChangeForPirateLease(Empire empire) => LoyaltyTracker.SetLoyaltyForLease(empire);
+        [StarData] public int PirateLeaseId;
+        [StarData] public bool WasPirateLease;
+        [StarData] public bool PirateBountyCredited;
         public void LoyaltyChangeAtSpawn(Empire empire) => LoyaltyTracker.SetLoyaltyForNewShip(empire);
 
         [StarData] public float Ordinance { get; private set; } // FB: use ChanceOrdnance function to control Ordnance
@@ -609,7 +617,7 @@ namespace Ship_Game.Ships
         public bool IsHangarShip   => Mothership != null;
         public bool IsHomeDefense  => HomePlanet != null;
         public bool CanBeRefitted  => CanBeScrapped;
-        public bool CanBeScrapped  => !IsHangarShip && !IsHomeDefense && LandShip is not { Trades: false };
+        public bool CanBeScrapped  => PirateLeaseId == 0 && !IsHangarShip && !IsHomeDefense && LandShip is not { Trades: false };
         public bool CombatDisabled => EMPDisabled || Dying || !Active || !HasCommand;
 
         public bool SupplyShipCanSupply => Carrier.HasSupplyBays 

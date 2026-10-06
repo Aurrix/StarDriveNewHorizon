@@ -21,7 +21,7 @@ public sealed class BorderStationOwnership
         foreach (Ship station in universe.Ships)
         {
             if (!station.Active || station.Dying || !station.IsPlatformOrStation
-                || !(station.IsMiningStation || station.IsResearchStation)
+                || station.IsStarbase || !(station.IsMiningStation || station.IsResearchStation)
                 || station.LoyaltyTracker.ChangeType != LoyaltyChanges.Type.None) continue;
             Empire controller = null;
             foreach (Empire empire in universe.Empires)

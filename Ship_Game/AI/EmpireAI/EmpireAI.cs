@@ -417,6 +417,7 @@ namespace Ship_Game.AI
 
         public void AddScrapShipGoal(Ship ship, bool immediateScuttle)
         {
+            if (ship.PirateLeaseId != 0) return;
             AddGoalAndEvaluate(new ScrapShip(ship, OwnerEmpire, immediateScuttle));
         }
 

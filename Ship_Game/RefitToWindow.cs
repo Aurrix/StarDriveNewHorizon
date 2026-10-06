@@ -1,3 +1,5 @@
+using System;
+using SDUtils;
 using Microsoft.Xna.Framework.Graphics;
 using Color = Microsoft.Xna.Framework.Color;
 using SDGraphics;
@@ -30,6 +32,7 @@ namespace Ship_Game
         DanButton ConfirmRefit;
         ShipInfoOverlayComponent ShipInfoOverlay;
         bool Rush;
+        Power ProposedPower;
 
         public RefitToWindow(ShipListScreen screen, ShipListScreenItem item) : base(screen, toPause: null)
         {
@@ -82,7 +85,7 @@ namespace Ship_Game
 
         public override void LoadContent()
         {
-            RectF shipDesignsRect = new(ScreenWidth / 2 - 200, 200, 400, 500);
+            RectF shipDesignsRect = new(ScreenWidth / 2 - 200, 50, 400, Math.Min(360, ScreenHeight - 310));
             sub_ships = Add(new SubmenuScrollList<RefitShipListItem>(shipDesignsRect, "Refit to..."));
             sub_ships.SetBackground(Colors.TransparentBlackFill);
             
@@ -94,30 +97,26 @@ namespace Ship_Game
             {
                 foreach (IShipDesign design in ShipToRefit.Loyalty.ShipsWeCanBuildSnapshot)
                 {
-                    if ((design.Hull == ShipToRefit.ShipData.Hull || ShipToRefit.IsResearchStation || ShipToRefit.IsMiningStation)
-                        && design != ShipToRefit.ShipData
-                        && !design.ShipRole.Protected
-                        && ShipToRefit.IsResearchStation == design.IsResearchStation
-                        && ShipToRefit.IsMiningStation == design.IsMiningStation)
+                    if (StarbaseRules.CanRefit(ShipToRefit, design))
                     {
                         RefitShipList.AddItem(new RefitShipListItem(this, design));
                     }
                 }
             }
 
-            ConfirmRefit = new DanButton(new Vector2(shipDesignsRect.X, (shipDesignsRect.Y + 505)), "Do Refit");
+            ConfirmRefit = new DanButton(new Vector2(shipDesignsRect.X, (shipDesignsRect.Bottom + 8)), "Do Refit");
 
-            RefitOne = ButtonMedium(shipDesignsRect.X + 10, shipDesignsRect.Y + 505, text:GameText.RefitOne, click: OnRefitOneClicked);
+            RefitOne = ButtonMedium(shipDesignsRect.X + 10, shipDesignsRect.Bottom + 8, text:GameText.RefitOne, click: OnRefitOneClicked);
             RefitOne.Tooltip = GameText.RefitOnlyThisShipTo;
-            RefitAll = ButtonMedium(shipDesignsRect.X + 270, shipDesignsRect.Y + 505, text:GameText.RefitAll, click: OnRefitAllClicked);
+            RefitAll = ButtonMedium(shipDesignsRect.X + 270, shipDesignsRect.Bottom + 8, text:GameText.RefitAll, click: OnRefitAllClicked);
             RefitAll.Tooltip = GameText.RefitAllShipsOfThis;
-            RefitInFleet = ButtonMedium(shipDesignsRect.X + 140, shipDesignsRect.Y + 505, text: GameText.RefitInFleet, click: OnRefitFleetClicked);
+            RefitInFleet = ButtonMedium(shipDesignsRect.X + 140, shipDesignsRect.Bottom + 8, text: GameText.RefitInFleet, click: OnRefitFleetClicked);
             RefitInFleet.Tooltip = GameText.RefitInFleetTip;
             RushRefit = Add(new UICheckBox(() => Rush, Fonts.Arial12Bold,
                 title: GameText.RushRefit, tooltip: GameText.RushRefitTip));
             RushRefit.TextColor = Color.Gray;
             RushRefit.CheckedTextColor = Color.Red;
-            RushRefit.Pos = new Vector2(shipDesignsRect.X, shipDesignsRect.Y + 540);
+            RushRefit.Pos = new Vector2(shipDesignsRect.X, shipDesignsRect.Bottom + 44);
             RushRefit.Visible = false;
 
             ShipInfoOverlay = Add(new ShipInfoOverlayComponent(this, ShipToRefit.Universe));
@@ -133,6 +132,10 @@ namespace Ship_Game
         void OnRefitShipItemClicked(RefitShipListItem item)
         {
             RefitTo = item.Design;
+            var modules = new SDUtils.Array<ShipModule>();
+            foreach (var slot in RefitTo.GetOrLoadDesignSlots())
+                if (ResourceManager.GetModuleTemplate(slot.ModuleUID, out ShipModule module)) modules.Add(module);
+            ProposedPower = Power.Calculate(modules, Player, designModule: true);
             RushRefit.Visible = RefitAll.Visible = RefitOne.Visible = RefitTo != null;
             RefitInFleet.Visible = RefitAll.Visible && ShipToRefit.Fleet != null;
         }
@@ -144,9 +147,27 @@ namespace Ship_Game
             base.Draw(batch, elapsed);
             if (RefitTo != null)
             {
-                var cursor = new Vector2(ConfirmRefit.r.X, (ConfirmRefit.r.Y + 60));
-                string text = Fonts.Arial14Bold.ParseText($"Refit {ShipToRefit.Name} to {RefitTo.Name}", 270f);
-                batch.DrawString(Fonts.Arial14Bold, text, cursor, Color.White);
+                var panel = new RectF(ConfirmRefit.r.X, ConfirmRefit.r.Y + 72, 400, 154);
+                batch.FillRectangle(panel, new Color(4, 15, 25).Alpha(.95f));
+                var capability = StationCapabilities.ForDesign(RefitTo);
+                float y = panel.Y + 8;
+                batch.DrawString(Fonts.Arial12Bold, "REFIT COMPARISON", panel.X + 10, y, Color.White);
+                void Row(string label, float before, float after, string suffix = "")
+                {
+                    y += 20;
+                    batch.DrawString(Fonts.Arial10, $"{label}: {before.String(0)} -> {after.String(0)}{suffix}",
+                        panel.X + 10, y, Color.LightGray);
+                }
+                Row("Borders", ShipToRefit.BorderClaimRadius, capability.Borders);
+                Row("Sensors", ShipToRefit.SensorRange, capability.Sensors * Player.data.SensorModifier);
+                Row("Inhibition", ShipToRefit.InhibitionRadius, capability.Inhibition);
+                Row("Power surplus", ShipToRefit.NetPower.PowerFlowMax - ShipToRefit.NetPower.NetSubLightPowerDraw,
+                    ProposedPower.PowerFlowMax - ProposedPower.NetSubLightPowerDraw);
+                y += 20;
+                batch.DrawString(Fonts.Arial10, $"Upkeep: {ShipToRefit.ShipData.GetMaintenanceCost(Player).String(2)} -> {RefitTo.GetMaintenanceCost(Player).String(2)} BC/T",
+                    panel.X + 10, y, Color.LightGray);
+                if (ShipToRefit.IsStarbase && capability.Borders <= 0)
+                    batch.DrawString(Fonts.Arial10, "WARNING: this refit removes territorial control", panel.X + 10, y + 20, Color.Orange);
             }
             batch.SafeEnd();
         }
@@ -160,6 +181,7 @@ namespace Ship_Game
 
         void OnRefitOneClicked(UIButton b)
         {
+            if (!StarbaseRules.CanRefit(ShipToRefit, RefitTo)) { GameAudio.NegativeClick(); return; }
             Player.AI.AddGoalAndEvaluate(GetRefitGoal(ShipToRefit));
             GameAudio.EchoAffirmative();
             ExitScreen();
@@ -180,7 +202,8 @@ namespace Ship_Game
             var ships = Player.OwnedShips;
             foreach (Ship ship in ships)
             {
-                if (ship.Name == ShipToRefit.Name && (specificFleet == null || ship.Fleet == specificFleet))
+                if (ship.Name == ShipToRefit.Name && (specificFleet == null || ship.Fleet == specificFleet)
+                    && StarbaseRules.CanRefit(ship, RefitTo))
                     Player.AI.AddGoalAndEvaluate(GetRefitGoal(ship));
             }
 

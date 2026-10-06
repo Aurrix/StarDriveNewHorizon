@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <UID>AdvPulse Capacitors</UID>
+  <TechnologyType>ShipGeneral</TechnologyType>
+  <Cost>1800</Cost>
+  <LowPriorityCostMultiplier>1.25</LowPriorityCostMultiplier>  
+  <RootNode>0</RootNode>
+  <Name>Advanced Pulse Capacitors</Name>
+  <NameIndex>50963</NameIndex>
+  <DescriptionIndex>50964</DescriptionIndex>
+  <LongDescription>We believe that encountering Electromagnetic Pulse weaponry is distinctly possible. As a result it would be prudent to have defensive measures prepared for that eventuality. </LongDescription>
+  <LeadsTo>
+    <LeadsToTech>
+      <UID>DysonSwarm1</UID>
+    </LeadsToTech>    	  
+  </LeadsTo>
+
+  <ModulesUnlocked>
+    <UnlockedMod>
+      <ModuleUID>AdvPulse Capacitor Small</ModuleUID>
+    </UnlockedMod>	
+    <UnlockedMod>
+      <ModuleUID>AdvPulse Capacitor</ModuleUID>
+    </UnlockedMod>
+  </ModulesUnlocked>
+  <BuildingsUnlocked />
+  <BonusUnlocked />
+  <TroopsUnlocked />
+  <HullsUnlocked />
+</Technology>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <UID>Light Torpedo</UID>
+  <TechnologyType>ShipWeapons</TechnologyType>
+  <Cost>1000</Cost>
+  <RootNode>0</RootNode>
+  <Name>Light Torpedo</Name>
+  <NameIndex>50525</NameIndex>
+  <DescriptionIndex>690</DescriptionIndex>
+  <LongDescription>Light Torpedo</LongDescription>
+  <LeadsTo>
+    <LeadsToTech>
+      <UID>Conventional Torpedoes</UID>
+    </LeadsToTech>
+  </LeadsTo>
+  <ModulesUnlocked>
+    <UnlockedMod>
+      <ModuleUID>Light Torpedo</ModuleUID>
+    </UnlockedMod>
+	<UnlockedMod>
+		<ModuleUID>Fighter Torpedo</ModuleUID>
+	</UnlockedMod>	
+	<UnlockedMod>
+		<ModuleUID>Micro Torpedo1</ModuleUID>
+	</UnlockedMod>		
+  </ModulesUnlocked>
+  <BuildingsUnlocked />
+  <BonusUnlocked />
+  <TroopsUnlocked />
+  <HullsUnlocked />
+</Technology>

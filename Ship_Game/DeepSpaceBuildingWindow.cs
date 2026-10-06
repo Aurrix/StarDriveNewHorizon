@@ -184,15 +184,8 @@ namespace Ship_Game
             if (ShipToBuild == null)
                 return false;
 
-            bool claimsTerritory = false;
-            foreach (string uid in ShipToBuild.UniqueModuleUIDs)
-                if (uid == "StarbaseCommand") { claimsTerritory = true; break; }
-
-            // Territorial command stations may only be deployed where the player
-            // has already discovered the system. This keeps construction from
-            // becoming an unintentional map-reveal mechanism.
-            if (claimsTerritory && (targetSystem == null || !targetSystem.IsExploredBy(Player)))
-                return false;
+            if (!StarbaseRules.CanDeploy(Player, ShipToBuild, Screen.CursorWorldPosition2D,
+                targetPlanet, null, null, out _)) return false;
 
             if (targetSystem != null && (targetPlanet == null && Screen.CursorWorldPosition2D.InRadius(targetSystem.Position, MinimumBuildDistanceFromSun)
                                          || !targetSystem.InSafeDistanceFromRadiation(Screen.CursorWorldPosition2D)))
@@ -278,6 +271,12 @@ namespace Ship_Game
                     }
                 }
 
+                if (StarbaseRules.IsStarbase(ShipToBuild) && system.IsExploredBy(Player))
+                {
+                    Screen.DrawCircleProjected(system.Position, StarbaseRules.InnerOrbit(system), Color.Cyan.Alpha(.7f));
+                    Screen.DrawCircleProjected(system.Position, StarbaseRules.OuterOrbit(system), Color.Cyan.Alpha(.7f));
+                }
+
                 Screen.DrawCircleProjected(system.Position, system.SunDangerRadius.LowerBound(MinimumBuildDistanceFromSun),
                     new Color(255, 0, 0, 100).Premultiplied(), 2f, nodeTex, new Color(255, 0, 0, 50).Premultiplied());
             }
@@ -343,6 +342,17 @@ namespace Ship_Game
                     }
 
                     TargetSystem = null;
+                }
+
+                if (StarbaseRules.IsStarbase(ShipToBuild))
+                {
+                    Screen.DrawCircleProjected(cursorWorldPos, StarbaseRules.NoBuildRadius, Color.Orange.Alpha(.55f));
+                    StarbaseRules.CanDeploy(Player, ShipToBuild, cursorWorldPos, TargetPlanet, null, null, out string reason);
+                    batch.DrawString(Fonts.Arial12Bold, reason ?? "Starbase orbit - one per system",
+                        cursorPos + new Vector2(18, 52), reason == null ? Color.Cyan : Color.Orange);
+                    foreach (Ship station in Player.Universe.Ships)
+                        if (station.Active && !station.Dying && station.IsStarbase && station.IsVisibleToPlayer)
+                            Screen.DrawCircleProjected(station.Position, StarbaseRules.NoBuildRadius, Color.Orange.Alpha(.55f));
                 }
 
                 Color shipColor = OkToBuild(TargetPlanet, TargetSystem) ? new Color(0, 255, 0, 100).Premultiplied() : Color.Red.Alpha(100);

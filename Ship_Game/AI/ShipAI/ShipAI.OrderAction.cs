@@ -500,7 +500,8 @@ namespace Ship_Game.AI
             {
                 Ship[] friends = FriendliesNearby;
                 for (int i = 0; i < friends.Length; i++)
-                    friends[i].AI.OrderPirateFleeHome();
+                    if (!Owner.Universe.Underworld.IsBountyRaider(friends[i]))
+                        friends[i].AI.OrderPirateFleeHome();
             }
         }
 
@@ -630,6 +631,7 @@ namespace Ship_Game.AI
 
         public void OrderRefitTo(Planet refitPlanet, Goal refitGoal)
         {
+            if (Owner.PirateLeaseId != 0) return;
             OrderMoveAndRefit(refitPlanet, refitGoal);
         }
 

@@ -394,6 +394,7 @@ public class EmpireAssetsPanelTests : StarDriveTest
         }
         Assert.AreEqual(Enum.GetValues<EmpireAssetsPanel.SidebarAction>().Length, seen.Count);
         Assert.IsTrue(seen.Contains(EmpireAssetsPanel.SidebarAction.Help));
+        Assert.IsTrue(seen.Contains(EmpireAssetsPanel.SidebarAction.Pirates));
     }
 
     [TestMethod]
@@ -664,6 +665,11 @@ public class EmpireAssetsPanelTests : StarDriveTest
         MoveTo(19, 125, click: true);
         Panel.RectF = new RectF(0, 110, 350, 550);
         Color[] wider = Render();
+        string screenshot = Path.GetFullPath(Path.Combine(StarDriveTestContext.StarDriveAbsolutePath,
+            "../output/pirates-preview/PirateSidebar.png"));
+        Directory.CreateDirectory(Path.GetDirectoryName(screenshot));
+        using (var file = File.Create(screenshot)) target.SaveAsPng(file, target.Width, target.Height);
+        TestContext.AddResultFile(screenshot);
         for (int y = 60; y < 680; ++y)
         {
             for (int x = 0; x < 48; ++x)

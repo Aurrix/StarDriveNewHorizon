@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <UID>Advanced MRM Systems</UID>
+  <TechnologyType>ShipWeapons</TechnologyType>
+  <Cost>5000</Cost>
+  <RootNode>0</RootNode>
+  <Name>Advanced MRM Systems</Name>
+  <NameIndex>50078</NameIndex>
+  <DescriptionIndex>50079</DescriptionIndex>
+  <LongDescription>MRM mk3</LongDescription>
+<LeadsTo />
+  <ModulesUnlocked>
+    <UnlockedMod>
+      <ModuleUID>MRM mk3</ModuleUID>
+    </UnlockedMod>
+  </ModulesUnlocked>
+  <BuildingsUnlocked />
+  <BonusUnlocked />
+  <TroopsUnlocked />
+  <HullsUnlocked />
+</Technology>

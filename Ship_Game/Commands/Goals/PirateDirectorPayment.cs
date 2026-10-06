@@ -50,7 +50,6 @@ namespace Ship_Game.Commands.Goals
             if (Pirates.PaidBy(TargetEmpire))
             {
                 // Ah, so they paid us,  we can use this money to expand our business 
-                Pirates.TryLevelUp(TargetEmpire.Universe);
                 Pirates.ResetThreatLevelFor(TargetEmpire);
                 Pirates.Owner.SignTreatyWith(TargetEmpire, Gameplay.TreatyType.NonAggression);
             }
@@ -67,6 +66,8 @@ namespace Ship_Game.Commands.Goals
 
         bool RequestPayment()
         {
+            if (UState.Underworld.Locked(Owner, TargetEmpire)
+                || UState.Underworld.Protected(Owner, TargetEmpire)) return false;
             if (GlobalStats.RestrictAIPlayerInteraction && TargetEmpire.isPlayer)
                 return false;
 
@@ -79,7 +80,7 @@ namespace Ship_Game.Commands.Goals
 
             // If the player did not pay, don't ask for another payment, let them crawl to
             // us when they are ready to pay and increase out threat level to them
-            if (!Pirates.PaidBy(TargetEmpire) && TargetEmpire.isPlayer && Pirates.ThreatLevelFor(TargetEmpire) > -1)
+            if (Owner.IsAtWarWith(TargetEmpire) && TargetEmpire.isPlayer && Pirates.ThreatLevelFor(TargetEmpire) > -1)
             {
                 Pirates.IncreaseThreatLevelFor(TargetEmpire);
                 Pirates.ResetPaymentTimerFor(TargetEmpire);
@@ -119,14 +120,15 @@ namespace Ship_Game.Commands.Goals
                 if (e.PercentMoneyDemanded > 0)
                 {
                     error             = false;
-                    int moneyDemand   = Pirates.GetMoneyModifier(TargetEmpire, e.PercentMoneyDemanded);
-                    float chanceToPay = 1 - moneyDemand/TargetEmpire.Money.LowerBound(1);
-                    chanceToPay       = chanceToPay.LowerBound(0) * 100 / ((int)UState.P.Difficulty+1) * Owner.PersonalityModifiers.PiratePayChanceModifier;
+                    float moneyDemand = UState.Underworld.ProtectionPrice(Owner, TargetEmpire);
+                    float reserve = Math.Max(1000, TargetEmpire.AllSpending * 20);
+                    float available = Math.Max(0, TargetEmpire.Money - reserve);
+                    float danger = Math.Max(Owner.CurrentMilitaryStrength, Pirates.Level * 1000)
+                        / Math.Max(1, TargetEmpire.CurrentMilitaryStrength);
                         
-                    if (TargetEmpire.AI.CreditRating > 0.6f && Owner.Random.RollDice(chanceToPay))
+                    if (moneyDemand <= available * Math.Clamp(danger, .25f, 1f)
+                        && UState.Underworld.PurchaseProtection(Owner, TargetEmpire))
                     {
-                        TargetEmpire.AddMoney(-moneyDemand);
-                        TargetEmpire.AI.EndWarFromEvent(Pirates.Owner);
                         Log.Info(ConsoleColor.Green, $"Pirates: {Owner.Name} Payment Director " +
                                                      $"Got - {moneyDemand} credits from {TargetEmpire.Name}");
                     }

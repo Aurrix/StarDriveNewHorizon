@@ -69,7 +69,7 @@ namespace Ship_Game
             Description = Localizer.Token(GameText.UnlocksANewHullType) + " " +
                           (hullData != null ? Localizer.GetRole(hullData.Role, player) + $" ({hullData.HullSlots.Length} slots)"
                                             : "Hull: " + unlockedHull.Name);
-            if (hullData.IsShipyard)
+            if (hullData?.IsShipyard == true)
                 Description += $"\n{Localizer.Token(GameText.ShipyardHullNotEditible)}";
             Icon = hullData?.Icon ?? ResourceManager.InvalidTexture;
         }

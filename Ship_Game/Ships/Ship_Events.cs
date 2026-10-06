@@ -95,6 +95,7 @@ namespace Ship_Game.Ships
         // note that pSource can be null
         public virtual void OnShipDie(Projectile pSource)
         {
+            Universe.Underworld.RecordAssetLoss(this, Loyalty, pSource?.Loyalty);
             bool shouldCheckInvestigateInhibition = true;
             if (pSource?.Module != null)
                 UpdateKillAndDefenseTasks(pSource.Module, ref shouldCheckInvestigateInhibition);

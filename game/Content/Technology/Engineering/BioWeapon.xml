@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <UID>BioWeapon</UID>
+  <TechnologyType>ShipWeapons</TechnologyType>
+  <Cost>1800</Cost>
+  <RootNode>0</RootNode>
+  <Name>BioWeapon</Name>
+  <NameIndex>51084</NameIndex>
+  <DescriptionIndex>51085</DescriptionIndex>
+  <LongDescription>By studying alien plants, animals, and microganisms, we have learned many new genetic secrets.  By applying some of what we have learned to our own bodies, we are able to live much longer and healthier lives. </LongDescription>
+  <LeadsTo>
+    <LeadsToTech>
+      <UID>Xenocide</UID>
+    </LeadsToTech>			    
+  </LeadsTo>
+  <ModulesUnlocked>
+    <UnlockedMod>
+      <ModuleUID>DeathSporeBay</ModuleUID>
+    </UnlockedMod>
+  </ModulesUnlocked>
+  <BuildingsUnlocked>
+  </BuildingsUnlocked>
+  <BonusUnlocked>
+  </BonusUnlocked>
+  <TroopsUnlocked />
+  <HullsUnlocked />
+</Technology>

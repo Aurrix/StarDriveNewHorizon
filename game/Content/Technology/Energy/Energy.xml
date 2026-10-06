@@ -1,29 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/ XMLSchema"> 
-  <Version>2</Version>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <UID>Energy</UID>
   <TechnologyType>General</TechnologyType>
   <Cost>50</Cost>
-  <RootNode>7</RootNode>
+  <RootNode>4</RootNode>
+  <Name>Energy</Name>
   <NameIndex>558</NameIndex>
-  <DescriptionIndex>559</DescriptionIndex>
   <IconPath>icons_techroot_energy</IconPath>
+  <DescriptionIndex>559</DescriptionIndex>
+  <LongDescription>The technology branch explores power creation and energy fields, with applications both industrial and military. </LongDescription>
   <LeadsTo>
     <LeadsToTech>
-      <UID>LaserBeamTurrets</UID>
+      <UID>Energy Weapons</UID>
     </LeadsToTech>
     <LeadsToTech>
-      <UID>Coherency</UID>
-    </LeadsToTech>
+      <UID>Ionic Weaponry</UID>
+    </LeadsToTech>		
     <LeadsToTech>
-      <UID>FocusedLaserBeam</UID>
-    </LeadsToTech>
-    <LeadsToTech>
-      <UID>Energy Cannons</UID>
-    </LeadsToTech>
-    <LeadsToTech>
-      <UID>CombatReadiness</UID>
-    </LeadsToTech>
+      <UID>PlasmaThrowers</UID>
+    </LeadsToTech>		
   </LeadsTo>
   <ModulesUnlocked>
     <UnlockedMod>
@@ -37,12 +32,6 @@
     </UnlockedMod>
     <UnlockedMod>
       <ModuleUID>MediumFuelCell</ModuleUID>
-    </UnlockedMod>
-      <UnlockedMod>
-      <ModuleUID>Beam1x2</ModuleUID>
-    </UnlockedMod>
-    <UnlockedMod>
-      <ModuleUID>BlueLaser1x2</ModuleUID>
     </UnlockedMod>
   </ModulesUnlocked>
   <BuildingsUnlocked />

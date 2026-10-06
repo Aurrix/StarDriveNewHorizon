@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <UID>XenoMiningII</UID>
+  <TechnologyType>Industry</TechnologyType>
+  <Cost>3000</Cost>
+  <RootNode>0</RootNode>
+  <Name>XenoMiningII</Name>
+  <NameIndex>50450</NameIndex>
+  <DescriptionIndex>50451</DescriptionIndex>
+  <LongDescription>Industry World Development I</LongDescription>
+  <LeadsTo>
+    <LeadsToTech>
+      <UID>Deep Core Mining</UID>
+    </LeadsToTech>  
+  </LeadsTo>
+  <ModulesUnlocked />
+  <BuildingsUnlocked>
+    <UnlockedBuilding>
+      <Name>Upgraded Xeno mines</Name>
+    </UnlockedBuilding>
+  </BuildingsUnlocked>
+  <BonusUnlocked />
+  <TroopsUnlocked />
+  <HullsUnlocked />
+</Technology>

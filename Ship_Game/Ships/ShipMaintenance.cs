@@ -13,7 +13,7 @@ namespace Ship_Game.Ships
             return empire.WeAreRemnants
                 || empire?.data == null
                 || ship.Name == empire.data.PrototypeShip
-                || !ship.CanBeRefitted;
+                || ship.PirateLeaseId == 0 && !ship.CanBeRefitted;
         }
 
         static bool IsFreeUpkeepShip(Empire empire, IShipDesign ship)

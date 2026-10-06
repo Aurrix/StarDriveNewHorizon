@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<UID>Assault Cannons</UID>
+	<TechnologyType>ShipWeapons</TechnologyType>
+	<Cost>5400</Cost>
+	<RootNode>0</RootNode>
+	<Name>Assault Cannon Type74</Name>
+	<NameIndex>50817</NameIndex>
+	<DescriptionIndex>50818</DescriptionIndex>
+	<LongDescription>Artillery piece weak against shields .Explosion radius: Medium</LongDescription>
+	<LeadsTo>
+	<LeadsToTech>
+			<UID>Assault_Cannons_II</UID>
+		</LeadsToTech>
+	</LeadsTo>
+	<ModulesUnlocked>
+		<UnlockedMod>
+			<ModuleUID>Assault Cannon Type74</ModuleUID>
+		</UnlockedMod>
+        <UnlockedMod>
+			<ModuleUID>Assault Cannon Type10</ModuleUID>
+		</UnlockedMod>
+	</ModulesUnlocked>
+	<BuildingsUnlocked/>
+	<BonusUnlocked/>
+	<TroopsUnlocked/>
+	<HullsUnlocked/>
+</Technology>

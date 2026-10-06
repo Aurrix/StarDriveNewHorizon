@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology>
+  <UID>StarbaseInfrastructure</UID><RootNode>0</RootNode><TechnologyType>General</TechnologyType>
+  <Cost>900</Cost><NameIndex>62000</NameIndex><DescriptionIndex>62001</DescriptionIndex>
+  <IconPath>SmallStations</IconPath>
+  <LeadsTo><LeadsToTech><UID>DeepSpaceObservation</UID></LeadsToTech><LeadsToTech><UID>StationInterdiction</UID></LeadsToTech></LeadsTo>
+  <ModulesUnlocked><UnlockedMod><ModuleUID>Starbase Command</ModuleUID></UnlockedMod></ModulesUnlocked>
+</Technology>

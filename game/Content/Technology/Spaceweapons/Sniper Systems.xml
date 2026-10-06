@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <UID>Sniper Systems</UID>
+  <TechnologyType>ShipWeapons</TechnologyType>
+  <Cost>750</Cost>
+  <RootNode>0</RootNode>
+  <Name>Sniper Systems</Name>
+  <NameIndex>50142</NameIndex>
+  <DescriptionIndex>50143</DescriptionIndex>
+  <LongDescription>Sniper Systems</LongDescription>
+  <LeadsTo>
+    <LeadsToTech>
+      <UID>Sniper Systems AP</UID>
+    </LeadsToTech>
+  </LeadsTo>
+  <ModulesUnlocked>
+    <UnlockedMod>
+      <ModuleUID>Sniper1x6</ModuleUID>
+    </UnlockedMod>
+    <UnlockedMod>
+      <ModuleUID>Needler1x2</ModuleUID>
+    </UnlockedMod>	
+  </ModulesUnlocked>
+  <BuildingsUnlocked />
+  <BonusUnlocked />
+  <TroopsUnlocked />
+  <HullsUnlocked />
+</Technology>

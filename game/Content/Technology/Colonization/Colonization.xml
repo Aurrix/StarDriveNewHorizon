@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/ XMLSchema"> 
-  <Version>2</Version>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <UID>Colonization</UID>
-  <TechnologyType>General</TechnologyType>
+  <TechnologyType>Colonization</TechnologyType>
   <Cost>50</Cost>
-  <RootNode>1</RootNode>
+  <RootNode>2</RootNode>
+  <Name>Colonization</Name>
   <NameIndex>530</NameIndex>
-  <DescriptionIndex>531</DescriptionIndex>
   <IconPath>icons_techroot_colonization</IconPath>
-  <LeadsTo>
-    <LeadsToTech>
-      <UID>SolarArraysV1</UID>
-    </LeadsToTech>
-    <LeadsToTech>
-      <UID>SoilEnrichment</UID>
-    </LeadsToTech>
-    <LeadsToTech>
-      <UID>IndustrialFoundations</UID>
-    </LeadsToTech>
+  <DescriptionIndex>531</DescriptionIndex>
+  <LongDescription>Boldly going to strange new worlds is just the first step. What to do when we get there is quite a bit more important. This technology branch explores various scientific, industrial, and military enhancements we can make to our colonies. </LongDescription>
+    <LeadsTo>
+		<LeadsToTech>
+		  <UID>Aeroponics</UID>
+		</LeadsToTech>	
+		<LeadsToTech>
+		  <UID>IndustrialFoundations</UID>
+		</LeadsToTech>
+		<LeadsToTech>
+		  <UID>ScientificFoundations</UID>
+		</LeadsToTech>		
+		<LeadsToTech>
+		  <UID>IS Government</UID>
+		</LeadsToTech>		
   </LeadsTo>
   <ModulesUnlocked>
     <UnlockedMod>
@@ -49,7 +53,7 @@
       <Name>Vulfar Grunt</Name>
       <Type>Vulfen</Type>
     </UnlockedTroop>
-    <UnlockedTroop>
+	<UnlockedTroop>
       <Name>Kulrathi Swordsbear</Name>
       <Type>Kulrathi</Type>
     </UnlockedTroop>
@@ -57,19 +61,14 @@
       <Name>Pollop Skroderiders</Name>
       <Type>Pollops</Type>
     </UnlockedTroop>
+    <UnlockedTroop>
+      <Name>Dauntless Trooper</Name>
+      <Type>Dauntless</Type>
+    </UnlockedTroop>
   </TroopsUnlocked>
   <BuildingsUnlocked>
     <UnlockedBuilding>
-      <Name>Tax Office</Name>
-    </UnlockedBuilding>
-        <UnlockedBuilding>
-      <Name>Science Facility</Name>
-    </UnlockedBuilding>
-        <UnlockedBuilding>
-      <Name>Ore refinery</Name>
-    </UnlockedBuilding>
-        <UnlockedBuilding>
-      <Name>Greenhouse</Name>
+      <Name>Space Port</Name>
     </UnlockedBuilding>
     <UnlockedBuilding>
       <Name>Outpost</Name>

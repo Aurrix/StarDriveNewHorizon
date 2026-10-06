@@ -11,6 +11,7 @@ namespace Ship_Game.Commands.Goals  // Created by Fat Bastard
     {
         [StarData] public sealed override Ship OldShip { get; set; }
         [StarData] public sealed override Planet PlanetBuildingAt { get; set; }
+        protected override GoalStep? PreEvaluate() => OldShip?.PirateLeaseId > 0 ? GoalStep.GoalFailed : null;
 
         [StarDataConstructor]
         public ScrapShip(Empire owner) : base(GoalType.ScrapShip, owner)

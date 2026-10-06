@@ -34,13 +34,24 @@ namespace Ship_Game.Commands.Goals  // Created by Fat Bastard
             Planet targetPlanet = oldShip.GetTether();
             Rush= rush;
             if (targetPlanet != null)
-                Initialize(toBuild.Name, Vector2.Zero, targetPlanet, Vector2.Zero);
+                Initialize(toBuild.Name, Vector2.Zero, targetPlanet, oldShip.Position - targetPlanet.Position);
             else
                 Initialize(toBuild.Name, OldShip.Position, OldShip.System);
         }
 
+        public override void OnRemoved()
+        {
+            PlanetBuildingAt?.Construction.Cancel(this);
+            if (OldShip is { Active: true } && OldShip.Loyalty == Owner && OldShip.DoingRefit)
+                OldShip.AI.ClearOrders();
+            if (FinishedShip is { Active: true } && FinishedShip.Loyalty == Owner)
+                FinishedShip.AI.OrderScrapShip();
+        }
+
         GoalStep FindOrbitalAndPlanetToRefit()
         {
+            if (!StarbaseRules.CanRefit(OldShip, ToBuild)) return GoalStep.GoalFailed;
+
             if (OldShip.AI.State == AIState.Refit)
                 RemoveOldRefitGoal();
 
@@ -117,7 +128,7 @@ namespace Ship_Game.Commands.Goals  // Created by Fat Bastard
         {
             get
             {
-                if (OldShip == null)
+                if (OldShip == null || !OldShip.Active || OldShip.Dying || OldShip.Loyalty != Owner)
                     return false; // Ship was removed from game, probably destroyed
 
                 return OldShip.DoingRefit;
@@ -127,7 +138,7 @@ namespace Ship_Game.Commands.Goals  // Created by Fat Bastard
         void RemoveOldRefitGoal()
         {
             if (OldShip.AI.FindGoal(ShipAI.Plan.Refit, out _))
-                OldShip.Loyalty.AI.FindAndRemoveGoal(GoalType.Refit, g => g.OldShip == OldShip);
+                OldShip.Loyalty.AI.FindAndRemoveGoal(GoalType.RefitOrbital, g => g.OldShip == OldShip);
         }
 
         bool ConstructionShipOk => FinishedShip?.Active == true;

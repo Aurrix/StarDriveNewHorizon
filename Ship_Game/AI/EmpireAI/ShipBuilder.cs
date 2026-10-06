@@ -227,8 +227,8 @@ namespace Ship_Game.AI
                 bestResearchStation = researchStations.FindMax(s =>
                     s.BaseStrength / s.SurfaceArea
                     + (HasModule(s, "ObservationPost") ? 0.15f : 0f)
-                    + (HasModule(s, "StarbaseCommand") ? 0.10f : 0f)
-                    + (HasModule(s, "StationWarpInhibitor") ? 0.05f : 0f));
+                    + (StarbaseRules.IsStarbase(s) ? 0.10f : 0f)
+                    + (StationCapabilities.ForDesign(s).Inhibition > 0 ? 0.05f : 0f));
             }
 
             if (empire.Universe?.Debug == true)
@@ -273,8 +273,8 @@ namespace Ship_Game.AI
 
                 bestMiningStation = miningStations.FindMax(s =>
                     s.BaseCargoSpace / s.BaseRefiningPerTurn
-                    + (HasModule(s, "StarbaseCommand") ? 0.10f : 0f)
-                    + (HasModule(s, "StationWarpInhibitor") ? 0.05f : 0f));
+                    + (StarbaseRules.IsStarbase(s) ? 0.10f : 0f)
+                    + (StationCapabilities.ForDesign(s).Inhibition > 0 ? 0.05f : 0f));
             }
 
             if (empire.Universe?.Debug == true)

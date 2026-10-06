@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <UID>Advanced SRM Systems</UID>
+  <TechnologyType>ShipWeapons</TechnologyType>
+  <Cost>5000</Cost>
+  <RootNode>0</RootNode>
+  <Name>Advanced SRM Systems</Name>
+  <NameIndex>51281</NameIndex>
+  <DescriptionIndex>51282</DescriptionIndex>
+  <LongDescription>Hell Storm</LongDescription>
+  <LeadsTo>
+  </LeadsTo>
+  <ModulesUnlocked>
+    <UnlockedMod>
+      <ModuleUID>HellStorm</ModuleUID>
+    </UnlockedMod>
+    <UnlockedMod>
+      <ModuleUID>Nemesis_Rocket_Pod</ModuleUID>
+    </UnlockedMod>
+  </ModulesUnlocked>
+  <BuildingsUnlocked />
+
+  <TroopsUnlocked />
+  <HullsUnlocked />
+</Technology>

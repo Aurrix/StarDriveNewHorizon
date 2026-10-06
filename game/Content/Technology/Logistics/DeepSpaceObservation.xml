@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Technology>
+  <UID>DeepSpaceObservation</UID><RootNode>0</RootNode><TechnologyType>General</TechnologyType>
+  <Cost>1200</Cost><NameIndex>62002</NameIndex><DescriptionIndex>62003</DescriptionIndex>
+  <IconPath>ScientificFoundations</IconPath>
+  <LeadsTo></LeadsTo>
+  <ModulesUnlocked><UnlockedMod><ModuleUID>ObservationPost</ModuleUID></UnlockedMod></ModulesUnlocked>
+</Technology>

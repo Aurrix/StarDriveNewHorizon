@@ -313,13 +313,47 @@ internal sealed class BorderSavePreparation
         bool reuse = PreviousOverview?.Version == SavedBorderOverview.CurrentVersion && PreviousOverview.Radius == Radius
             && PreviousOverview.SceneKey != null && key.AsSpan().SequenceEqual(PreviousOverview.SceneKey);
         var keys = BorderVisualRenderer.PresentationKeys(Scene,Radius);
-        var tiles = reuse ? PreviousOverview.Tiles : new byte[keys.Count][];
-        var scratch = new BorderVisualTile.Scratch();
-        if (!reuse)
-            for (int i = 0; i < tiles.Length; ++i) tiles[i] = new BorderVisualTile(Scene,keys[i],scratch).Save();
-        Log.Info($"Border save prepared in {timer.ElapsedMilliseconds}ms: {tiles.Length} tiles");
+        var tiles = reuse ? PreviousOverview.Tiles : BuildTiles(Scene, keys, PreviousOverview);
+        Log.Info($"Border save prepared in {timer.ElapsedMilliseconds}ms: {tiles.Length} tiles, whole-cache reuse={reuse}");
         return new() { Version = SavedBorderOverview.CurrentVersion, Radius = Radius, SceneKey = key,
-            Tiles = tiles };
+            Tiles = tiles, RuntimeScene = Scene };
+    }
+
+    internal static int TileWorkers => Math.Clamp(Environment.ProcessorCount - 1, 1, 4);
+
+    internal static byte[][] BuildTiles(BorderScene scene, List<BorderVisualTile.Key> keys,
+                                        SavedBorderOverview previous = null)
+    {
+        var timer = System.Diagnostics.Stopwatch.StartNew();
+        var result = new byte[keys.Count][];
+        var old = new Dictionary<BorderVisualTile.Key, byte[]>();
+        if (previous?.Version == SavedBorderOverview.CurrentVersion && previous.RuntimeScene != null)
+        {
+            var oldKeys = BorderVisualRenderer.PresentationKeys(previous.RuntimeScene, previous.Radius);
+            if (previous.Tiles?.Length == oldKeys.Count)
+                for (int i = 0; i < oldKeys.Count; ++i) old[oldKeys[i]] = previous.Tiles[i];
+        }
+        int reused = 0;
+        // Each worker owns scratch buffers; output positions never depend on scheduling.
+        System.Threading.Tasks.Parallel.For(0, keys.Count,
+            new ParallelOptions { MaxDegreeOfParallelism = TileWorkers },
+            () => new BorderVisualTile.Scratch(), (i, _, scratch) =>
+            {
+                var key = keys[i];
+                RectF b = key.Bounds;
+                float pad = key.Cell * BorderVisualTile.Gutter;
+                b = new(b.X-pad, b.Y-pad, b.W+2*pad, b.H+2*pad);
+                if (old.TryGetValue(key, out byte[] bytes) && bytes != null
+                    && scene.CanReuseSavedTile(previous.RuntimeScene, b))
+                {
+                    result[i] = bytes;
+                    Interlocked.Increment(ref reused);
+                }
+                else result[i] = new BorderVisualTile(scene, key, scratch).Save();
+                return scratch;
+            }, _ => { });
+        Log.Info($"Border save tiles: {timer.ElapsedMilliseconds}ms, {reused} reused, {keys.Count-reused} built, {TileWorkers} workers");
+        return result;
     }
 
     internal void Release()
@@ -462,6 +496,42 @@ internal sealed class BorderScene
         for (int k = 0; k < a.Length; ++k)
             if (a[k].Position != b[k].Position || a[k].Radius != b[k].Radius
                 || a[k].Phase != b[k].Phase || a[k].Growth != b[k].Growth) return false;
+        return true;
+    }
+
+    // Persistence cannot use the display's last-seen/fog-of-war reuse policy.
+    internal bool CanReuseSavedTile(BorderScene previous, RectF bounds)
+    {
+        if (RevealAll != previous.RevealAll || Empires.Length != previous.Empires.Length) return false;
+        bool Touches(Entry e)
+        {
+            if (e.Snapshot == null) return false;
+            RectF b = e.Snapshot.Field.Bounds;
+            return b.Right >= bounds.Left && b.Left <= bounds.Right
+                && b.Bottom >= bounds.Top && b.Top <= bounds.Bottom;
+        }
+        static byte[] Fields(BorderSnapshot snapshot)
+        {
+            using var stream = new MemoryStream();
+            using var writer = new BinaryWriter(stream);
+            snapshot.Field.WriteCacheKey(writer);
+            snapshot.KnownField.WriteCacheKey(writer);
+            return stream.ToArray();
+        }
+        for (int i = 0; i < Empires.Length; ++i)
+        {
+            Entry a = Empires[i], b = previous.Empires[i];
+            if (a.Id != b.Id) return false;
+            if (Touches(a) || Touches(b))
+            {
+                if (a.Active != b.Active || a.Known != b.Known || a.Color != b.Color) return false;
+                if (a.Snapshot != b.Snapshot && (a.Snapshot == null || b.Snapshot == null
+                    || !Fields(a.Snapshot).AsSpan().SequenceEqual(Fields(b.Snapshot)))) return false;
+            }
+            for (int j = 0; j < Empires.Length; ++j)
+                if (!SameOverlap(previous, i, j) && (Touches(a) || Touches(b)
+                    || Touches(Empires[j]) || Touches(previous.Empires[j]))) return false;
+        }
         return true;
     }
 

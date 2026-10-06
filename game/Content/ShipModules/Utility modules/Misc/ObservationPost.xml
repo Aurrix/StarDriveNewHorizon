@@ -2,6 +2,16 @@
 <ShipModule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <UID>ObservationPost</UID>
   <Version>2</Version>
+  <NameIndex>62008</NameIndex><DescriptionIndex>62009</DescriptionIndex>
+  <DroneModule>false</DroneModule>
+  <FighterModule>false</FighterModule>
+  <CorvetteModule>false</CorvetteModule>
+  <FrigateModule>false</FrigateModule>
+  <DestroyerModule>false</DestroyerModule>
+  <CruiserModule>false</CruiserModule>
+  <BattleshipModule>false</BattleshipModule>
+  <CapitalModule>false</CapitalModule>
+  <FreighterModule>false</FreighterModule>
   <Name>Observation Post</Name>
   <ModuleType>Sensors</ModuleType>
   <XSize>2</XSize><YSize>2</YSize>

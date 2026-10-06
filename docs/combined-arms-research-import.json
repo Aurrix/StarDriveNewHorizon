@@ -1,0 +1,1526 @@
+{
+  "technology_count": 336,
+  "old_technology_count": 188,
+  "roots": [
+    {
+      "uid": "SpaceWeapons",
+      "order": 1,
+      "seeds": [
+        "Magnetic Artillery",
+        "Shotguns",
+        "Point Defense"
+      ]
+    },
+    {
+      "uid": "Colonization",
+      "order": 2,
+      "seeds": [
+        "Aeroponics",
+        "IndustrialFoundations",
+        "ScientificFoundations",
+        "IS Government"
+      ]
+    },
+    {
+      "uid": "Defense",
+      "order": 3,
+      "seeds": [
+        "ArmorTheory",
+        "Plasteel",
+        "ElectronicArmors",
+        "Shields"
+      ]
+    },
+    {
+      "uid": "Energy",
+      "order": 4,
+      "seeds": [
+        "Energy Weapons",
+        "Ionic Weaponry",
+        "PlasmaThrowers"
+      ]
+    },
+    {
+      "uid": "MissileWeapons",
+      "order": 5,
+      "seeds": [
+        "BasicMissileTheory",
+        "Missile Defense"
+      ]
+    },
+    {
+      "uid": "Logistics",
+      "order": 6,
+      "seeds": [
+        "SubSpaceProjectors",
+        "Fleet Supply",
+        "SolarArraysV1"
+      ]
+    },
+    {
+      "uid": "Physics",
+      "order": 7,
+      "seeds": [
+        "Fusion Reactor",
+        "WirelessPower",
+        "SubspaceTheory"
+      ]
+    },
+    {
+      "uid": "Engineering",
+      "order": 8,
+      "seeds": [
+        "AdvancedEducation"
+      ]
+    },
+    {
+      "uid": "StarshipConstruction",
+      "order": 10,
+      "seeds": [
+        "Fighter Hulls I",
+        "CorvetteHulls"
+      ]
+    },
+    {
+      "uid": "Upgrades",
+      "order": 11,
+      "seeds": [
+        "Velocity Stimulance Mk1",
+        "Advanced Materials",
+        "ShieldsV1",
+        "Nanoweave Metallurgy",
+        "Reactive Armor",
+        "SmartMissiles",
+        "FuelCell1",
+        "Ordnance Payload I"
+      ]
+    },
+    {
+      "uid": "Secret",
+      "order": 13,
+      "seeds": [
+        "Remnant Tech",
+        "Remnant Studies",
+        "Ancient Ion Technology",
+        "Owlwok Freedom",
+        "Experimental Phasors",
+        "S_cannon",
+        "RAD",
+        "ScrappyBeam2x4",
+        "Energizer3x3",
+        "RemnantNuker",
+        "Magnetrom",
+        "TritaniumMissiles",
+        "Enforcer",
+        "Cyclone",
+        "AtomizingBattery",
+        "Black matter weaponry",
+        "StorageShield",
+        "AncientArmor",
+        "Remnant Assembly",
+        "Remnant Metallurgy",
+        "Slip Streams"
+      ]
+    }
+  ],
+  "removed_base_uids": [
+    "AdvAmplifier",
+    "Advanced Nanoweave Metallurgy",
+    "AdvancedCells",
+    "AdvancedKineticTurrets",
+    "AdvancedWarp",
+    "AdvancedXenoMine",
+    "Amplifier",
+    "Ancient Repulsor",
+    "Ancient Shield Technology",
+    "AntiFighterSystems",
+    "Armor Phasing",
+    "ArmoredShield",
+    "CanopyShields",
+    "CapitalEngines",
+    "CeramicArmor",
+    "Coherency",
+    "CompositeArmor",
+    "ConventionalTorpedo",
+    "CoreExtractor",
+    "CorvetteSquadron",
+    "Corvettes",
+    "CruiserEngines",
+    "CrystalArmor",
+    "Customs Station",
+    "Disintegrator Array",
+    "Dispersion",
+    "DualMissileTurret",
+    "Durability",
+    "DysonSwarmOverclock",
+    "ECM",
+    "Energization",
+    "ExtremeFusionReactor",
+    "FigateEngines",
+    "Fighter Shields",
+    "FocusedFusionBeam",
+    "FocusedLaserBeam",
+    "FocusedPhasorBeam",
+    "FrigateSquadron",
+    "FusionReactor",
+    "Galactic Stock Exchange",
+    "HDZone",
+    "HVTurrets",
+    "HeavyPD",
+    "HeavyShields",
+    "Integrated Systems",
+    "KineticWeapons",
+    "LargeFabricator",
+    "LargeOrdStorage",
+    "LargePlanetStockpile",
+    "LaserBeamTurrets",
+    "LightTorpedo",
+    "MagneticArtillery",
+    "MagneticTurrets",
+    "MassiveDisruptors",
+    "MassivePhasors",
+    "MassivePhotonCannons",
+    "MassivePolaronCannons",
+    "MassiveSubspaceArtillery",
+    "MegaCity",
+    "MicroTorpedo",
+    "MissileArmor",
+    "MissileTheory",
+    "MissileTurret",
+    "NanoStorage",
+    "Nanoprisms",
+    "OrdnanceDevelopment",
+    "PlanetStockpile",
+    "Planetary Stock Exchange",
+    "PlanetaryDefenseI",
+    "PlanetaryDefenseII",
+    "PlanetaryDefenseIII",
+    "Plasma Ordnance",
+    "QuadMissileTurret",
+    "RapidFirePD",
+    "Remnant Shielding",
+    "RemnantTechs",
+    "RemnantTroop",
+    "SlipstreamProjection",
+    "Spaceport",
+    "StarshipDefences",
+    "SubspaceArtillery",
+    "SustainedWarefare",
+    "WarheadDevelopment",
+    "WarpTheory",
+    "XenoMining"
+  ],
+  "missing_links": [],
+  "missing_text_ids": [],
+  "text_entries_imported": 507,
+  "icons_imported": 271,
+  "missing_icon_files": [],
+  "missing_unlock_assets": {
+    "ShipModules": {
+      "270FlakTurret": [
+        "StarshipConstruction"
+      ],
+      "2x1Twinengines": [
+        "CorvetteHulls"
+      ],
+      "AMProjectorMod": [
+        "AntiMatterWeaponry"
+      ],
+      "AMTorpedoTube": [
+        "AntiMatterWeaponry"
+      ],
+      "AMX50 Revolver": [
+        "AMX50 Revolver"
+      ],
+      "ATCSM": [
+        "ATCSM"
+      ],
+      "Active Armor Large": [
+        "Active Armor"
+      ],
+      "Active Armor Med": [
+        "Active Armor"
+      ],
+      "Active Armor Small": [
+        "Active Armor"
+      ],
+      "AdvArmored Solar collector Large": [
+        "AdvArmored Solar collector"
+      ],
+      "AdvArmored Solar collector Med": [
+        "AdvArmored Solar collector"
+      ],
+      "AdvArmored Solar collector Small": [
+        "AdvArmored Solar collector"
+      ],
+      "AdvPulse Capacitor": [
+        "AdvPulse Capacitors"
+      ],
+      "AdvPulse Capacitor Small": [
+        "AdvPulse Capacitors"
+      ],
+      "Advance ColonyModule": [
+        "Shipyards"
+      ],
+      "Advanced Bionic Armor Large": [
+        "Advanced Bionic Armor"
+      ],
+      "Advanced Bionic Armor Med": [
+        "Advanced Bionic Armor"
+      ],
+      "Advanced Bionic Armor Small": [
+        "Advanced Bionic Armor"
+      ],
+      "Advanced Fighter Generator": [
+        "Fusion Reactor"
+      ],
+      "Advanced FlakAA Cannon": [
+        "Defense Guns_II"
+      ],
+      "AdvancedDualFlak": [
+        "Magnetic Artillery"
+      ],
+      "AdvancedFlak": [
+        "Magnetic Artillery"
+      ],
+      "Ammunition Dump": [
+        "Ammunition Dump"
+      ],
+      "AmplifierMk1": [
+        "Amplifiers_I"
+      ],
+      "AmplifierMk2": [
+        "Amplifiers_II"
+      ],
+      "AmplifierMk3": [
+        "Amplifiers_III"
+      ],
+      "AntiMReactorSmall": [
+        "Extreme AntiMatter"
+      ],
+      "AntiMatterBomb1x1": [
+        "Extreme AntiMatter"
+      ],
+      "AntiMatterBomb_3x3": [
+        "Extreme AntiMatter"
+      ],
+      "AntimatterReactor2x2": [
+        "AntiMatter"
+      ],
+      "AntimatterReactor4x4": [
+        "Massive Anti-Matter"
+      ],
+      "AntimatterThruster": [
+        "AntiMatter"
+      ],
+      "Armored Solarpanel Large": [
+        "ElectronicArmors"
+      ],
+      "Armored Solarpanel Med": [
+        "ElectronicArmors"
+      ],
+      "Armored Solarpanel Small": [
+        "ElectronicArmors"
+      ],
+      "Assault Cannon Type10": [
+        "Assault Cannons"
+      ],
+      "Assault Cannon Type20": [
+        "Assault_Cannons_II"
+      ],
+      "Assault Cannon Type74": [
+        "Assault Cannons"
+      ],
+      "Assault Cannon Type81": [
+        "Assault_Cannons_II"
+      ],
+      "AssultRaiders": [
+        "AssultRaiders"
+      ],
+      "AtomizingBattery": [
+        "AtomizingBattery"
+      ],
+      "AutoCannon": [
+        "Phased Defense I"
+      ],
+      "AutoCannonAP": [
+        "Phased Defense II"
+      ],
+      "AutoCannonHEAP": [
+        "Phased Defense III"
+      ],
+      "AutoTurret Type54": [
+        "AutoTurrets_I"
+      ],
+      "AutoTurret Type62": [
+        "AutoTurrets_II"
+      ],
+      "AutoTurret Type68": [
+        "AutoTurrets_III"
+      ],
+      "AutoTurret Type80": [
+        "Multi-Barrel Drivers"
+      ],
+      "BattleShield2x2": [
+        "Battle_Shielding_I"
+      ],
+      "BattleShield3x3": [
+        "Battle_Shielding_II"
+      ],
+      "BattleShield4x4": [
+        "Battle_Shielding_III"
+      ],
+      "Battleship Turn Thrust": [
+        "Velocity Stimulance Mk4"
+      ],
+      "BeamPD": [
+        "BeamPD1"
+      ],
+      "BeamPDSuite": [
+        "BeamPD2"
+      ],
+      "BigCannon_Heavy": [
+        "Subspace Artillery_II"
+      ],
+      "BioTerminator_3x3": [
+        "Xenocide"
+      ],
+      "Bionic Armor Large": [
+        "Bionic Armor"
+      ],
+      "Bionic Armor Med": [
+        "Bionic Armor"
+      ],
+      "Bionic Armor Small": [
+        "Bionic Armor"
+      ],
+      "BlueLaser1x1": [
+        "Energy Cannons"
+      ],
+      "BlueLaser1x3": [
+        "Polaron Cannons"
+      ],
+      "BlueLaser1x4": [
+        "Photon Cannons"
+      ],
+      "BosonTransmiter2": [
+        "WirelessPower2"
+      ],
+      "BosonTransmiter3": [
+        "WirelessPower3"
+      ],
+      "BroadSide_SRM_2x3": [
+        "OrbitalMissile1"
+      ],
+      "BroadSide_SRM_3x4": [
+        "OrbitalMissile2"
+      ],
+      "BroadSide_SRM_4x5": [
+        "OrbitalMissile3"
+      ],
+      "Cockpit_Side": [
+        "Fighter Hulls I"
+      ],
+      "Cold Fusion Reactor": [
+        "Cold Fusion"
+      ],
+      "ColonyModuleFood": [
+        "XenoFarming"
+      ],
+      "ColonyModuleMilOut": [
+        "Planetary Defense"
+      ],
+      "ColonyModuleMissile": [
+        "Advanced Missile Defense"
+      ],
+      "ColonyModuleProduction": [
+        "GeoSurvey"
+      ],
+      "ColonyModuleResearch": [
+        "SystemNetworks"
+      ],
+      "CommandModule_I": [
+        "Drones"
+      ],
+      "CommandModule_II": [
+        "PowerMgmt1"
+      ],
+      "CommandModule_III": [
+        "Colony Shielding"
+      ],
+      "Cruiser Turn Thrust": [
+        "Velocity Stimulance Mk3"
+      ],
+      "Cyclone": [
+        "Cyclone"
+      ],
+      "Dark Energy Reactor": [
+        "Dark Energy"
+      ],
+      "DarkMatterReactor_2x2": [
+        "Dark Matter"
+      ],
+      "Deflector2x2": [
+        "Deflectors_I"
+      ],
+      "Deflector3x3": [
+        "Deflectors_II"
+      ],
+      "Deflector4x4": [
+        "Deflectors_III"
+      ],
+      "Defshield": [
+        "Shields"
+      ],
+      "DepletedUraniumArmor Large": [
+        "DepletedUranium Armor"
+      ],
+      "DepletedUraniumArmor Med": [
+        "DepletedUranium Armor"
+      ],
+      "DepletedUraniumArmor small": [
+        "DepletedUranium Armor"
+      ],
+      "DisintegratorArray_Assault": [
+        "Disintegrator Array_II"
+      ],
+      "DisintegratorArray_Large": [
+        "Disintegrator Array_II"
+      ],
+      "DisintegratorArray_Small": [
+        "Disintegrator Array_I"
+      ],
+      "Dissolver_Torpedo": [
+        "EMPTorpedoes"
+      ],
+      "DroneBay": [
+        "Drones"
+      ],
+      "DroneBeam1x1": [
+        "Fusion Beam"
+      ],
+      "DroneCannon1x1": [
+        "SpaceWeapons"
+      ],
+      "DroneCannon1x1AP": [
+        "Phased Defense II"
+      ],
+      "DroneCannon1x1Fast": [
+        "Phased Defense I"
+      ],
+      "DroneCannon1x1HE": [
+        "Phased Defense III"
+      ],
+      "DroneClusterBomb1x1": [
+        "Fusion Reactor"
+      ],
+      "DroneEngine_I": [
+        "Drones"
+      ],
+      "DroneEngine_II": [
+        "Velocity Stimulance Mk2"
+      ],
+      "DroneEngine_III": [
+        "Velocity Stimulance Mk3"
+      ],
+      "DroneIonBeam1x1": [
+        "Ionic Weaponry"
+      ],
+      "DroneRocketLauncher": [
+        "BasicMissileTheory"
+      ],
+      "DroneShieldBomb1x1": [
+        "Dark Energy"
+      ],
+      "DroneShotgunDragon": [
+        "Shotgun Plasma Rounds"
+      ],
+      "DroneShotgunHE": [
+        "Shotgun Explosive Rounds"
+      ],
+      "DroneShotgunHVEmp": [
+        "Shotgun Emp Rounds"
+      ],
+      "DroneShotgunRepeater": [
+        "Shotgun Repeater"
+      ],
+      "Dual ATCSM": [
+        "Dual ATCSM"
+      ],
+      "Dual Gatling Turret": [
+        "Gatling Defense_II"
+      ],
+      "DualMassDriver_2x7": [
+        "Subspace Artillery_I"
+      ],
+      "DualPhasors_3x3": [
+        "Experimental Phasors"
+      ],
+      "Energizer3x3": [
+        "Energizer3x3"
+      ],
+      "EnergyCannon2x4": [
+        "Photon Cannons"
+      ],
+      "EnergyCannon2x4b": [
+        "Quantum Torpedo Cannon"
+      ],
+      "EnergyPD2x2": [
+        "EnergyPD2x2"
+      ],
+      "EnergyPD3x3": [
+        "EnergyPD3x3"
+      ],
+      "Enforcer": [
+        "Enforcer"
+      ],
+      "ExperimentalPhasor_2x5": [
+        "Experimental Phasors"
+      ],
+      "FT Mk.14": [
+        "Conventional Torpedoes"
+      ],
+      "Fighter ASG Turret": [
+        "Point Defense"
+      ],
+      "Fighter ATCSM": [
+        "ATCSM"
+      ],
+      "Fighter HASG Turret": [
+        "Phased Defense I"
+      ],
+      "Fighter QF 17-pdr": [
+        "AutoTurrets_II"
+      ],
+      "Fighter Torpedo": [
+        "Light Torpedo"
+      ],
+      "Frigate Turn Thrust": [
+        "Velocity Stimulance Mk2"
+      ],
+      "FusionBeam2x3": [
+        "Fusion Beam"
+      ],
+      "Gatling Turret": [
+        "Gatling Defense_I"
+      ],
+      "GravCannon": [
+        "Gravitons"
+      ],
+      "GreenHLaserCannon": [
+        "Energy Cannons"
+      ],
+      "HSA-Frontier Large": [
+        "HSA-Frontier"
+      ],
+      "HSA-Frontier Med": [
+        "HSA-Frontier"
+      ],
+      "HSA-Frontier Small": [
+        "HSA-Frontier"
+      ],
+      "HSA-Mirage Large": [
+        "HSA-Mirage"
+      ],
+      "HSA-Mirage Med": [
+        "HSA-Mirage"
+      ],
+      "HSA-Mirage Small": [
+        "HSA-Mirage"
+      ],
+      "HeavyForceField": [
+        "ForceFields_III"
+      ],
+      "HellStorm": [
+        "Advanced SRM Systems"
+      ],
+      "Huge Ammunition Dump": [
+        "Huge Ammunition Dump"
+      ],
+      "HvyAMCannon": [
+        "HeavyAntiMatterWeaponry"
+      ],
+      "Hydra_Rocket_Pod": [
+        "Anti-fighter Missiles"
+      ],
+      "Internal Bulkhead Advanced": [
+        "Crystal Armor"
+      ],
+      "Internal Bulkhead Improved": [
+        "Ceramic Armor"
+      ],
+      "IonBomb1x1": [
+        "Cold Fusion"
+      ],
+      "Jumpengine": [
+        "Velocity Stimulance Mk5"
+      ],
+      "LargeColdFusionReactor": [
+        "Extreme Cold Fusion"
+      ],
+      "LargeFabStorage": [
+        "SustainedSupport"
+      ],
+      "LargeFuelCell": [
+        "PowerMgmt1"
+      ],
+      "LaserBeamTurret3x3": [
+        "Laser Beams"
+      ],
+      "LaserGreen": [
+        "Energy Weapons"
+      ],
+      "LaserPurple": [
+        "Energy Weapons"
+      ],
+      "LaserTurretMassive": [
+        "Energy Cannons"
+      ],
+      "LightAC": [
+        "Phased Defense I"
+      ],
+      "LightACAP": [
+        "Phased Defense II"
+      ],
+      "LightACHEAP": [
+        "Phased Defense III"
+      ],
+      "LightForceField": [
+        "ForceFields_I"
+      ],
+      "LightningStorm": [
+        "Improved SRM Systems"
+      ],
+      "Linked AntiMatter Reactor Set": [
+        "Linked Anti-Matter"
+      ],
+      "Linked Dark Matter Reactor Set": [
+        "Linked Dark Matter"
+      ],
+      "Linked Quantum Fusion Reactor Set": [
+        "Linked Quantum Fusion"
+      ],
+      "MACCannon": [
+        "XACs"
+      ],
+      "MRM mk1": [
+        "Medium Range Missiles"
+      ],
+      "MRM mk2": [
+        "Improved MRM Platforms"
+      ],
+      "MRM mk3": [
+        "Advanced MRM Systems"
+      ],
+      "Magnetrom": [
+        "Magnetrom"
+      ],
+      "Magshield": [
+        "Shields"
+      ],
+      "MedOverdrive": [
+        "Velocity Stimulance Mk1"
+      ],
+      "MediumForceField": [
+        "ForceFields_II"
+      ],
+      "MeltBomb1x2": [
+        "Massive Anti-Matter"
+      ],
+      "Micro Torpedo1": [
+        "Light Torpedo"
+      ],
+      "Micro Torpedo2": [
+        "Conventional Torpedoes"
+      ],
+      "MissilePD_2x2": [
+        "MissilePD_I"
+      ],
+      "MissilePD_3x3": [
+        "MissilePD_II"
+      ],
+      "NanoContainerDeck": [
+        "Nano Storage"
+      ],
+      "Needler1x2": [
+        "Sniper Systems"
+      ],
+      "NeedlerAP1x2": [
+        "Sniper Systems AP"
+      ],
+      "NeedlerHEAP1x2": [
+        "Sniper Systems HEAP"
+      ],
+      "Nemesis_Rocket_Pod": [
+        "Advanced SRM Systems"
+      ],
+      "NuclearBombBay3x3": [
+        "Extreme Fusion"
+      ],
+      "NuclearThermalThruster": [
+        "Velocity Stimulance Mk1"
+      ],
+      "Ordnance Assemble": [
+        "Ordnance Assemble"
+      ],
+      "OrdnanceLocker2x2nano": [
+        "Nano Storage"
+      ],
+      "OrdnanceLockerLarge": [
+        "Large Ordnance Locker"
+      ],
+      "OrdnanceLockerNano": [
+        "Nano Storage"
+      ],
+      "Organic Armor Large": [
+        "Organic Armor"
+      ],
+      "Organic Armor Med": [
+        "Organic Armor"
+      ],
+      "Organic Armor Small": [
+        "Organic Armor"
+      ],
+      "Organic Bioplates Large": [
+        "Organic Bioplates"
+      ],
+      "Organic Bioplates Med": [
+        "Organic Bioplates"
+      ],
+      "Organic Bioplates Small": [
+        "Organic Bioplates"
+      ],
+      "Overdrive Titan Engine": [
+        "Velocity Stimulance Mk5"
+      ],
+      "OverdriveCapEngines": [
+        "Velocity Stimulance Mk3"
+      ],
+      "Overload AntiMatter Reactor": [
+        "Extreme AntiMatter"
+      ],
+      "Overload Fusion Reactor": [
+        "Extreme Fusion"
+      ],
+      "PhasorBeam2x3": [
+        "Phasors"
+      ],
+      "PlasmaBomb1x1": [
+        "PlasmaThrowers"
+      ],
+      "PlasmaCannon": [
+        "Plasma Weapons I"
+      ],
+      "PlasmaProjectorMod": [
+        "Plasma Weapons II"
+      ],
+      "PlasmaTorchThruster": [
+        "Plasma Vectoring II"
+      ],
+      "PlasmaTorpedoTube": [
+        "Plasma Weapons II"
+      ],
+      "Plasma_Thrower_Blue": [
+        "Plasma Vectoring IV"
+      ],
+      "Plasma_Thrower_Purple": [
+        "Plasma Vectoring III"
+      ],
+      "Plasma_Thrower_Red": [
+        "Plasma Vectoring II"
+      ],
+      "PlatformKinetic1": [
+        "PlatformWeapons1"
+      ],
+      "PlatformKinetic2": [
+        "PlatformWeapons2"
+      ],
+      "PlatformKinetic3": [
+        "PlatformWeapons3"
+      ],
+      "PowerSolar2x2": [
+        "StarshipConstruction"
+      ],
+      "Pulse Capacitor Small": [
+        "Pulse Capacitors"
+      ],
+      "PulseBeam1x2": [
+        "Fusion Beam"
+      ],
+      "PulseBeam1x2Advanced": [
+        "Phasors"
+      ],
+      "PurpleHLaserCannon": [
+        "Energy Cannons"
+      ],
+      "QuantumFusionReactor_1x1": [
+        "Quantum Fusion"
+      ],
+      "QuantumFusionReactor_2x2": [
+        "Quantum Fusion"
+      ],
+      "QuantumFusionReactor_3x3": [
+        "Quantum Fusion"
+      ],
+      "QuantumFusionReactor_4x4": [
+        "Quantum Fusion"
+      ],
+      "RAD": [
+        "RAD"
+      ],
+      "RailGunTurret3x3": [
+        "Subspace Artillery_I"
+      ],
+      "RailGunTurret3x3V2": [
+        "Subspace Artillery_II"
+      ],
+      "Railgun1x3V2": [
+        "Subspace Artillery_I"
+      ],
+      "Railgun2x4": [
+        "MassDrivers"
+      ],
+      "Railgun2x5": [
+        "MassDrivers"
+      ],
+      "Railgun2x6": [
+        "MassDrivers"
+      ],
+      "Reinforced Bulkhead Advanced": [
+        "Crystal Armor"
+      ],
+      "Reinforced Bulkhead Impoved": [
+        "Ceramic Armor"
+      ],
+      "RepairBay": [
+        "SustainedSupport"
+      ],
+      "RepairBaySmall": [
+        "Fleet Repair"
+      ],
+      "Repeater2x2": [
+        "ArmorTheory"
+      ],
+      "Repeater2x2_Ceramic": [
+        "Ceramic Armor"
+      ],
+      "Repeater2x2_Composite": [
+        "CompositeAlloys"
+      ],
+      "Repeater2x2_Crystal": [
+        "Crystal Armor"
+      ],
+      "Repeater2x2_Hyper": [
+        "Active Armor"
+      ],
+      "Repeater2x2_Reactive": [
+        "DepletedUranium Armor"
+      ],
+      "Repeater2x2_Tritanium": [
+        "Tritanium Armor"
+      ],
+      "S_cannon": [
+        "S_cannon"
+      ],
+      "ScrappyBeam2x4": [
+        "ScrappyBeam2x4"
+      ],
+      "ShadowStorm": [
+        "Anti-fighter Missiles"
+      ],
+      "Shape Memory Armor Large": [
+        "Shapememory Alloys"
+      ],
+      "Shape Memory Armor Med": [
+        "Shapememory Alloys"
+      ],
+      "Shape Memory Armor Small": [
+        "Shapememory Alloys"
+      ],
+      "Shapememory Alloys Med": [
+        "Shapememory Alloys"
+      ],
+      "Shapememory Alloys small": [
+        "Shapememory Alloys"
+      ],
+      "Shapememory_Alloys_Med2": [
+        "Organic Armor"
+      ],
+      "Shapememory_Alloys_Med3": [
+        "Advanced Bionic Armor"
+      ],
+      "Shapememory_Alloys_small2": [
+        "Organic Armor"
+      ],
+      "Shapememory_Alloys_small3": [
+        "Advanced Bionic Armor"
+      ],
+      "Shield Armor Large": [
+        "Shield Armor"
+      ],
+      "Shield Armor Med": [
+        "Shield Armor"
+      ],
+      "Shield Armor Small": [
+        "Shield Armor"
+      ],
+      "ShieldBomb1x2": [
+        "Dark Energy"
+      ],
+      "ShotgunDragon": [
+        "Shotgun Plasma Rounds"
+      ],
+      "ShotgunDragon1x3": [
+        "Shotgun Plasma Rounds"
+      ],
+      "ShotgunHE": [
+        "Shotgun Explosive Rounds"
+      ],
+      "ShotgunHE1x3": [
+        "Shotgun Explosive Rounds"
+      ],
+      "ShotgunHVEmp": [
+        "Shotgun Emp Rounds"
+      ],
+      "ShotgunHVEmp1x3": [
+        "Shotgun Emp Rounds"
+      ],
+      "ShotgunRepeater": [
+        "Shotgun Repeater"
+      ],
+      "ShotgunRepeater1x3": [
+        "Shotgun Repeater"
+      ],
+      "Small Inertial Damper": [
+        "InertialDampers"
+      ],
+      "SmallCraftBattleShield": [
+        "Battle_Shielding_I"
+      ],
+      "SmallCraftBattleShieldAdv": [
+        "Battle_Shielding_II"
+      ],
+      "SmallCraftDeflector": [
+        "Deflectors_I"
+      ],
+      "SmallCraftDeflectorAdv": [
+        "Deflectors_II"
+      ],
+      "SmallCraftForceField": [
+        "ForceFields_I"
+      ],
+      "Sniper1x6": [
+        "Sniper Systems"
+      ],
+      "Sniper1x6AP": [
+        "Sniper Systems AP"
+      ],
+      "Sniper1x6HEAP": [
+        "Sniper Systems HEAP"
+      ],
+      "StarLancers": [
+        "StarLancers"
+      ],
+      "StorageShield": [
+        "StorageShield"
+      ],
+      "Tactical nuke": [
+        "Tactical nuke"
+      ],
+      "Tactical_cannon": [
+        "Subspace Artillery_II"
+      ],
+      "Talon_Rocket_Pod": [
+        "Anti-fighter Missiles"
+      ],
+      "Titan Turn Thrust": [
+        "Velocity Stimulance Mk5"
+      ],
+      "Tritanium Armor Large": [
+        "Tritanium Armor"
+      ],
+      "Tritanium Armor Med": [
+        "Tritanium Armor"
+      ],
+      "Tritanium Armor Small": [
+        "Tritanium Armor"
+      ],
+      "TritaniumMissiles": [
+        "TritaniumMissiles"
+      ],
+      "Venom_Rocket_Pod": [
+        "Improved SRM Systems"
+      ],
+      "VernierThruster": [
+        "StarshipConstruction"
+      ],
+      "XGC-ForAnswer": [
+        "Multi-Barrel Drivers"
+      ],
+      "XSGA5Fairy Large": [
+        "XSGA5Fairy"
+      ],
+      "XSGA5Fairy Med": [
+        "XSGA5Fairy"
+      ],
+      "XSGA5Fairy Small": [
+        "XSGA5Fairy"
+      ],
+      "advanced_large_fuelcell": [
+        "PowerMgmt2"
+      ],
+      "advanced_med_fuelcell": [
+        "Advanced_Powercells"
+      ],
+      "advanced_small_fuelcell": [
+        "Advanced_Powercells"
+      ],
+      "engine_fighter_1x1": [
+        "StarshipConstruction",
+        "StarshipConstruction"
+      ],
+      "jumpdrive2x2": [
+        "Velocity Stimulance Mk2"
+      ],
+      "jumpdrive2x3": [
+        "Velocity Stimulance Mk3"
+      ],
+      "jumpdrive3x3": [
+        "Velocity Stimulance Mk4"
+      ],
+      "mwdsmall": [
+        "Cruisers"
+      ],
+      "thruster1x1": [
+        "Velocity Stimulance Mk1"
+      ],
+      "thruster1x2": [
+        "Velocity Stimulance Mk1"
+      ],
+      "thruster1x3": [
+        "Velocity Stimulance Mk2"
+      ],
+      "thruster1x4": [
+        "Velocity Stimulance Mk3"
+      ]
+    },
+    "Buildings": {
+      "Advanced Xeno Farm": [
+        "Farming Colony Development II"
+      ],
+      "Automatic Factory": [
+        "AutomaticProduction"
+      ],
+      "CorvetteDefense3": [
+        "Corvette Hulls I"
+      ],
+      "FighterDefense4": [
+        "FighterTheory"
+      ],
+      "FrigateDefense2": [
+        "Frigate Hulls I"
+      ],
+      "Galactic Network Uplink": [
+        "GalacticNetworks"
+      ],
+      "Geo Survey Satellite Uplink": [
+        "GeoSurvey"
+      ],
+      "Heavy Sniper": [
+        "Advanced Planetary Defense"
+      ],
+      "Hive City": [
+        "HiveCities"
+      ],
+      "Lifestock Cloning Center": [
+        "LifestockCloning"
+      ],
+      "Luxury Resort": [
+        "Resorts"
+      ],
+      "Mega City": [
+        "Mega Cities"
+      ],
+      "Missile Silo": [
+        "Missile Defense"
+      ],
+      "Nano Storage": [
+        "Nano Storage"
+      ],
+      "Planet_Disruptor": [
+        "Disruptors"
+      ],
+      "Planet_Photon": [
+        "Photon Cannons"
+      ],
+      "Planet_Rapid_Laser": [
+        "EnergyPD3x3"
+      ],
+      "Planet_Red_Laser": [
+        "Energy Cannons"
+      ],
+      "Planetary Customs Station": [
+        "ImperialCustoms"
+      ],
+      "Planetary Supercomputer": [
+        "PlanetaryComputing"
+      ],
+      "PlanetaryEducationCenter": [
+        "AdvancedEducation"
+      ],
+      "PlanetarySanitationCenter": [
+        "AdvancedSanitation"
+      ],
+      "PlanetaryTransportationCenter": [
+        "AdvancedTransportation"
+      ],
+      "Plant Genetic Manipulation Center": [
+        "PlantGeneticManipulation"
+      ],
+      "System Research Network Uplink": [
+        "SystemNetworks"
+      ],
+      "Upgraded Xeno Farm": [
+        "Farming Colony Development I"
+      ],
+      "Zero Gravity Production Plant": [
+        "ZeroGravityProduction"
+      ]
+    },
+    "Troops": {
+      "Dauntless Trooper": [
+        "Colonization"
+      ]
+    },
+    "Hulls": {
+      "Cordrazine/Cordrazine_Heavy_Platform": [
+        "Shipyards"
+      ],
+      "Cordrazine/Kitving": [
+        "Drones"
+      ],
+      "Cordrazine/Kodaving": [
+        "Battleship Hulls I"
+      ],
+      "Cordrazine/Qing": [
+        "Fighter Hulls I"
+      ],
+      "Cordrazine/Radving": [
+        "Frigate Hulls I"
+      ],
+      "Cordrazine/Sitving": [
+        "Corvette Hulls I"
+      ],
+      "Cordrazine/Ting": [
+        "Fighter Hulls II"
+      ],
+      "Cordrazine/Tornaving": [
+        "Titan Hulls I"
+      ],
+      "Cordrazine/Zorving": [
+        "Cruiser Hulls I"
+      ],
+      "Corsairs/Corsair-Frigate": [
+        "FrigateConstruction"
+      ],
+      "Corsairs/CorsairFighterAdvanced": [
+        "Fighter Hulls II"
+      ],
+      "Corsairs/CorsairFighterBasic": [
+        "StarshipConstruction"
+      ],
+      "Corsairs/CorsairFighterImproved": [
+        "Fighter Hulls I"
+      ],
+      "Corsairs/CorsairFlagShip": [
+        "Cruisers"
+      ],
+      "Corsairs/HeavyFrigate": [
+        "FrigateConstruction"
+      ],
+      "Dauntless/Catfish": [
+        "Battleship Hulls I"
+      ],
+      "Dauntless/Dauntless_Heavy_Platform": [
+        "Shipyards"
+      ],
+      "Dauntless/Dauntless_Station": [
+        "Battle_Stations"
+      ],
+      "Dauntless/Dauntless_Station_Small": [
+        "SmallStations"
+      ],
+      "Dauntless/Goldfish": [
+        "Drones"
+      ],
+      "Dauntless/Goosefish": [
+        "Cruiser Hulls I"
+      ],
+      "Dauntless/Obelisk": [
+        "Titan Hulls I"
+      ],
+      "Dauntless/Triton": [
+        "Fighter Hulls II"
+      ],
+      "Dauntless/Wolffish": [
+        "Fighter Hulls I"
+      ],
+      "Dauntless/ts1": [
+        "Corvette Hulls I"
+      ],
+      "Dauntless/ts1_modb": [
+        "MediumFreighters"
+      ],
+      "Dauntless/ts2": [
+        "Corvette Hulls II"
+      ],
+      "Dauntless/ts2_modE2": [
+        "StarshipConstruction"
+      ],
+      "Dauntless/ts2_modG": [
+        "StarshipConstruction"
+      ],
+      "Dauntless/ts2_modb": [
+        "FrigateConstruction"
+      ],
+      "Dauntless/ts2_modc": [
+        "CorvetteHulls"
+      ],
+      "Dauntless/ts2_modh": [
+        "LargeFreighters"
+      ],
+      "Dauntless/ts3": [
+        "Cruisers"
+      ],
+      "Dauntless/ts3_modb": [
+        "Battleships"
+      ],
+      "Dauntless/ts3_modc": [
+        "Frigate Hulls I"
+      ],
+      "Dauntless/ts3_modd": [
+        "Titans"
+      ],
+      "Draugar/Draug Flagship Hull": [
+        "Titans"
+      ],
+      "Draugar/Draug1": [
+        "FrigateConstruction"
+      ],
+      "Draugar/Draug2": [
+        "FrigateConstruction"
+      ],
+      "Draugar/Draug3": [
+        "FrigateConstruction"
+      ],
+      "Draugar/DraugSlaver1": [
+        "FrigateConstruction"
+      ],
+      "Draugar/DraugSlaver2": [
+        "FrigateConstruction"
+      ],
+      "Draugar/DraugSlaver3": [
+        "FrigateConstruction"
+      ],
+      "Draylok/Aferka": [
+        "Titan Hulls I"
+      ],
+      "Draylok/Arikara": [
+        "Drones"
+      ],
+      "Draylok/Astarte": [
+        "Corvette Hulls I"
+      ],
+      "Draylok/Chenoo": [
+        "Fighter Hulls I"
+      ],
+      "Draylok/Dahu": [
+        "Fighter Hulls II"
+      ],
+      "Draylok/Draylok_Heavy_Platform": [
+        "Shipyards"
+      ],
+      "Draylok/Reaper": [
+        "Frigate Hulls I"
+      ],
+      "Draylok/Vulture": [
+        "Cruiser Hulls I"
+      ],
+      "Draylok/Whirlwind": [
+        "Battleship Hulls I"
+      ],
+      "Kulrathi/Chela": [
+        "Frigate Hulls II"
+      ],
+      "Kulrathi/Demolisher": [
+        "Battleship Hulls I"
+      ],
+      "Kulrathi/Kulrathi_Heavy_Platform": [
+        "Shipyards"
+      ],
+      "Kulrathi/Kunai": [
+        "Fighter Hulls II"
+      ],
+      "Kulrathi/Lancer": [
+        "Cruiser Hulls I"
+      ],
+      "Kulrathi/Pitsaw": [
+        "Corvette Hulls I"
+      ],
+      "Kulrathi/Protector": [
+        "Titan Hulls I"
+      ],
+      "Kulrathi/Shuriken": [
+        "Fighter Hulls I"
+      ],
+      "Kulrathi/Tanto": [
+        "Drones"
+      ],
+      "Opteris/Bit": [
+        "Drones"
+      ],
+      "Opteris/Chitin10": [
+        "Cruiser Hulls I"
+      ],
+      "Opteris/Drone01": [
+        "Fighter Hulls I"
+      ],
+      "Opteris/Drone10": [
+        "Fighter Hulls II"
+      ],
+      "Opteris/Hiver10": [
+        "Battleship Hulls I"
+      ],
+      "Opteris/Opteris_Heavy_Platform": [
+        "Shipyards"
+      ],
+      "Opteris/Queen01": [
+        "Titan Hulls I"
+      ],
+      "Opteris/Soldier10": [
+        "Frigate Hulls I"
+      ],
+      "Opteris/Worker10": [
+        "Corvette Hulls I"
+      ],
+      "Pollops/Aldrovanda": [
+        "Battleship Hulls I"
+      ],
+      "Pollops/Cocoon": [
+        "Cruiser Hulls I"
+      ],
+      "Pollops/Coppice": [
+        "Corvette Hulls I"
+      ],
+      "Pollops/Cycad": [
+        "Frigate Hulls I"
+      ],
+      "Pollops/Eldritch": [
+        "Titan Hulls I"
+      ],
+      "Pollops/Ivy": [
+        "Drones"
+      ],
+      "Pollops/Pollops_Heavy_Platform": [
+        "Shipyards"
+      ],
+      "Pollops/Prickle": [
+        "Fighter Hulls II"
+      ],
+      "Pollops/Star Flower": [
+        "CorvetteHulls"
+      ],
+      "Ralyeh/Apostle": [
+        "Battleship Hulls I"
+      ],
+      "Ralyeh/Devotee": [
+        "Frigate Hulls I"
+      ],
+      "Ralyeh/Fanatic": [
+        "Fighter Hulls I"
+      ],
+      "Ralyeh/Monk": [
+        "Drones"
+      ],
+      "Ralyeh/Partizan": [
+        "Cruiser Hulls I"
+      ],
+      "Ralyeh/Pious": [
+        "Titan Hulls I"
+      ],
+      "Ralyeh/Priest": [
+        "Corvette Hulls I"
+      ],
+      "Ralyeh/Ralyeh_Heavy_Platform": [
+        "Shipyards"
+      ],
+      "Ralyeh/Zealous": [
+        "Fighter Hulls II"
+      ],
+      "Remnant/Mothership": [
+        "Titans"
+      ],
+      "Remnant/Xeno Drone": [
+        "Drones"
+      ],
+      "Remnant/Xeno Fighter": [
+        "Fighter Hulls I"
+      ],
+      "Terran/AssaultCarrier": [
+        "Battleship Hulls I"
+      ],
+      "Terran/BattleCruiser": [
+        "Cruiser Hulls II"
+      ],
+      "Terran/Destroyer": [
+        "Frigate Hulls II"
+      ],
+      "Terran/Knife": [
+        "Drones"
+      ],
+      "Terran/Lightning": [
+        "Fighter Hulls I"
+      ],
+      "Terran/Scarlet": [
+        "Titan Hulls I"
+      ],
+      "Terran/Seeker": [
+        "Corvette Hulls I"
+      ],
+      "Terran/Specter": [
+        "Fighter Hulls II"
+      ],
+      "Terran/Terran_Heavy_Platform": [
+        "Shipyards"
+      ],
+      "Vulfen/Nulla": [
+        "Drones"
+      ],
+      "Vulfen/Type IX": [
+        "Frigate Hulls I"
+      ],
+      "Vulfen/Type Ia": [
+        "Fighter Hulls I"
+      ],
+      "Vulfen/Type Ib": [
+        "Fighter Hulls II"
+      ],
+      "Vulfen/Type XII": [
+        "Cruiser Hulls I"
+      ],
+      "Vulfen/Type XIV": [
+        "Battleship Hulls I"
+      ],
+      "Vulfen/Type XV": [
+        "Titans"
+      ],
+      "Vulfen/Type XVI": [
+        "Titan Hulls I"
+      ],
+      "Vulfen/Vulfen_Heavy_Platform": [
+        "Shipyards"
+      ]
+    }
+  },
+  "backup": "output/backups/research-before-combined-arms-20261004-215721.zip"
+}

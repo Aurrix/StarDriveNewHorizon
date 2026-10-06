@@ -14,6 +14,7 @@ namespace Ship_Game.Commands.Goals
     {
         [StarData] public sealed override Ship TargetShip { get; set; }
         [StarData] public sealed override Empire TargetEmpire { get; set; }
+        [StarData] Array<Ship> RaidShips = new();
 
         Pirates Pirates => Owner.Pirates;
         
@@ -38,8 +39,7 @@ namespace Ship_Game.Commands.Goals
 
         // Stand down the moment the victim pays protection or is defeated - on every step, not
         // just the first - unless we've already taken the target (let that capture conclude).
-        // Unlike the other raids this one spawns an untracked escort force plus several boarding
-        // ships, so send the whole raiding party home rather than a single tracked ship.
+        // Recall only this mission's ships, never another raid in the same system.
         protected override GoalStep? PreEvaluate()
         {
             if ((Pirates.PaidBy(TargetEmpire) || Pirates.VictimIsDefeated(TargetEmpire))
@@ -52,28 +52,15 @@ namespace Ship_Game.Commands.Goals
             return null;
         }
 
-        // We keep no handles to the spawned raiders, so find our ships by the target's system
-        // when it has one, otherwise by proximity (deep-space targets have a null System), and
-        // order them back to base. Bases/platforms are skipped - only the mobile raiders flee.
         void RecallRaidForce()
         {
-            if (TargetShip == null)
-                return;
-
-            SolarSystem system = TargetShip.System;
-            var ourShips = Owner.OwnedShips;
-            for (int i = 0; i < ourShips.Count; i++)
-            {
-                Ship s = ourShips[i];
-                if (s == null || s.IsPlatformOrStation)
-                    continue;
-
-                bool inRange = system != null
-                    ? s.System == system
-                    : s.Position.InRadius(TargetShip.Position, 100_000);
-                if (inRange)
-                    s.AI.OrderPirateFleeHome();
-            }
+            foreach (Ship ship in RaidShips)
+                if (ship.Active && ship.Loyalty == Owner) ship.AI.OrderPirateFleeHome();
+            // Old saves lack membership. Only recall ships still targeting this objective.
+            if (RaidShips.Count == 0 && TargetShip != null)
+                foreach (Ship ship in Owner.OwnedShips)
+                    if (!ship.IsPlatformOrStation && ship.AI.Target == TargetShip)
+                        ship.AI.OrderPirateFleeHome();
         }
 
         GoalStep DetectAndSpawnRaidForce()
@@ -90,13 +77,19 @@ namespace Ship_Game.Commands.Goals
             int numBoardingShips = (TargetShip.TroopCount / 2).LowerBound(1);
 
             if (Pirates.SpawnForce(TargetShip, where, 5000, out Array<Ship> force))
+            {
+                RaidShips.AddRange(force);
                 Pirates.OrderAttackShip(TargetShip, force);
+            }
 
             for (int i = 0; i < numBoardingShips; i++)
             {
                 Vector2 pos = where.GenerateRandomPointInsideCircle(2000, Owner.Random);
                 if (Pirates.SpawnBoardingShip(orbital, pos, out Ship boardingShip))
+                {
+                    RaidShips.Add(boardingShip);
                     boardingShip.AI.OrderAttackSpecificTarget(TargetShip);
+                }
             }
 
             Pirates.ExecuteProtectionContracts(TargetEmpire, TargetShip);
